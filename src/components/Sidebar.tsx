@@ -12,11 +12,11 @@ import { accent } from "@/utils/accentColors";
 import NodeLogo from "@/components/NodeLogo";
 
 function StatusDot({ status }: { status: keyof typeof statusColorKey }) {
-  return <span className={`w-1.75 h-1.75 rounded-full shrink-0 ${accent[statusColorKey[status]].bg}`} />;
+  return <span className={`w-1.75 h-1.75 rounded-full shrink-0 mt-1.5 ${accent[statusColorKey[status]].bg}`} />;
 }
 
 const linkBase =
-  "flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-body text-sm truncate border-l-2 border-transparent hover:bg-surface-raised hover:text-title hover:no-underline";
+  "flex items-start gap-2.5 px-2.5 py-2 rounded-lg text-body text-sm leading-snug border-l-2 border-transparent hover:bg-surface-raised hover:text-title hover:no-underline";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -63,7 +63,7 @@ export default function Sidebar() {
                   className={`${linkBase} ${isActive ? `bg-surface-raised text-title font-semibold ${colors.border}` : ""}`}
                 >
                   <StatusDot status={topic.status} />
-                  {topic.title}
+                  <span className="min-w-0 wrap-break-word line-clamp-2">{topic.title}</span>
                 </Link>
               );
             })}

@@ -1,0 +1,18 @@
+{
+  "name": "named-wildcards-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof of Express 5's named-wildcard route syntax, and that the old Express 4 bare '*' wildcard genuinely throws now.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

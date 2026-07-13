@@ -1,0 +1,70 @@
+{
+  "info": {
+    "_postman_id": "8f0a2b3c-4d5e-4f6a-9b1c-2d3e4f5a6b7c",
+    "name": "Exploring the API — Node + Express Playground",
+    "description": "A real, importable Postman collection for the todos API in this folder's server.js.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get all todos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4011/todos",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4011",
+          "path": ["todos"]
+        }
+      }
+    },
+    {
+      "name": "Get one todo by id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4011/todos/2",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4011",
+          "path": ["todos", "2"]
+        }
+      }
+    },
+    {
+      "name": "Create a new todo",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"Try sending this request for real\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:4011/todos",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4011",
+          "path": ["todos"]
+        }
+      }
+    },
+    {
+      "name": "Get a todo that doesn't exist (real 404)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4011/todos/999",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "4011",
+          "path": ["todos", "999"]
+        }
+      }
+    }
+  ]
+}

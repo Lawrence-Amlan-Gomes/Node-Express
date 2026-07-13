@@ -1,0 +1,19 @@
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <polygon
+    points="50,4 91,27 91,73 50,96 9,73 9,27"
+    fill="#141414"
+    stroke="#539E43"
+    stroke-width="4"
+  />
+  <text
+    x="50"
+    y="65"
+    text-anchor="middle"
+    font-family="ui-monospace, SF Mono, monospace"
+    font-weight="700"
+    font-size="42"
+    fill="#539E43"
+  >
+    N
+  </text>
+</svg>

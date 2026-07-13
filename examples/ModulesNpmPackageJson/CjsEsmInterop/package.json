@@ -1,0 +1,17 @@
+{
+  "name": "cjs-esm-interop-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable demo of CommonJS vs ES Modules interop, including the require()-can-load-synchronous-ESM behavior stable since Node 22.12.",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "picocolors": "^1.1.1"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

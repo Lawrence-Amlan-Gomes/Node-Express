@@ -1,0 +1,23 @@
+### This is a real, plain-text ".http" request file — the format the
+### "REST Client" and "Thunder Client" VS Code extensions (and JetBrains'
+### built-in HTTP Client) all read directly. Each block starting with ###
+### is one separate request. With one of those extensions installed, a
+### "Send Request" link appears right above each block — no separate app,
+### no GUI to learn, just a file that lives in your project like any other.
+
+### Get every todo
+GET http://localhost:4012/todos
+
+### Get one todo by id
+GET http://localhost:4012/todos/2
+
+### Create a new todo — the body below is real JSON, sent exactly as written
+POST http://localhost:4012/todos
+Content-Type: application/json
+
+{
+  "text": "Try sending this request for real"
+}
+
+### A request for something that doesn't exist — proves the real 404
+GET http://localhost:4012/todos/999

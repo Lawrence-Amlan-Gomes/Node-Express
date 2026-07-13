@@ -1,0 +1,18 @@
+{
+  "name": "creating-the-app-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof that express() plus one route plus app.listen() is a genuinely running server, not just a file full of definitions.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

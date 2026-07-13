@@ -1,0 +1,25 @@
+{
+  "name": "typed-backend-setup-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable demo of a typed Node.js backend layout: tsconfig for module: nodenext, running TS in dev via native type-stripping, and compiling with tsc for a real production build.",
+  "type": "module",
+  "scripts": {
+    "dev": "node src/index.ts",
+    "dev:tsx": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "run-type-error-demo": "node src/type-error-demo.ts",
+    "check-type-error-demo": "tsc -p tsconfig.errordemo.json",
+    "run-enum-demo:strip-only": "node src/enum-demo.ts",
+    "run-enum-demo:transform": "node --experimental-transform-types src/enum-demo.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.1",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=22.6.0"
+  }
+}
