@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+/*
+  Tailwind's default blue/purple/orange/yellow/green/red/cyan-500 shades match
+  this project's color guide exactly, so semantic colors are used directly
+  (bg-blue-500, text-green-500, etc.) with no override needed here. Only the
+  app-specific tokens (surfaces, text hierarchy, radius, fonts) are custom.
+*/
+@theme {
+  --color-bg: #0a0a0a;
+  --color-surface: #141414;
+  --color-surface-raised: #1c1c1c;
+  --color-border: #2a2a2a;
+
+  --color-title: #ffffff;
+  --color-body: #d4d4d4;
+  --color-sublabel: #a3a3a3;
+  --color-muted: #444444;
+
+  --radius-card: 10px;
+
+  --font-mono: "SF Mono", "Fira Code", Menlo, Consolas, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+}
+
+@layer base {
+  html {
+    background: var(--color-bg);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-body);
+  }
+
+  h1, h2, h3, h4 {
+    @apply text-title font-semibold;
+    margin: 0 0 0.5em 0;
+  }
+
+  p {
+    line-height: 1.65;
+    margin: 0 0 1em 0;
+  }
+
+  a {
+    @apply text-blue-500;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  code {
+    @apply font-mono;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-muted);
+  }
+}

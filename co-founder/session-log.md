@@ -1,0 +1,5 @@
+# Session Log
+
+One terse entry per session. Newest at the bottom. Append on "End Today" — don't let entries balloon, a few lines each.
+
+- 2026-07-13: First real session. Set up the whole mentor system, then corrected a scope misread (built with no delivery UI at first — fixed by scaffolding a real Next.js viewer app mirroring a sibling project's shell, with `TerminalFrame` replacing `BrowserFrame` for backend). Built topic 1, "What is Node.js, really" (V8/libuv/event loop, a genuinely live-executed demo), then revised it after a second sibling project revealed the generic event-loop content was already mastered elsewhere. Ran a web-research pass and added 8 concrete roadmap items (TypeScript-with-Node, Express 5 pinning, pagination/idempotency, OWASP framing, memory profiling, cluster-vs-worker_threads, a real background-jobs topic, GraphQL/tRPC awareness). Fixed a real CSS bug (missing default body text color) and a couple of tooling gotchas (Turbopack `execFileSync`, sibling-folder lint exclusion). Topic 1 built but not yet confirmed mastered — no direct teaching happened yet this session.

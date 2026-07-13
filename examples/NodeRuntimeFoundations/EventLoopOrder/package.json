@@ -1,0 +1,10 @@
+{
+  "name": "event-loop-order-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Standalone runnable demo of Node's synchronous -> microtask -> macrotask execution order.",
+  "main": "event-loop-order.js",
+  "scripts": {
+    "start": "node event-loop-order.js"
+  }
+}
