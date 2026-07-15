@@ -1,0 +1,18 @@
+{
+  "name": "legacy-try-catch-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A real Express 4 app (deliberately, not Express 5) proving the pre-Express-5 footgun for real: an async handler with no try/catch really does hang forever, and the manual try/catch + next(err) pattern is what fixed it.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "layered-routes-controllers-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof that splitting a growing Express app into routes (which paths exist) and controllers (what actually happens) is a real, standard layering convention, not just tidiness.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

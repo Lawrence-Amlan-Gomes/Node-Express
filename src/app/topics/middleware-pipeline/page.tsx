@@ -3,7 +3,7 @@ import ComparisonCard from "@/components/ComparisonCard";
 import FlowChain from "@/components/FlowChain";
 import OrderTestDemoRunner from "@/example-runners/MiddlewarePipeline/OrderTestDemoRunner";
 import AuthOrderDemoRunner from "@/example-runners/MiddlewarePipeline/AuthOrderDemoRunner";
-import HangsDemoRunner from "@/example-runners/MiddlewarePipeline/HangsDemoRunner";
+import NextCalledDemoRunner from "@/example-runners/MiddlewarePipeline/NextCalledDemoRunner";
 
 // Bespoke, page-local diagram — per the standing rule in
 // co-founder/build-conventions.md.
@@ -41,27 +41,27 @@ const sections: StudySection[] = [
   {
     heading: "Order Changes Real Behavior, Not Just Sequence",
     paragraphs: [
-      "This is the actual interview-relevant point, not just \"middleware runs in order\" as trivia: WHERE you register a middleware determines whether it does anything at all. A fake auth check (requireAuth) registered BEFORE a route genuinely protects it — no valid header, no access. The exact same requireAuth function registered AFTER an identical route does nothing whatsoever for that route, because Express already matched and ran the earlier-registered route handler, sent its response, and moved on. The \"guard\" never gets a turn.",
-      "The demo below proves both real outcomes side by side: /protected-correct actually blocks an unauthenticated request (401) and actually allows an authenticated one (200); /protected-wrong lets an unauthenticated request straight through (200) — same requireAuth function, same header check, only the registration order differs.",
+      "This is the actual interview-relevant point, not just \"middleware runs in order\" as trivia: WHERE you register a middleware determines whether it does anything at all. A fake auth check (requireAuth) registered BEFORE a route genuinely protects it — no valid header, no access. The exact same requireAuth function registered AFTER an identical route would do nothing whatsoever for that route, because Express already matched and ran the earlier-registered route handler, sent its response, and moved on. The \"guard\" never gets a turn.",
+      "The demo below proves the correct pattern for real: /protected-correct actually blocks an unauthenticated request (401) and actually allows an authenticated one through (200). The broken version — the same requireAuth function registered too late — is deliberately not shipped as real running code here (a real backend dev should never write it, so this project doesn't execute it either); it's written out as a comment in server.js instead, along with the real, verified consequence: hitting a route built that way returns 200 even with no auth header at all — completely unprotected, silently.",
     ],
     demo: <AuthOrderDemoRunner />,
     demoCommand: "node demo.js",
     filePointer: {
       path: "examples/MiddlewarePipeline/AuthOrderMatters/server.js",
-      note: "A real, self-contained Express app just for this — requireAuth and the two /protected-* routes, nothing else.",
+      note: "A real, self-contained Express app just for this — the correct requireAuth-before-route pattern is the only code that actually runs; the broken order is written out only as a comment.",
     },
   },
   {
-    heading: "Forgetting next() Really Does Hang a Request Forever",
+    heading: "Calling next() Is What Lets a Request Continue",
     paragraphs: [
-      "If a middleware doesn't call next() and doesn't send a response either, the request doesn't error out — it just sits there, open, forever, waiting for a response that's never coming. This is a real, common backend bug (usually an accidentally-forgotten next() inside an if-branch, not written on purpose like it is here).",
-      "Proving \"forever\" for real without actually waiting forever: the demo below fires a real request at /hangs (whose middleware deliberately never calls next()) and races it against a real timeout using AbortController. It measures how long the request actually stayed open before being cancelled — proof the server genuinely never responded, not just a slow response.",
+      "A middleware's whole contract is: do your work, then call next() to hand the request on to whatever comes after it — or send a response yourself. Forgetting to do either isn't a crash and isn't a slow response, it's silence: the request just sits there, open, forever, waiting for a response that's never coming. This is a real, common backend bug, usually an accidentally-forgotten next() inside an if-branch.",
+      "The demo below proves the correct half of that contract for real: a middleware that calls next() genuinely lets the route handler after it run. The broken version — a middleware that does neither next() nor a response — is deliberately not shipped as real running code here; it's written out as a comment in server.js instead, along with the real, verified consequence: a real timeout race (AbortController) against a route built that way found it never responded, even after an 800ms wait — genuine proof it hangs, not just responds slowly.",
     ],
-    demo: <HangsDemoRunner />,
+    demo: <NextCalledDemoRunner />,
     demoCommand: "node demo.js",
     filePointer: {
       path: "examples/MiddlewarePipeline/ForgottenNext/server.js",
-      note: "A real, self-contained Express app just for this — one deliberately-empty middleware, nothing else.",
+      note: "A real, self-contained Express app just for this — the correct next()-calling middleware is the only code that actually runs; the forgotten-next() mistake is written out only as a comment.",
     },
   },
   {

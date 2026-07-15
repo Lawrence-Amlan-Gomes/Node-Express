@@ -1,0 +1,18 @@
+{
+  "name": "automatic-forwarding-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof that Express 5 automatically forwards a rejected promise from an async route handler to its error handling, with no try/catch anywhere.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

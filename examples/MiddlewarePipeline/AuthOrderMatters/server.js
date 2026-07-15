@@ -17,26 +17,30 @@ function requireAuth(req, res, next) {
   }
 }
 
-// CORRECT order: requireAuth is registered BEFORE the route handler here
-// (as a second argument to app.get, which Express treats as "run this
-// middleware first, then the real handler"). This route is genuinely
-// protected — no valid header, no access.
+// THE CORRECT PATTERN, and the only route that actually runs in this file:
+// requireAuth is registered BEFORE the route handler (as a second argument
+// to app.get, which Express treats as "run this middleware first, then the
+// real handler"). This route is genuinely protected — no valid header, no
+// access.
 app.get("/protected-correct", requireAuth, (req, res) => {
   res.json({ message: "you got in — correct order, real auth check ran first" });
 });
 
-// WRONG order, on purpose: the route below is registered FIRST, and only
-// AFTER that do we register requireAuth for the same path. Express matches
-// and runs things in registration order — so a request to GET
-// /protected-wrong finds this route handler FIRST, sends its response, and
-// requireAuth (registered below, too late) never even gets a chance to run
-// for this request. This is exactly why middleware order is a real
-// interview question, not academic trivia: the "auth check" here does
-// nothing at all, silently.
-app.get("/protected-wrong", (req, res) => {
-  res.json({ message: "reached with NO real auth check — wrong order let this slip through" });
-});
-app.use("/protected-wrong", requireAuth);
+// THE MISTAKE (shown only as a comment, never actually run in this project
+// — see co-founder/build-conventions.md's "wrong code stays in comments"
+// rule). If requireAuth were registered AFTER an identical route instead:
+//
+//   app.get("/protected-wrong", (req, res) => {
+//     res.json({ message: "reached with NO real auth check" });
+//   });
+//   app.use("/protected-wrong", requireAuth);
+//
+// ...Express would already have matched and answered the request with the
+// route above BEFORE requireAuth (registered too late) ever got a turn.
+// Verified directly while building this topic: hitting a route built this
+// way returns 200 even with NO auth header at all — the "auth check" does
+// nothing whatsoever, silently. This is exactly why middleware order is a
+// real interview question, not academic trivia.
 
 // Only actually listen when this file is run directly (`node server.js`) —
 // demo.js imports { app } and controls its own ephemeral-port listener

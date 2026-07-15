@@ -1,0 +1,18 @@
+{
+  "name": "static-assets-and-json-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof that one Express app can serve real static files (HTML, CSS, images) alongside a real JSON API, and what actually differs between the two.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

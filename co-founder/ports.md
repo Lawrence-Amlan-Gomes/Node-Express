@@ -4,10 +4,10 @@ Internal record so a new session knows what "my port" refers to, per the port-ma
 
 ## Current state
 
-- **Server running:** no — killed at `End Today`, 2026-07-14.
-- **Last port used:** 3000 (`http://localhost:3000`)
-- **Start command:** `npm run dev` (from project root — starts the Next.js viewer app via Turbopack)
-- **Started by me this session:** n/a until next session starts it fresh. Last PID this session was 44379 (restarted 14x total across the session, each after a `npm run build` verification pass — see History).
+- **Server running:** no — killed at `End Today`, 2026-07-15.
+- **Last port used:** 3001 (`http://localhost:3001`) — port 3000 was occupied by an unrelated project's dev server (`next-server` running out of `/Users/lawrencealangomes/Documents/English`, not something started by this session), so this project used 3001 instead all session. If 3000 is still taken by that other project next time, default to 3001 again (or the next free port) rather than assuming it's free.
+- **Start command:** `npm run dev -- -p 3001` (from project root — starts the Next.js viewer app via Turbopack)
+- **Started by me this session:** yes (PID 24638, last of several restarts across the session for build-verification passes). Killed cleanly at close.
 
 ## History
 
@@ -30,3 +30,5 @@ Internal record so a new session knows what "my port" refers to, per the port-ma
 - 2026-07-14 — User caught a real structural mistake across all 3 built Stage B topics: sections covering genuinely unrelated concepts were sharing one server.js/example project. Fixed by splitting every section into its own separate mini-project — Middleware Pipeline (OrderOfExecution/AuthOrderMatters/ForgottenNext), App & Router Basics (CreatingTheApp/RoutesParamsQueryBody/NamedWildcards — the wildcard section also got a real live demo it never had before), and API Testing Tools (CurlWorkflow/PostmanCollection/HttpRequestFile — the latter two also gained real live demos). Deleted the old shared folders (PipelineOrder, BasicExpressApp, ExploringTheApi). Recorded as a standing rule in build-conventions.md and memory. Killed PID 37300 (mine) to rebuild cleanly, restarted `npm run dev` fresh (new PID 41035). Verified via `curl` across all three topics.
 - 2026-07-14 — User wanted a visual sense of the real Postman UI instead of terminal-style JSON output for the Postman Collection section. Built `src/components/PostmanMockUI.tsx` — a static, orange-branded illustration of Postman's real layout (sidebar of saved requests, URL/Send bar, response panel), populated entirely with the same real, already-verified response data from that section's live demo (kept alongside it, not replaced, so the mockup's data stays backed by real execution). Killed PID 41035 (mine) to rebuild cleanly, restarted `npm run dev` fresh (new PID 44379). Verified via `curl`.
 - 2026-07-14 — `End Today`: killed PID 44379 (mine, started earlier this session) cleanly. Port 3000 confirmed clear before ending.
+- 2026-07-15 — New session started via `@skillCoFounderMentor.md`. Port 3000 was occupied by a DIFFERENT project's dev server (next-server out of `/Users/lawrencealangomes/Documents/English`, PID 6852/6851, cwd confirmed via `lsof` — not something this session started, so left untouched per the "never kill a process you didn't start" rule). Started this project on port 3001 instead (`npm run dev -- -p 3001`, PID 10561). Verified 200 via `curl`.
+- 2026-07-15 — Long session: built Error Handling in Express and Project Structure & Config (completing Stage B), then SQL vs NoSQL (starting Stage C). Restarted the dev server 5 times total across the session for build-verification passes (PIDs 10561 → 12925 → 14461 → 15850 → 18560 → 24638), each time killing the previous one (mine) first per the cache-corruption gotcha. Killed the final one (24638) cleanly at `End Today`.

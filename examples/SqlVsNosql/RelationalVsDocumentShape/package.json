@@ -1,0 +1,14 @@
+{
+  "name": "relational-vs-document-shape-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof of the actual structural difference between a relational model (separate linked tables) and a document model (one embedded object) for the same blog data.",
+  "type": "module",
+  "main": "demo.js",
+  "scripts": {
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}

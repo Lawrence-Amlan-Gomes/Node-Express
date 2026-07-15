@@ -1,0 +1,14 @@
+{
+  "name": "foreign-keys-vs-embedding-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof that a relational database enforces its declared relationships (a real foreign key constraint), while a document model has nothing enforcing consistency between embedded data on its own.",
+  "type": "module",
+  "main": "demo.js",
+  "scripts": {
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}

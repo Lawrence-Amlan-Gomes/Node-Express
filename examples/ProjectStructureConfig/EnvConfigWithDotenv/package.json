@@ -1,0 +1,19 @@
+{
+  "name": "env-config-with-dotenv-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof that config (a port, a message, anything environment-specific) belongs in a real .env file, loaded with dotenv, not hardcoded straight into the code.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}

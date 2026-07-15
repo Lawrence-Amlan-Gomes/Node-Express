@@ -1,0 +1,14 @@
+{
+  "name": "read-pattern-comparison-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof that each data model wins at a DIFFERENT real read pattern — fetching one aggregate favors documents, querying across many aggregates favors relational.",
+  "type": "module",
+  "main": "demo.js",
+  "scripts": {
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}
