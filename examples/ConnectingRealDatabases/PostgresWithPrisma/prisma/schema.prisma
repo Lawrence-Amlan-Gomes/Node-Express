@@ -1,0 +1,29 @@
+// Prisma's own config file. It has two jobs:
+//   1. "generator client" — tells Prisma to generate a real, typed JS client
+//      (into node_modules/@prisma/client) that knows the shape below.
+//   2. "datasource db" — tells Prisma WHICH real database to talk to. The
+//      actual connection string lives in .env (never in this file, and
+//      never committed), read here via env("DATABASE_URL").
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// A "model" in Prisma = one real table once pushed to the database. This
+// becomes a real "Task" table living inside the "node_express_learning"
+// schema (a schema is just a namespace of tables inside one Postgres
+// database — this schema is a fresh, isolated one just for this
+// curriculum, kept completely separate from any other real tables that
+// already exist in this database's "public" schema). Which schema Prisma
+// targets is controlled by "?schema=node_express_learning" on the
+// connection string in .env, not by anything in this file.
+model Task {
+  id        Int      @id @default(autoincrement())
+  title     String
+  done      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

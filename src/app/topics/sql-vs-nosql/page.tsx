@@ -11,11 +11,11 @@ import ReadPatternComparisonRunner from "@/example-runners/SqlVsNosql/ReadPatter
 function ShapeDiagram() {
   return (
     <div className="rounded-card border border-dashed border-orange-500 bg-surface p-4 my-4 font-mono text-xs leading-relaxed">
-      <div className="text-orange-500 mb-2.5">The same blog post, modeled two real ways:</div>
-      <div className="pl-2 mb-1.5 text-cyan-500">RELATIONAL — users, posts, comments in 3 separate tables, linked by ids. Reassembled with a JOIN at query time.</div>
-      <div className="pl-2 mb-1.5 text-green-500">DOCUMENT — one object: title, author name, and comments all embedded together already. No reassembly needed.</div>
+      <div className="text-orange-500 mb-2.5">The same blog post, built two real ways:</div>
+      <div className="pl-2 mb-1.5 text-cyan-500">RELATIONAL — users, posts, and comments live in 3 separate tables. We link them with an id. We join them back together when we read them.</div>
+      <div className="pl-2 mb-1.5 text-green-500">DOCUMENT — one object holds the title, the author&apos;s name, and all the comments already. No joining needed.</div>
       <div className="mt-2 text-muted">
-        Neither shape is inherently correct — they are two different bets about how the data will actually be read and changed.
+        Neither shape is the &quot;right&quot; one. They are just two different bets about how the data gets read and changed later.
       </div>
     </div>
   );
@@ -23,10 +23,10 @@ function ShapeDiagram() {
 
 const sections: StudySection[] = [
   {
-    heading: "Same Domain, Two Real Shapes",
+    heading: "Same Data, Two Real Shapes",
     paragraphs: [
-      "SQL vs NoSQL isn't a battle of syntax — it's a decision about WHERE related data physically lives. A relational database (SQL) splits data into separate tables and links them by id; a document database (NoSQL, like MongoDB) keeps related data embedded together in one place. Both are real, common, production-proven choices — the right one depends on the shape of the actual problem, not on which is newer or trendier.",
-      "The demo below builds the exact same blog post — a title, an author, and some comments — both ways for real: as three linked SQLite tables (users, posts, comments, reassembled with a real JOIN), and as one embedded JS object (which really is exactly what a MongoDB document is — JSON-shaped data). Same final result, two structurally different paths to get there.",
+      "SQL and NoSQL are not really about which one is better. They are about WHERE related data lives. A SQL database splits data into separate tables. It links them with an id. A NoSQL database, like MongoDB, keeps related data together in one place. That one place is called a document. Both are real, common choices. Real companies use both. The right one depends on your actual problem, not on which one is newer.",
+      "The demo below builds the exact same blog post, two ways, for real. First way: three linked SQLite tables — users, posts, comments — joined back together. Second way: one plain JS object, with everything already inside it. That second way is really just what a MongoDB document is. Same end result. Two very different paths to get there.",
     ],
     extra: <ShapeDiagram />,
     demo: <RelationalVsDocumentShapeRunner />,
@@ -37,10 +37,10 @@ const sections: StudySection[] = [
     },
   },
   {
-    heading: "Relationships Are Enforced in SQL, Not in a Document",
+    heading: "SQL Checks Your Rules. A Document Does Not.",
     paragraphs: [
-      "A relational database doesn't just SUGGEST that a post belongs to a real user — it can enforce it, with a foreign key constraint the database itself checks on every insert. A document model has no separate table to check an embedded field against, so nothing enforces that an embedded author name (or any other embedded relationship) is actually consistent with anything else in the data.",
-      "The demo below proves both real outcomes: trying to insert a post pointing at a user_id that doesn't exist gets REJECTED by SQLite itself (a real thrown error, not application code catching it after the fact); creating the equivalent 'orphaned' document succeeds with no error whatsoever, because there's nothing in the document model itself to notice.",
+      "A SQL database does not just assume a post belongs to a real user. It can actually check this, every single time. This check is called a foreign key. A document has no separate table to check against. So nothing stops you from saving broken, mismatched data inside it.",
+      "The demo below proves both real results. First: adding a post that points at a user who doesn't exist gets REJECTED by SQLite itself. That's a real error. Our own code didn't have to catch it later. Second: saving that same kind of broken data as a document works fine. No error at all. Nothing in the document model was watching for it.",
     ],
     demo: <ForeignKeysVsEmbeddingRunner />,
     demoCommand: "node demo.js",
@@ -50,10 +50,10 @@ const sections: StudySection[] = [
     },
   },
   {
-    heading: "Two Query Patterns, Two Different Winners",
+    heading: "Two Ways to Read Data, Two Different Winners",
     paragraphs: [
-      "This is the actual decision framework, proven with real code instead of just asserted: which model is \"better\" depends entirely on how the data actually gets READ, not on the data itself. Fetching ONE aggregate (a post plus its own comments) favors documents — it's already sitting together, no query needed. Searching ACROSS MANY aggregates at once (every comment a specific person ever wrote, over every post that exists) favors relational — SQL answers that in one real, indexed, set-based query, while a document model has no query engine to ask, so the application itself has to loop through every single document by hand.",
-      "The demo below runs both real patterns against both real models: getting one post's comments costs 2 real SQL queries but 0 for the document; finding one author's comments across every post costs 1 real SQL query but forces a manual scan of every document in the document model. Same two models, opposite winners — which is exactly why a real backend often uses BOTH (a relational store for its core, consistency-critical data, a document store for content that's read as whole chunks and rarely needs cross-cutting queries), rather than treating this as an either/or choice.",
+      "This is the real choice to make. It's proven here with real code, not just talked about. Which model wins depends on HOW you read the data — not on the data itself. Getting ONE thing, like a post plus its own comments, is easier with a document. Everything is already sitting together. Searching ACROSS MANY things at once — every comment one person ever wrote, on every post — is easier with SQL. One question can answer that. A document database can't search across many documents like that. Your own code would have to check every single one by hand.",
+      "The demo below tries both ways, on both real models. Getting one post's comments costs 2 real SQL queries. It costs 0 for the document. Finding one author's comments, across every post, costs 1 real SQL query. But it forces a slow, manual check of every document. Same two models. Opposite winners. This is exactly why real backends often use BOTH: SQL for data that must stay correct and linked, documents for content read as one big chunk.",
     ],
     demo: <ReadPatternComparisonRunner />,
     demoCommand: "node demo.js",
@@ -65,19 +65,19 @@ const sections: StudySection[] = [
   {
     heading: "Interview Angle",
     paragraphs: [
-      "Quick recap. SQL (relational) splits data into separate, linked tables and enforces those relationships with real constraints (foreign keys) — it wins when data has many evolving relationships, needs strong consistency, or gets queried across many records at once (reporting, search, anything that isn't \"give me this one thing\"). NoSQL document stores (like MongoDB) embed related data together in one place with no enforced schema between documents — they win when you mostly read one whole aggregate at a time and its shape varies or nests deeply per record. Most real, mature backends use BOTH for different parts of the same system (polyglot persistence) rather than picking one dogmatically — which is exactly why this project is building real depth in both PostgreSQL and MongoDB in this stage, instead of just one.",
+      "Quick recap. SQL splits data into separate, linked tables. It can enforce those links with real rules, called foreign keys. It wins when your data has a lot of connections, needs to stay correct, or gets searched across many records at once. NoSQL document stores, like MongoDB, keep related data together in one place. There are no rules connecting one document to another. They win when you mostly read one whole thing at a time, and its shape can change from record to record. Most real, mature backends use BOTH, for different parts of the same app, instead of picking just one. That's exactly why this project is learning both PostgreSQL and MongoDB in this stage.",
     ],
     extra: (
       <>
-        <FlowChain steps={["what's the read pattern?", "one aggregate at a time? → document", "many aggregates / relationships? → relational", "often: both, for different data"]} />
+        <FlowChain steps={["how will you read the data?", "one thing at a time? → document", "many things connected? → relational", "often: use both, for different data"]} />
         <ComparisonCard
           tone="good"
           title="What to say in the interview"
           points={[
-            "The real decision axis is read pattern and relationship complexity, not \"which is faster\" in the abstract — each model wins at different query shapes, proven directly in this topic's third demo.",
-            "Relational databases enforce declared relationships (foreign keys) at the database layer; document stores don't — that's a real trade-off between safety and flexibility, not a flaw in either.",
-            "A document is genuinely just JSON-shaped data (embedded, denormalized); a relational row is normalized data reassembled at query time via joins.",
-            "Real production systems commonly use both — relational for consistency-critical core data, document for content read as whole chunks — polyglot persistence, not a single either/or choice.",
+            "The real question is how the data gets read, not which one is faster in general. Each model wins for different kinds of reads. This was proven directly in this topic's third demo.",
+            "A SQL database checks its rules at the database level. A document store does not. That's a real trade-off between safety and flexibility, not a flaw in either one.",
+            "A document really is just JSON data, all bundled together. A SQL row is spread across tables and put back together with a join.",
+            "Real production systems often use both — SQL for data that must stay correct, documents for content read in big chunks — instead of picking just one.",
           ]}
         />
       </>
@@ -91,7 +91,7 @@ export default function SqlVsNosqlPage() {
       title="SQL vs NoSQL"
       stageLabel="Stage C — Data Layer"
       stageColor="orange"
-      intro="Before connecting to a real PostgreSQL and a real MongoDB database in this stage's next topic, this one builds the actual decision framework — using real, runnable code (SQLite's own built-in engine, plus plain embedded JS objects) to prove what each model's data shape really looks like, what each one actually enforces, and which real read patterns favor which model."
+      intro="Before connecting to a real PostgreSQL and a real MongoDB database in the next topic, this one builds the real decision framework first. It uses real, runnable code — SQLite's own built-in engine, plus plain JS objects — to show what each model's data really looks like, what each one actually checks for you, and which real way of reading data favors which model."
       sections={sections}
     />
   );

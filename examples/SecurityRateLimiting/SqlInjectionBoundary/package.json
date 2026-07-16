@@ -1,0 +1,15 @@
+{
+  "name": "sql-injection-boundary-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real proof of SQL injection via naive string-concatenated queries, and the real parameterized-query fix — using node:sqlite, Node's own built-in engine.",
+  "type": "module",
+  "main": "demo.js",
+  "scripts": {
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {}
+}

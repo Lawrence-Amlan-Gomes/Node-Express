@@ -1,0 +1,20 @@
+{
+  "name": "session-based-auth-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A real Express app using express-session — login sets a real server-side session, a protected route checks it via cookie, logout destroys it for real.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0"
+  }
+}

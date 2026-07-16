@@ -1,0 +1,18 @@
+{
+  "name": "broken-access-control-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real proof of BOLA (Broken Object Level Authorization) — the #1 real-world API vulnerability per OWASP — and the real ownership check that fixes it.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "password-hashing-bcrypt-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof of password hashing with bcrypt — a real salted hash, why the same password hashes differently every time, and real verification of correct vs wrong passwords.",
+  "type": "module",
+  "main": "demo.js",
+  "scripts": {
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0"
+  }
+}

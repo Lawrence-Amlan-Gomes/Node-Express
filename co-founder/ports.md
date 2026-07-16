@@ -4,10 +4,10 @@ Internal record so a new session knows what "my port" refers to, per the port-ma
 
 ## Current state
 
-- **Server running:** no — killed at `End Today`, 2026-07-15.
-- **Last port used:** 3001 (`http://localhost:3001`) — port 3000 was occupied by an unrelated project's dev server (`next-server` running out of `/Users/lawrencealangomes/Documents/English`, not something started by this session), so this project used 3001 instead all session. If 3000 is still taken by that other project next time, default to 3001 again (or the next free port) rather than assuming it's free.
-- **Start command:** `npm run dev -- -p 3001` (from project root — starts the Next.js viewer app via Turbopack)
-- **Started by me this session:** yes (PID 24638, last of several restarts across the session for build-verification passes). Killed cleanly at close.
+- **Server running:** no — killed at `End Today`, 2026-07-16.
+- **Last port used:** 3002 (`http://localhost:3002`) — BOTH 3000 and 3001 were occupied this session by other unrelated projects' dev servers (3000: `next-server` out of `/Users/lawrencealangomes/Documents/English`; 3001: `next-server` out of `/Users/lawrencealangomes/Documents/Next Js`), neither started by this session, so left untouched and used 3002 instead. If both are still taken next time, default to 3002 again (or the next free port) rather than assuming either is free.
+- **Start command:** `npm run dev -- -p 3002` (from project root — starts the Next.js viewer app via Turbopack)
+- **Started by me this session:** yes (PID 12088, 2026-07-15 through 2026-07-16). Killed cleanly at close.
 
 ## History
 
@@ -32,3 +32,5 @@ Internal record so a new session knows what "my port" refers to, per the port-ma
 - 2026-07-14 — `End Today`: killed PID 44379 (mine, started earlier this session) cleanly. Port 3000 confirmed clear before ending.
 - 2026-07-15 — New session started via `@skillCoFounderMentor.md`. Port 3000 was occupied by a DIFFERENT project's dev server (next-server out of `/Users/lawrencealangomes/Documents/English`, PID 6852/6851, cwd confirmed via `lsof` — not something this session started, so left untouched per the "never kill a process you didn't start" rule). Started this project on port 3001 instead (`npm run dev -- -p 3001`, PID 10561). Verified 200 via `curl`.
 - 2026-07-15 — Long session: built Error Handling in Express and Project Structure & Config (completing Stage B), then SQL vs NoSQL (starting Stage C). Restarted the dev server 5 times total across the session for build-verification passes (PIDs 10561 → 12925 → 14461 → 15850 → 18560 → 24638), each time killing the previous one (mine) first per the cache-corruption gotcha. Killed the final one (24638) cleanly at `End Today`.
+- 2026-07-15 — New session started via `@skillCoFounderMentor.md`. Both port 3000 (`/Users/lawrencealangomes/Documents/English`) and 3001 (`/Users/lawrencealangomes/Documents/Next Js`) were occupied by other unrelated projects' dev servers — neither started by this session, so left untouched. Started this project on port 3002 instead (`npm run dev -- -p 3002`, PID 12088). Verified 200 via `curl` on the new `orm-query-builder` topic page.
+- 2026-07-16 — Long session (Stage C + Stage D fully built and mastered, 8 topics total) continued using the same PID 12088 on port 3002 throughout — no restarts needed this session. Killed cleanly at `End Today`.

@@ -1,0 +1,20 @@
+{
+  "name": "preflight-vs-simple-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real proof, using a real headless browser (CORS is enforced by browsers, not Node), of exactly which real cross-origin requests trigger a real OPTIONS preflight first, and which don't.",
+  "type": "commonjs",
+  "main": "demo.js",
+  "scripts": {
+    "postinstall": "playwright install chromium",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "playwright": "^1.61.1"
+  }
+}

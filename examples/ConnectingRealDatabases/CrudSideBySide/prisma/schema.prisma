@@ -1,0 +1,28 @@
+// Same real "Task" shape as PostgresWithPrisma's schema, and the same
+// real "node_express_learning" schema in the same real database — but a
+// DIFFERENT real table ("SideBySideTask", via @@map below), not a
+// reused one. Confirmed 2026-07-16: two mini-projects' demo scripts both
+// writing to the literal same table/collection is a real concurrency
+// bug, not just an efficiency question — Next.js renders a page's
+// Server Components concurrently, not one at a time, so this section's
+// demo.js and PostgresWithPrisma's demo.js could run at the same real
+// moment. Each one's cleanup step (deleteMany) could then wipe out a
+// row the OTHER was still mid-update/delete on, crashing with a null
+// result. See build-conventions.md for the full story.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Task {
+  id        Int      @id @default(autoincrement())
+  title     String
+  done      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("SideBySideTask")
+}

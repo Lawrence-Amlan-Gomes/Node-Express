@@ -1,0 +1,22 @@
+{
+  "name": "crud-side-by-side-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "The exact same real CRUD operations run against a real PostgreSQL database (via Prisma) AND a real MongoDB database (via Mongoose) in one script, side by side.",
+  "type": "commonjs",
+  "main": "demo.js",
+  "scripts": {
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "dotenv": "^17.4.2",
+    "mongoose": "^8.20.1"
+  },
+  "devDependencies": {
+    "prisma": "^6.19.0"
+  }
+}

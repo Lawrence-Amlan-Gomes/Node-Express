@@ -1,0 +1,20 @@
+{
+  "name": "jwt-based-auth-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A real Express app using jsonwebtoken — login issues a real signed JWT, a protected route verifies it via middleware, and a tampered token is really rejected.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3"
+  }
+}
