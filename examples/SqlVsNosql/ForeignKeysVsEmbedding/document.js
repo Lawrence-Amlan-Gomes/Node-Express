@@ -5,6 +5,7 @@
 // "exist" anywhere else in the data. There's no built-in relationship to
 // enforce, because there's no separate table to relate it to.
 export function buildDocumentPost() {
+  // A real object — nothing checks authorName against anything else.
   return {
     id: 1,
     title: "Orphan post",

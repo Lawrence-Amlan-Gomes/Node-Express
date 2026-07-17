@@ -1,7 +1,12 @@
 {
+  // "extends" reuses every option from tsconfig.json, then only overrides
+  // what's listed below — no need to repeat strict/module/etc. here.
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": true // this run only CHECKS types, it never writes .js files
   },
+  // a separate, isolated project that includes the ONE deliberately-broken
+  // file (type-error-demo.ts) — kept out of tsconfig.json's own "include"
+  // list above so the real production build never sees it.
   "include": ["src/math.ts", "src/type-error-demo.ts"]
 }

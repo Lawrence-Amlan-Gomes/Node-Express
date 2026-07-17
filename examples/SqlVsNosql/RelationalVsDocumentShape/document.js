@@ -6,6 +6,7 @@
 // why no real database engine is needed to demonstrate this half of the
 // comparison honestly; the shape itself is the whole point.
 export function buildDocumentBlog() {
+  // One real object — the author's name and every comment already inside it.
   return {
     id: 1,
     title: "Learning SQL vs NoSQL",
@@ -19,6 +20,7 @@ export function buildDocumentBlog() {
 // exists only so the two models can be compared with the exact same
 // return shape, side by side.
 export function getPostWithComments(post) {
+  // Just reads properties that were already there — no lookup, no join.
   return {
     id: post.id,
     title: post.title,

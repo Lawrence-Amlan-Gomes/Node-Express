@@ -15,21 +15,33 @@ let todos = [
   { id: 2, text: "Learn layered project structure", done: false },
 ];
 
+// Handles GET /todos — the routes file just points here, all logic is here.
 export function listTodos(req, res) {
+  // Send back every real todo currently in the in-memory array.
   res.json(todos);
 }
 
+// Handles GET /todos/:id.
 export function getTodoById(req, res) {
+  // Look for a real todo whose id matches the URL — Number() because
+  // req.params.id always arrives as a string, never already a number.
   const todo = todos.find((t) => t.id === Number(req.params.id));
   if (!todo) {
+    // No match — respond with a real 404 instead of continuing below.
     res.status(404).json({ error: "not found" });
+    // Stop here — without this, the code below would also try to run.
     return;
   }
+  // A real match was found — send it back.
   res.json(todo);
 }
 
+// Handles POST /todos.
 export function createTodo(req, res) {
+  // Build a real new todo from the request body, with a simple next id.
   const newTodo = { id: todos.length + 1, text: req.body.text, done: false };
+  // Actually add it to the in-memory array, for real, not just in this response.
   todos.push(newTodo);
+  // 201 means "created" — the correct real status code for a successful POST.
   res.status(201).json(newTodo);
 }

@@ -6,6 +6,7 @@
   "type": "commonjs",
   "main": "demo.js",
   "scripts": {
+    "start": "node server.js",
     "demo": "node demo.js"
   },
   "engines": {
@@ -14,6 +15,7 @@
   "dependencies": {
     "@prisma/client": "^6.19.0",
     "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "mongoose": "^8.20.1"
   },
   "devDependencies": {

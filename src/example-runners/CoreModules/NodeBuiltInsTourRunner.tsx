@@ -1,0 +1,14 @@
+import { execSync } from "node:child_process";
+
+// Plain async Server Component, no client interactivity needed — spawns the
+// real tour script on every render (see co-founder/build-conventions.md for
+// why execSync's single-string form is used instead of execFileSync's array
+// form under Turbopack).
+export default async function NodeBuiltInsTourRunner() {
+  const output = execSync("node index.js", {
+    encoding: "utf-8",
+    cwd: process.cwd() + "/examples/CoreModules/NodeBuiltInsTour",
+  });
+
+  return <>{output}</>;
+}

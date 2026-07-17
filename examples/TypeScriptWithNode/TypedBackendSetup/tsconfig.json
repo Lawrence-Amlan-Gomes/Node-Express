@@ -1,15 +1,20 @@
 {
+  // tsconfig.json allows real comments like this one — tsc's own parser
+  // strips them before reading the file, so this is safe, normal practice.
   "compilerOptions": {
-    "target": "es2022",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "rootDir": "src",
-    "outDir": "dist",
-    "strict": true,
-    "rewriteRelativeImportExtensions": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "target": "es2022", // which JS version tsc's OUTPUT is allowed to use
+    "module": "nodenext", // matches Node's own real module system, not a bundler's
+    "moduleResolution": "nodenext", // matches Node's own real import-resolution rules
+    "rootDir": "src", // where your real .ts source files live
+    "outDir": "dist", // where tsc writes its real compiled .js files
+    "strict": true, // the real safety net — turns on every strict type-checking rule
+    "rewriteRelativeImportExtensions": true, // lets you write "./math.ts", rewritten to "./math.js" on emit
+    "esModuleInterop": true, // lets default-exporting CommonJS packages import cleanly
+    "skipLibCheck": true, // skips type-checking inside node_modules' own .d.ts files, for speed
+    "forceConsistentCasingInFileNames": true // catches import "./Math.ts" vs a real "math.ts" file, cross-platform
   },
+  // only these two files are part of THIS tsconfig's project — everything
+  // else (type-error-demo.ts, enum-demo.ts) is intentionally left out, so
+  // this project's own clean build/typecheck never trips over them.
   "include": ["src/index.ts", "src/math.ts"]
 }

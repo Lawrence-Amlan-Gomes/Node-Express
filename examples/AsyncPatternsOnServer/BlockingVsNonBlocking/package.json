@@ -1,0 +1,14 @@
+{
+  "name": "blocking-vs-nonblocking-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, measured proof that blocking the event loop stalls every other request on a real local http server.",
+  "type": "module",
+  "main": "blocking-server-demo.js",
+  "scripts": {
+    "start": "node blocking-server-demo.js"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

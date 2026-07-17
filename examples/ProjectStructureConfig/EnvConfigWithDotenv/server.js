@@ -8,6 +8,7 @@ import "dotenv/config";
 import express from "express";
 import { pathToFileURL } from "node:url";
 
+// Creates the real, empty Express app every route below attaches to.
 export const app = express();
 
 // Nothing here is hardcoded. GREETING_MESSAGE lives in .env, not in this
@@ -17,6 +18,7 @@ export const app = express();
 // values happen to be in each environment's .env (or real environment
 // variables, in a real deployment).
 app.get("/greeting", (req, res) => {
+  // Send back the real value that "dotenv/config" copied onto process.env.
   res.json({ message: process.env.GREETING_MESSAGE });
 });
 
@@ -28,6 +30,9 @@ app.get("/greeting", (req, res) => {
 // pattern taught here — but knowing Node's native option exists is a real,
 // current (2026) fact worth having for an interview.
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  // Falls back to 3000 only if .env somehow didn't set PORT — in this
+  // example it always does, so the real .env value (4032) wins.
   const PORT = process.env.PORT ?? 3000;
+  // Actually starts the server for real, opening the port and listening.
   app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 }

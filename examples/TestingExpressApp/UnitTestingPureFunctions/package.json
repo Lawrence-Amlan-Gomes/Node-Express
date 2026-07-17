@@ -1,0 +1,16 @@
+{
+  "name": "unit-testing-pure-functions",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real Jest unit tests against plain, pure functions — no Express, no server, no network. This is the fastest and simplest kind of test.",
+  "type": "module",
+  "scripts": {
+    "test": "node --no-warnings --experimental-vm-modules node_modules/.bin/jest --reporters=default --verbose"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "jest": "^30.4.1"
+  }
+}

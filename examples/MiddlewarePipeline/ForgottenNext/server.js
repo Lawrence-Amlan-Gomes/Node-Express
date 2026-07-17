@@ -7,14 +7,18 @@ import { pathToFileURL } from "node:url";
 export const app = express();
 
 // THE CORRECT PATTERN, and the only middleware that actually runs in this
-// file: it does a little real work (stamping a timestamp onto the
-// request), then calls next() — handing the request on to the route
-// handler below.
+// file — it's scoped to just the "/works" path, so it only runs on requests
+// to that one route.
 app.use("/works", (req, res, next) => {
+  // Do a little real work: stamp the current time onto the request object.
   req.checkedAt = Date.now();
+  // Call next() — this is the one non-negotiable step. Without it, the
+  // route handler below would NEVER run, and the request would just hang.
   next();
 });
+// This route only ever runs because the middleware above called next().
 app.get("/works", (req, res) => {
+  // Send back proof: the real timestamp the middleware stamped a moment ago.
   res.json({ message: "the middleware above called next(), so this route actually ran", checkedAt: req.checkedAt });
 });
 
@@ -44,6 +48,9 @@ app.get("/works", (req, res) => {
 // always an absolute file:// URL, so pathToFileURL is needed for a correct
 // comparison (see co-founder/build-conventions.md's ESM main-module note).
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  // A real, fixed, known port — so a person (or Postman) running this file
+  // directly always knows exactly where to send a request.
   const PORT = process.env.PORT ?? 4005;
+  // Actually starts the server for real, opening the port and listening.
   app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 }

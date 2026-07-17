@@ -7,6 +7,7 @@
   "main": "demo.js",
   "scripts": {
     "db:push": "prisma db push",
+    "start": "node server.js",
     "demo": "node demo.js"
   },
   "engines": {
@@ -14,7 +15,8 @@
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
   },
   "devDependencies": {
     "prisma": "^6.19.0"

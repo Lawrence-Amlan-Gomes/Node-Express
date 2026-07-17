@@ -1,64 +1,66 @@
-// A "transaction" groups multiple real database operations into ONE
-// all-or-nothing unit: either every operation in it succeeds and gets
-// permanently saved together, or — if ANY step fails — the database
-// undoes every step in that transaction as if none of them ever ran.
-// This proves BOTH real outcomes, against a real remote Postgres.
+// Calls the real, running Express API (server.js) over real HTTP — this
+// file does NOT talk to Prisma directly at all. A real backend dev
+// exercises an API this way: real requests, real JSON responses,
+// exactly like a frontend or Postman would. The real $transaction call
+// lives in controllers/accounts.controller.js instead.
 require("dotenv").config({ quiet: true });
-const { PrismaClient } = require("@prisma/client");
-
-const prisma = new PrismaClient();
+const app = require("./server.js");
 
 async function main() {
-  await prisma.account.deleteMany();
-
-  const alice = await prisma.account.create({ data: { name: "Alice", balance: 100 } });
-  const bob = await prisma.account.create({ data: { name: "Bob", balance: 0 } });
-
-  // SUCCESSFUL transaction: transfer 50 from Alice to Bob. prisma.$transaction
-  // with a callback runs every query inside it against the SAME real
-  // database transaction — if the callback finishes without throwing,
-  // both writes below commit together for real.
-  await prisma.$transaction(async (tx) => {
-    await tx.account.update({ where: { id: alice.id }, data: { balance: { decrement: 50 } } });
-    await tx.account.update({ where: { id: bob.id }, data: { balance: { increment: 50 } } });
+  // Port 0 means "give me any free port" — resolve only once it's really listening.
+  const server = await new Promise((resolve) => {
+    const s = app.listen(0, () => resolve(s));
   });
+  // The real port the OS actually assigned, read back off the live server.
+  const { port } = server.address();
+  const base = `http://localhost:${port}`;
 
-  const afterSuccess = await prisma.account.findMany({ orderBy: { id: "asc" } });
+  // Seed two fresh real accounts — through the real API, not Prisma directly.
+  await fetch(`${base}/accounts/reset`, { method: "POST" });
+
+  // SUCCESSFUL transfer — a real POST request for 50.
+  await fetch(`${base}/accounts/transfer`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ amount: 50 }),
+  });
+  // A real GET request, to see the real result of the successful transfer.
+  const afterSuccessRes = await fetch(`${base}/accounts`);
+  // Parse the real JSON body the API sent back.
+  const afterSuccess = await afterSuccessRes.json();
   console.log("AFTER SUCCESSFUL TRANSFER (50 from Alice to Bob):");
+  // Print the real, updated balances.
   console.log(afterSuccess);
 
-  // FAILED transaction: try to transfer 500 more from Alice, who now
-  // only has 50 — a real balance check inside the transaction throws a
-  // real error on purpose, deliberately AFTER the first write already
-  // ran, to prove Prisma really rolls back BOTH writes, not just stops
-  // where it is.
-  try {
-    await prisma.$transaction(async (tx) => {
-      const currentAlice = await tx.account.findUniqueOrThrow({ where: { id: alice.id } });
-      await tx.account.update({ where: { id: alice.id }, data: { balance: { decrement: 500 } } });
+  // FAILED transfer — a real POST request for 500, more than Alice has left.
+  const failRes = await fetch(`${base}/accounts/transfer`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ amount: 500 }),
+  });
+  // Parse the real JSON body the API sent back — a real, forced 400 error.
+  const failBody = await failRes.json();
+  console.log(`\nFORCED FAILURE (real, on purpose): ${failBody.error}`);
 
-      if (currentAlice.balance - 500 < 0) {
-        throw new Error("Insufficient balance — this transaction must not be allowed to commit.");
-      }
-
-      await tx.account.update({ where: { id: bob.id }, data: { balance: { increment: 500 } } });
-    });
-  } catch (err) {
-    console.log(`\nFORCED FAILURE (real, on purpose): ${err.message}`);
-  }
-
-  const afterFailure = await prisma.account.findMany({ orderBy: { id: "asc" } });
+  // A real GET request, to see the real result of the failed transfer.
+  const afterFailureRes = await fetch(`${base}/accounts`);
+  // Parse the real JSON body the API sent back.
+  const afterFailure = await afterFailureRes.json();
   console.log("\nAFTER THE FAILED TRANSFER — both balances unchanged from before, including Alice's, even though her debit ran first inside the transaction:");
+  // Print the real balances — Alice's debit was really undone.
   console.log(afterFailure);
 
-  await prisma.account.deleteMany();
+  // Clean up after this run — a real shared database, not a throwaway
+  // local one, so nothing from this demo should be left behind.
+  await fetch(`${base}/accounts`, { method: "DELETE" });
+
+  // Required, not just tidy — a listening server keeps this script alive forever.
+  server.close();
 }
 
-main()
-  .catch((err) => {
-    console.error("FAILED:", err.message);
-    process.exitCode = 1;
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main().catch((err) => {
+  // Print the real error message if anything above actually failed.
+  console.error("FAILED:", err.message);
+  // Mark the process as failed, so a CI run or Postman check can notice.
+  process.exitCode = 1;
+});

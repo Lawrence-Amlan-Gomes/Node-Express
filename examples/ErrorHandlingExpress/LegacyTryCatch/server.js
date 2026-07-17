@@ -4,6 +4,7 @@
 import express from "express";
 import { pathToFileURL } from "node:url";
 
+// Creates the real, empty Express 4 app every route below attaches to.
 export const app = express();
 
 // THE CORRECT PATTERN for Express 4, and the only route that actually runs
@@ -14,8 +15,12 @@ export const app = express();
 // below.
 app.get("/with-trycatch", async (req, res, next) => {
   try {
+    // Deliberately fail, on purpose, so the catch block below has something
+    // real to actually catch — not a simulated/fabricated error.
     throw new Error("Simulated failure, handled the Express-4 way");
   } catch (err) {
+    // THE one manual step Express 4 needs that Express 5 does automatically:
+    // hand the caught error to next(), so it reaches the error middleware.
     next(err);
   }
 });
@@ -41,6 +46,7 @@ app.get("/with-trycatch", async (req, res, next) => {
 // A real Express 4 error-handling middleware — still detected the same way
 // as Express 5: by having exactly 4 arguments, (err, req, res, next).
 app.use((err, req, res, next) => {
+  // Send back a real, clean JSON error response instead of a crash or a hang.
   res.status(500).json({ error: err.message });
 });
 
@@ -50,6 +56,9 @@ app.use((err, req, res, next) => {
 // always an absolute file:// URL, so pathToFileURL is needed for a correct
 // comparison (see co-founder/build-conventions.md's ESM main-module note).
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  // A real, fixed, known port — so a person (or Postman) running this file
+  // directly always knows exactly where to send a request.
   const PORT = process.env.PORT ?? 4023;
+  // Actually starts the server for real, opening the port and listening.
   app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 }

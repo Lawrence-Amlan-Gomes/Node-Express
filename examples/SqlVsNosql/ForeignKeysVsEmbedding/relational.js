@@ -2,7 +2,10 @@
 // folder's relational.js for the fuller explanation of node:sqlite itself.
 import { DatabaseSync } from "node:sqlite";
 
+// Builds a real, in-memory database with ONE real user, ready for the
+// broken-insert test below.
 export function buildRelationalBlog() {
+  // A real, in-memory-only SQLite database for this process.
   const db = new DatabaseSync(":memory:");
   // PRAGMA foreign_keys = ON is NOT the default in SQLite — a real,
   // worth-knowing gotcha on its own. Without this line, the constraint
@@ -22,8 +25,10 @@ export function buildRelationalBlog() {
     );
   `);
 
+  // Insert exactly one real, valid user — id 1 is the only real user that exists.
   db.prepare("INSERT INTO users (id, name) VALUES (?, ?)").run(1, "Lawrence");
 
+  // Hand back the real, ready-to-query database.
   return db;
 }
 
@@ -32,5 +37,6 @@ export function buildRelationalBlog() {
 // is what rejects this, because we declared the relationship with FOREIGN
 // KEY and turned enforcement on.
 export function insertPostForNonexistentUser(db) {
+  // user_id 999 was never inserted into users — this is the real broken link.
   db.prepare("INSERT INTO posts (id, user_id, title) VALUES (?, ?, ?)").run(1, 999, "Orphan post");
 }

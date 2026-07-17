@@ -1,0 +1,14 @@
+{
+  "name": "node-builtins-tour-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable tour of Node's core built-in modules: path, fs, Buffer, EventEmitter, and process.",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=20.11.0"
+  }
+}

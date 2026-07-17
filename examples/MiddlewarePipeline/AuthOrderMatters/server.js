@@ -5,24 +5,26 @@ import { pathToFileURL } from "node:url";
 
 export const app = express();
 
-// A tiny fake "auth check" middleware: if the right header isn't present,
-// it responds with 401 and does NOT call next() — meaning nothing after it
-// runs at all for this request. If the header IS present, it calls next()
-// and lets the real route handler run.
+// A tiny fake "auth check" middleware — a real one would check a database
+// or verify a token; this one just checks for one specific header value.
 function requireAuth(req, res, next) {
+  // If the right header is present, the request is allowed through.
   if (req.headers["x-auth-token"] === "secret") {
+    // Hand the request on to whatever's registered after this — the real route.
     next();
   } else {
+    // No valid header: respond right here with 401, and do NOT call next().
+    // Nothing registered after this middleware ever runs for this request.
     res.status(401).json({ error: "unauthorized" });
   }
 }
 
 // THE CORRECT PATTERN, and the only route that actually runs in this file:
-// requireAuth is registered BEFORE the route handler (as a second argument
-// to app.get, which Express treats as "run this middleware first, then the
-// real handler"). This route is genuinely protected — no valid header, no
-// access.
+// requireAuth is passed as a SECOND argument to app.get, which Express
+// treats as "run this middleware first, then the real handler below" —
+// this route is genuinely protected, not just described as protected.
 app.get("/protected-correct", requireAuth, (req, res) => {
+  // This line only ever runs if requireAuth above already called next().
   res.json({ message: "you got in — correct order, real auth check ran first" });
 });
 
@@ -48,6 +50,9 @@ app.get("/protected-correct", requireAuth, (req, res) => {
 // always an absolute file:// URL, so pathToFileURL is needed for a correct
 // comparison (see co-founder/build-conventions.md's ESM main-module note).
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  // A real, fixed, known port — so a person (or Postman) running this file
+  // directly always knows exactly where to send a request.
   const PORT = process.env.PORT ?? 4004;
+  // Actually starts the server for real, opening the port and listening.
   app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 }

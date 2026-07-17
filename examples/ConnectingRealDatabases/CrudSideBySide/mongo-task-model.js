@@ -15,4 +15,7 @@ const taskSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
+// Pins this section's own, separate real collection name — deliberately
+// different from MongoWithMongoose's "learning_tasks", per the concurrency
+// note above.
 module.exports = mongoose.model("Task", taskSchema, "learning_tasks_side_by_side");

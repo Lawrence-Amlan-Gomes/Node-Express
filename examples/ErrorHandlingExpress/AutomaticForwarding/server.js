@@ -16,18 +16,20 @@
 import express from "express";
 import { pathToFileURL } from "node:url";
 
+// Creates the real, empty Express app every route below attaches to.
 export const app = express();
 
-// Deliberately no try/catch here. Throwing inside an `async` function is
-// identical to returning a promise that rejects with this error.
+// Deliberately no try/catch here — this is the whole point of the section.
 app.get("/risky", async (req, res) => {
+  // Throwing inside an `async` function IS a rejected promise — Express 5
+  // notices this rejection on its own, nobody has to catch it by hand.
   throw new Error("Something broke inside this async handler");
 });
 
 // A completely unrelated, healthy route — used by the demo to prove the
-// server itself is still alive and serving requests normally AFTER /risky
-// threw, i.e. the unhandled-looking throw didn't crash the whole process.
+// server itself is still alive AFTER /risky threw.
 app.get("/healthy", (req, res) => {
+  // If this line ever runs, the process survived the earlier throw.
   res.json({ status: "still running" });
 });
 
@@ -43,6 +45,7 @@ app.get("/healthy", (req, res) => {
 // stays in comments" rule) — a real backend always registers its own
 // handler, so this project always does too.
 app.use((err, req, res, next) => {
+  // Send back a clean, real JSON error — never the raw HTML default page.
   res.status(500).json({ error: err.message });
 });
 
@@ -52,6 +55,9 @@ app.use((err, req, res, next) => {
 // always an absolute file:// URL, so pathToFileURL is needed for a correct
 // comparison (see co-founder/build-conventions.md's ESM main-module note).
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  // A real, fixed, known port — so a person (or Postman) running this file
+  // directly always knows exactly where to send a request.
   const PORT = process.env.PORT ?? 4021;
+  // Actually starts the server for real, opening the port and listening.
   app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 }

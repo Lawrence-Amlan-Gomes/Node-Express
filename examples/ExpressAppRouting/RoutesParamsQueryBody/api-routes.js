@@ -10,7 +10,11 @@ import { Router } from "express";
 // until something else (server.js, in this case) mounts it.
 const apiRouter = Router();
 
+// A real route defined on the router itself — it has no idea it'll end up
+// mounted at "/api" by server.js, it only knows about "/status".
 apiRouter.get("/status", (req, res) => {
+  // Send back a real response — proof this route runs even though it never
+  // mentions "/api" anywhere in this file.
   res.json({ status: "ok", mountedAt: "/api" });
 });
 

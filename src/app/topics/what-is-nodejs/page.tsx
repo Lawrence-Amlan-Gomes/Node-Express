@@ -1,51 +1,132 @@
 import StudyPage, { type StudySection } from "@/components/StudyPage";
 import FlowChain from "@/components/FlowChain";
 import ComparisonCard from "@/components/ComparisonCard";
+import ConceptBreakdown from "@/components/ConceptBreakdown";
+import Callout from "@/components/Callout";
 import EventLoopOrderRunner from "@/example-runners/NodeRuntimeFoundations/EventLoopOrderRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per the
-// standing rule in co-founder/build-conventions.md.
+// standing rule in co-founder/build-conventions.md. Rewritten 2026-07-17 so
+// every box carries its own plain-English caption, not just a label — the
+// diagram should explain itself without needing the surrounding prose.
 
 function RuntimeLayersDiagram() {
+  const toneClasses = {
+    blue: "bg-blue-500/3 border-blue-500 text-blue-500",
+    green: "bg-green-500/3 border-green-500 text-green-500",
+    none: "bg-surface-raised border-border text-body",
+  } as const;
+  const layers: { title: string; caption: string; tone: keyof typeof toneClasses }[] = [
+    { title: "Your JavaScript Code", caption: "The functions, variables, and logic you actually write.", tone: "none" },
+    { title: "V8 — the engine", caption: "Reads your JavaScript and runs it. The exact same engine Google Chrome uses.", tone: "blue" },
+    {
+      title: "libuv — the helper",
+      caption:
+        "V8 alone can't touch a file or a network. libuv is bolted on top to handle files, network connections, timers, and the event loop itself.",
+      tone: "green",
+    },
+    { title: "Your Operating System", caption: "The real disk and the real network card libuv talks to.", tone: "none" },
+  ];
   return (
-    <div className="rounded-card border border-dashed border-blue-500 bg-surface p-4 my-4 font-mono text-xs leading-relaxed">
-      <div className="rounded bg-surface-raised px-2.5 py-1.5 text-body mb-1.5">Your JavaScript code</div>
-      <div className="text-center text-muted mb-1.5">↓ executed by</div>
-      <div className="rounded bg-blue-500/10 border border-blue-500 text-blue-500 px-2.5 py-1.5 mb-1.5">
-        V8 — the JS engine (same one Chrome uses)
+    <div className="rounded-card border border-dashed border-blue-500 bg-surface p-4 my-4">
+      <div className="text-xs uppercase tracking-wide text-sublabel mb-3">Node.js, layer by layer</div>
+      <div className="flex flex-col gap-1.5">
+        {layers.map((layer, i) => (
+          <div key={layer.title}>
+            <div className={`rounded-card px-3 py-2 border ${toneClasses[layer.tone]}`}>
+              <div className="font-mono text-sm font-semibold">{layer.title}</div>
+              <div className="text-xs mt-0.5 opacity-90 leading-relaxed">{layer.caption}</div>
+            </div>
+            {i < layers.length - 1 && <div className="text-center text-muted text-xs py-1">↓</div>}
+          </div>
+        ))}
       </div>
-      <div className="text-center text-muted mb-1.5">↓ V8 alone can&apos;t touch files/network — Node bolts on</div>
-      <div className="rounded bg-green-500/10 border border-green-500 text-green-500 px-2.5 py-1.5 mb-1.5">
-        libuv — event loop, thread pool, async I/O
-      </div>
-      <div className="text-center text-muted mb-1.5">↓ talks to</div>
-      <div className="rounded bg-surface-raised px-2.5 py-1.5 text-body">Operating System (filesystem, network sockets)</div>
     </div>
   );
 }
 
 function LibuvPhasesDiagram() {
   const phases = [
-    { name: "timers", detail: "setTimeout / setInterval callbacks whose delay has elapsed" },
-    { name: "pending callbacks", detail: "a few deferred system-level callbacks (rare in app code)" },
-    { name: "poll", detail: "fetch new I/O events; run I/O callbacks (fs, network) — Node waits here if there's nothing else to do" },
-    { name: "check", detail: "setImmediate() callbacks — always exactly after poll, every cycle" },
-    { name: "close callbacks", detail: "e.g. socket.on('close', ...)" },
+    { name: "timers", detail: "Runs any setTimeout / setInterval callback whose wait time is already up." },
+    { name: "pending callbacks", detail: "A few rare, low-level system callbacks. You almost never touch this one directly." },
+    { name: "poll", detail: "Checks for new file/network results and runs their callbacks. If there's nothing else to do, Node waits here." },
+    { name: "check", detail: "Runs every setImmediate() callback — always right after poll, every single cycle." },
+    { name: "close callbacks", detail: "Runs cleanup callbacks, like socket.on('close', ...)." },
   ];
   return (
-    <div className="rounded-card border border-dashed border-purple-500 bg-surface p-4 my-4 font-mono text-xs leading-relaxed">
-      <div className="text-purple-500 mb-2.5">libuv&apos;s phases — one trip through all of them is &quot;one tick&quot; of the loop:</div>
-      {phases.map((phase, i) => (
-        <div className="pl-2 mb-1.5 text-body" key={phase.name}>
-          {i + 1}.{" "}
-          <span className={phase.name === "check" ? "text-yellow-500" : "text-cyan-500"}>{phase.name}</span> —{" "}
-          <span className="text-body">{phase.detail}</span>
+    <div className="rounded-card border border-dashed border-purple-500 bg-surface p-4 my-4">
+      <div className="text-purple-500 text-sm font-semibold mb-3">
+        One trip through all 5 phases below = &quot;one tick&quot; of Node&apos;s event loop.
+      </div>
+      <div className="flex flex-col gap-2">
+        {phases.map((phase, i) => (
+          <div key={phase.name} className="flex items-start gap-2.5">
+            <span
+              className={`shrink-0 w-5 h-5 rounded-full border flex items-center justify-center font-mono text-[10px] mt-0.5 ${
+                phase.name === "check" ? "border-yellow-500 text-yellow-500" : "border-cyan-500 text-cyan-500"
+              }`}
+            >
+              {i + 1}
+            </span>
+            <div>
+              <span className={`font-mono text-sm font-semibold ${phase.name === "check" ? "text-yellow-500" : "text-cyan-500"}`}>
+                {phase.name}
+              </span>
+              <div className="text-body text-xs leading-relaxed mt-0.5">{phase.detail}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="text-sublabel text-xs mt-3 pl-7">↳ then back to timers, forever, for as long as the process runs.</div>
+      <div className="mt-3 pt-3 border-t border-border text-body text-xs leading-relaxed">
+        Promises (<code className="text-cyan-500">.then</code>) and <code className="text-cyan-500">queueMicrotask</code> are NOT one of
+        these 5 phases — they always finish completely between every single callback, no matter which phase you&apos;re in. Same rule
+        you already know from plain JavaScript.
+      </div>
+    </div>
+  );
+}
+
+function EventLoopOrderDiagram() {
+  const steps = [
+    { label: "1-2", title: "Synchronous code", detail: "Runs top to bottom, immediately, before anything else gets a turn." },
+    {
+      label: "3-4",
+      title: "Microtasks drain completely",
+      detail: "Promise.then and queueMicrotask both run, fully, before any timer or setImmediate gets a turn.",
+    },
+    {
+      label: "5-6",
+      title: "One event loop phase runs",
+      detail: "setTimeout (timers phase) and setImmediate (check phase) each get their turn.",
+    },
+  ];
+  return (
+    <div className="rounded-card border border-dashed border-yellow-500 bg-surface p-4 my-4">
+      <div className="text-xs uppercase tracking-wide text-sublabel mb-3">The real order, step by step</div>
+      <div className="flex flex-col gap-1.5 mb-4">
+        {steps.map((step, i) => (
+          <div key={step.label}>
+            <div className="rounded-card px-3 py-2 border border-border bg-surface-raised">
+              <span className="font-mono text-xs text-cyan-500 mr-2">lines {step.label}</span>
+              <span className="font-mono text-sm font-semibold text-body">{step.title}</span>
+              <div className="text-xs mt-0.5 text-body leading-relaxed">{step.detail}</div>
+            </div>
+            {i < steps.length - 1 && <div className="text-center text-sublabel text-xs py-1">↓</div>}
+          </div>
+        ))}
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="rounded-card border border-yellow-500 bg-yellow-500/3 px-3 py-2.5">
+          <div className="text-yellow-500 text-xs font-mono font-semibold mb-1">Started at the top of a script</div>
+          <div className="text-body text-xs leading-relaxed">Order NOT guaranteed. Lines 5 and 6 can swap places between runs.</div>
         </div>
-      ))}
-      <div className="pl-2 text-muted">(→ back to timers, forever, for the life of the process)</div>
-      <div className="mt-2.5 text-body">
-        Microtasks (<code className="text-cyan-500">Promise.then</code>/<code className="text-cyan-500">queueMicrotask</code>) aren&apos;t
-        a phase — they drain completely between every single callback anywhere in this cycle, same rule you already know from plain JS.
+        <div className="rounded-card border border-green-500 bg-green-500/3 px-3 py-2.5">
+          <div className="text-green-500 text-xs font-mono font-semibold mb-1">Started inside a real I/O callback</div>
+          <div className="text-body text-xs leading-relaxed">
+            Order IS guaranteed. Line 6 (setImmediate) always wins — check always runs right after poll.
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -54,19 +135,92 @@ function LibuvPhasesDiagram() {
 const sections: StudySection[] = [
   {
     heading: "Node Is a Runtime, Not a Language",
-    paragraphs: [
-      "JavaScript by itself can't read a file or open a network socket — the language spec doesn't define those things. In a browser, the browser provides them (fetch, the DOM, localStorage). Node.js is what provides them when JavaScript runs outside a browser: it's a C++ program that embeds Google's V8 engine (the same one Chrome uses) to execute your JS, and bolts on a library called libuv to handle everything V8 can't: files, network connections, timers, and the event loop itself.",
-      "This split matters immediately: V8 runs your JavaScript on a single thread, one call stack, one thing at a time. libuv is what lets Node hand off slow work (reading a file, waiting on a network response) so that single thread isn't stuck waiting — it keeps running other code, and comes back to your callback when the slow thing finishes.",
-    ],
+    body: (
+      <>
+        <p>
+          JavaScript, all by itself, cannot read a file. It cannot open a network connection. The people who designed the JavaScript
+          language never gave it those powers — something else has to add them.
+        </p>
+        <ConceptBreakdown
+          items={[
+            {
+              label: "In a Browser: the Browser Adds the Powers",
+              description:
+                "When your JavaScript runs inside Chrome or Firefox, the browser hands it extra tools: fetch to make network calls, the DOM to change a web page, localStorage to save small bits of data.",
+              example: "document.querySelector(...) only works because the browser built it. It is not part of JavaScript itself.",
+            },
+            {
+              label: "Outside a Browser: Node.js Adds the Powers",
+              description:
+                "Node.js does the same job as a browser, but for JavaScript running on a server or your own computer. It gives JavaScript the power to read files, open network connections, and talk to a database.",
+              example: "fs.readFile(...) and http.createServer(...) both come from Node. Neither one is part of the JavaScript language.",
+            },
+          ]}
+        />
+        <p>Node.js itself is a program written in C++. Inside that program are two main parts, working together as a team.</p>
+        <ConceptBreakdown
+          accent="cyan"
+          items={[
+            {
+              label: "V8 — the Engine",
+              description:
+                "V8 is the part that actually reads your JavaScript and runs it, line by line. It is the exact same engine Google Chrome uses to run JavaScript in your browser.",
+            },
+            {
+              label: "libuv — the Helper",
+              description:
+                "V8 cannot touch a file or a network on its own. libuv is a separate piece of code, also written in C++, that Node bolts on top of V8. It is what actually handles files, network connections, timers, and the event loop itself.",
+            },
+          ]}
+        />
+        <p>
+          Why split the work like this? V8 can only do one thing at a time — think of it as a single-lane road with room for exactly
+          one car. If V8 had to sit and wait every time your code asked for a slow file, your whole program would freeze while it
+          waited. libuv fixes that: when your code asks for something slow, libuv takes that request off to the side. V8 keeps
+          running your other code. When the slow thing finally finishes, libuv brings the result back and your callback runs.
+        </p>
+        <Callout title="The Bottom Line">
+          Node.js is not a new version of JavaScript. It is V8 (the engine that runs your code) plus libuv (the helper that gives it
+          real-world powers like files and networks), packaged together into one program.
+        </Callout>
+      </>
+    ),
     extra: <RuntimeLayersDiagram />,
   },
   {
     heading: "New Territory: libuv's Actual Phases and the Thread Pool",
-    paragraphs: [
-      "You already know the JS-level event loop rule cold from plain JavaScript: synchronous code runs first, then the microtask queue (Promise.then/queueMicrotask) drains completely, then one macrotask runs, then microtasks drain again. That rule doesn't change in Node — it's still exactly true. What's actually new here is what's UNDER that rule: Node's \"macrotask queue\" isn't really one queue. It's libuv running through a fixed cycle of named phases, and which phase you're in determines which kind of callback can run.",
-      "\"Single-threaded\" describes your JS call stack only — there is exactly one, so two of your callbacks never run at the literal same instant. It does NOT mean Node does one thing at a time overall: libuv keeps its own thread pool (default size 4) under the hood specifically for things that have no native async OS API — filesystem access and some crypto/DNS calls — while network I/O is handled by the OS's own async mechanisms directly, no thread pool needed. None of that blocks your one JS thread.",
-      "This thread pool + phase model is the actual reason Node became a real backend choice: an old-style one-thread-per-connection server runs out of threads under real load. Node keeps its one JS thread free to keep accepting new work, and only comes back to your callback when its phase comes back around.",
-    ],
+    body: (
+      <>
+        <ConceptBreakdown
+          items={[
+            {
+              label: "The Rule You Already Know Still Applies",
+              description:
+                "You already know this cold from plain JavaScript: synchronous code runs first. Then the microtask queue (Promise.then, queueMicrotask) empties out completely. Then exactly one macrotask runs. Then microtasks empty out again. That rule does not change in Node — it is still exactly true.",
+            },
+            {
+              label: "What's Actually New: 'Macrotask' Is Really 5 Named Phases",
+              description:
+                "In plain JavaScript, you were told there is one 'macrotask queue.' In Node, that is really libuv running through a fixed cycle of 5 named phases, one after another, forever. Which phase you are currently in decides which kind of callback is allowed to run next.",
+            },
+            {
+              label: "'Single-Threaded' Only Describes Your JavaScript Code",
+              description:
+                "There is exactly one JS call stack, so two of your own callbacks can never run at the exact same instant. But Node itself is not doing only one thing overall: libuv quietly runs its own thread pool (4 threads by default) off to the side, just for jobs that have no native async option — reading files, and some crypto/DNS work. A network request doesn't even need the thread pool — the operating system itself handles that asynchronously. None of this ever blocks your one JS thread.",
+            },
+            {
+              label: "Why This Is the Reason Node Works Well as a Backend",
+              description:
+                "An older style of server gives every incoming connection its own thread, and a busy server can run out of threads fast. Node keeps just one JS thread free at all times to keep accepting new work, and only comes back to run your callback when its phase comes back around in the cycle.",
+            },
+          ]}
+        />
+        <Callout title="The Bottom Line" accent="purple">
+          Node&apos;s event loop is not one queue — it is libuv cycling through 5 real, named phases (timers → pending callbacks → poll →
+          check → close callbacks) forever. setImmediate lives specifically in the check phase, always right after poll.
+        </Callout>
+      </>
+    ),
     extra: (
       <>
         <FlowChain steps={["timers", "pending callbacks", "poll (I/O)", "check (setImmediate)", "close callbacks", "→ timers again"]} />
@@ -76,11 +230,34 @@ const sections: StudySection[] = [
   },
   {
     heading: "Seeing the Real Order",
-    paragraphs: [
-      "Lines 1-4 below are the part you already know: sync first, then both microtasks in order, completely, before any timer/macrotask gets a turn. The genuinely new, Node-specific part is lines 5 and 6 — setImmediate is a real API that doesn't exist in browsers at all, and it lives specifically in libuv's check phase from the diagram above.",
-      "Confirmed by actually running this exact script repeatedly on this machine (not asserted from memory): at the TOP LEVEL of a script, Node does NOT guarantee whether setTimeout(fn, 0) (timers phase) or setImmediate(fn) (check phase) runs first — it flipped between runs during testing. That's real, documented behavior, not a bug in the demo: it depends on how long process startup took relative to the timer's minimum ~1ms resolution, which can push you into the loop's first pass either just before or just after the timers phase. Rerun the demo a few times below and watch lines 5 and 6 occasionally swap places.",
-      "That non-determinism disappears the moment you're already inside an I/O callback (e.g. inside fs.readFile's callback) — confirmed the same way, 5/5 runs. At that point setImmediate is guaranteed to run before setTimeout(fn, 0), every time, because an I/O callback fires during the poll phase, and check (setImmediate) is always the very next phase after poll — timers won't come around again until the next full cycle. This exact distinction is a real interview question.",
-    ],
+    body: (
+      <>
+        <p>
+          The demo below logs 6 lines out of order on purpose, so you can watch the real rule play out. Lines 1-4 are the part you
+          already know: synchronous code first, then both microtasks, in order, completely, before any timer gets a turn. Lines 5
+          and 6 are the genuinely new, Node-only part — setImmediate() does not exist in browsers at all, and it lives specifically
+          in libuv&apos;s check phase from the diagram above.
+        </p>
+        <ConceptBreakdown
+          accent="yellow"
+          items={[
+            {
+              label: "At the Top Level of a Script: the Order Is NOT Guaranteed",
+              description:
+                "Confirmed directly by actually running this exact file over and over on this machine, not assumed from memory: setTimeout(fn, 0) (timers phase) and setImmediate(fn) (check phase) sometimes swap places when a script starts running fresh. This is real, documented Node behavior, not a bug in this demo — it depends on tiny timing differences in how long the process took to start up.",
+              example: "Run the demo below a few times. Watch lines 5 and 6 occasionally trade places.",
+            },
+            {
+              label: "Inside an I/O Callback: the Order IS Guaranteed",
+              description:
+                "Confirmed the same way, 5 out of 5 real runs: once you are already inside a callback for real file or network I/O, setImmediate() is guaranteed to run before setTimeout(fn, 0), every single time. That callback fires during the poll phase, and check (where setImmediate lives) is always the very next phase — timers won't come around again until a whole new cycle starts.",
+              example: "This exact distinction is a real, commonly asked interview question.",
+            },
+          ]}
+        />
+      </>
+    ),
+    extra: <EventLoopOrderDiagram />,
     demo: <EventLoopOrderRunner />,
     demoCommand: "node event-loop-order.js",
     filePointer: {
@@ -90,9 +267,14 @@ const sections: StudySection[] = [
   },
   {
     heading: "Interview Angle",
-    paragraphs: [
-      "Quick recap. Node is a C++ program embedding V8 (executes your JS on one thread) plus libuv (a thread pool + a real, named-phase event loop, on top of async I/O). The JS-level rule you already knew (microtasks fully drain before the next macrotask) still holds — what's new is that \"macrotask\" is really a fixed cycle of libuv phases (timers → pending callbacks → poll → check → close callbacks), and setImmediate lives specifically in check, right after poll.",
-    ],
+    body: (
+      <p>
+        Quick recap, in plain words: Node is a C++ program. It embeds V8 (which runs your JavaScript on one thread) plus libuv
+        (which adds a thread pool and a real, named-phase event loop on top of async I/O). The JS-level rule you already knew —
+        microtasks fully drain before the next macrotask — still holds. What&apos;s new is that a &quot;macrotask&quot; is really a fixed
+        cycle of 5 libuv phases, and setImmediate lives specifically in check, right after poll.
+      </p>
+    ),
     extra: (
       <ComparisonCard
         tone="good"
@@ -114,7 +296,7 @@ export default function WhatIsNodeJsPage() {
       title="What is Node.js, really"
       stageLabel="Stage A — Node.js & Backend Foundations"
       stageColor="blue"
-      intro="You already know the JS-level event loop (sync → microtasks → macrotask) cold. This topic is what Node specifically bolts on top of plain JS to make that model actually run outside a browser — V8, libuv, its thread pool, and the real named phases behind 'macrotask' — the mental model that makes everything else here (middleware order, why a slow route hangs the whole server) click."
+      intro="You already know the JS-level event loop (sync → microtasks → macrotask) cold. This topic covers what Node specifically adds on top of plain JS to make that model actually run outside a browser: V8, libuv, its thread pool, and the real named phases hiding behind the word 'macrotask.'"
       sections={sections}
     />
   );

@@ -16,6 +16,7 @@ app.use(express.json());
 // If someone visits "/greet/Lawrence", Express matches "Lawrence" against
 // :name and makes it available as req.params.name.
 app.get("/greet/:name", (req, res) => {
+  // Send back the real value Express pulled out of the URL itself.
   res.json({ message: `Hello, ${req.params.name}!` });
 });
 
@@ -23,6 +24,7 @@ app.get("/greet/:name", (req, res) => {
 // Express automatically parses that into a plain object on req.query — here,
 // req.query.q would be "express".
 app.get("/search", (req, res) => {
+  // Send back the real query object Express parsed off the URL's "?" part.
   res.json({ query: req.query.q ?? null, receivedQuery: req.query });
 });
 
@@ -31,6 +33,7 @@ app.get("/search", (req, res) => {
 // middleware above, req.body already contains the real parsed JSON that was
 // sent — we're just echoing it straight back here to prove it arrived.
 app.post("/echo", (req, res) => {
+  // Send back the real req.body express.json() parsed from the request.
   res.json({ youSent: req.body });
 });
 
@@ -50,12 +53,16 @@ app.use("/api", apiRouter);
 // We use it to send back a proper 404 ("not found") instead of the request
 // just hanging with no response.
 app.use((req, res) => {
+  // Send back a real 404, with the real unmatched path, instead of silence.
   res.status(404).json({ error: "not found", path: req.path });
 });
 
 // Only actually listen when this file is run directly (`node server.js`) —
 // see co-founder/build-conventions.md's ESM main-module note.
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  // A real, fixed, known port — so a person (or Postman) running this file
+  // directly always knows exactly where to send a request.
   const PORT = process.env.PORT ?? 4001;
+  // Actually starts the server for real, opening the port and listening.
   app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 }

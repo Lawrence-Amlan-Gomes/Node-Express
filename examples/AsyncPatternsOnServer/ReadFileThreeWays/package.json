@@ -1,0 +1,14 @@
+{
+  "name": "read-file-three-ways-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable demo of the same file read done three ways: callback, Promise, and async/await.",
+  "type": "module",
+  "main": "read-file-three-ways.js",
+  "scripts": {
+    "start": "node read-file-three-ways.js"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

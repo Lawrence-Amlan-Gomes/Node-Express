@@ -8,6 +8,7 @@ import express from "express";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
+// Creates the real, empty Express app every route below attaches to.
 export const app = express();
 
 // Registered here, near the top: any request whose path matches a real
@@ -25,6 +26,7 @@ app.use(express.static(path.join(import.meta.dirname, "public")));
 // file in public/, and lets everything else fall through to whatever's
 // registered next.
 app.get("/api/status", (req, res) => {
+  // Send back real JSON — proof this route runs for paths express.static() skipped.
   res.json({ status: "ok", servedBy: "the JSON API, not a static file" });
 });
 
@@ -34,6 +36,9 @@ app.get("/api/status", (req, res) => {
 // always an absolute file:// URL, so pathToFileURL is needed for a correct
 // comparison (see co-founder/build-conventions.md's ESM main-module note).
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  // A real, fixed, known port — so a person (or Postman) running this file
+  // directly always knows exactly where to send a request.
   const PORT = process.env.PORT ?? 4031;
+  // Actually starts the server for real, opening the port and listening.
   app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 }

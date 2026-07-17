@@ -6,7 +6,7 @@ import { execSync } from "node:child_process";
 export default async function ReadFileThreeWaysRunner() {
   const output = execSync("node read-file-three-ways.js", {
     encoding: "utf-8",
-    cwd: process.cwd() + "/examples/AsyncPatternsOnServer/AsyncOnAServer",
+    cwd: process.cwd() + "/examples/AsyncPatternsOnServer/ReadFileThreeWays",
   });
 
   return <>{output}</>;

@@ -6,8 +6,10 @@ import express from "express";
 import { pathToFileURL } from "node:url";
 import todosRouter from "./routes/todos.routes.js";
 
+// Creates the real, empty Express app every route below attaches to.
 export const app = express();
 
+// Global middleware — needed so createTodo's POST route can read req.body.
 app.use(express.json());
 
 // Mounting a router: every path inside todosRouter (defined in
@@ -22,6 +24,9 @@ app.use("/todos", todosRouter);
 // always an absolute file:// URL, so pathToFileURL is needed for a correct
 // comparison (see co-founder/build-conventions.md's ESM main-module note).
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  // A real, fixed, known port — so a person (or Postman) running this file
+  // directly always knows exactly where to send a request.
   const PORT = process.env.PORT ?? 4030;
+  // Actually starts the server for real, opening the port and listening.
   app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 }

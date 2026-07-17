@@ -75,6 +75,13 @@ export const stages: Stage[] = [
     color: "purple",
     topics: [
       {
+        slug: "api-testing-tools",
+        title: "API Testing Tools: curl, Postman & Thunder Client",
+        summary: "Manually exploring and testing an API you're building — the terminal-based curl workflow, GUI tools (Postman, Thunder Client), and the plain-text .http file format they're both built around. Moved to Stage B topic 1 (2026-07-17) so this tool is already known before every later Stage B topic starts including its own Postman verification steps.",
+        hasPage: true,
+        status: "mastered",
+      },
+      {
         slug: "express-app-routing",
         title: "App & Router Basics (Express 5)",
         summary: "Creating an Express app, defining routes, and what next dev's equivalent (next start) is here: node server.js. Targets Express 5 — npm's default and the Technical Committee's production-recommended release as of 2026.",
@@ -85,13 +92,6 @@ export const stages: Stage[] = [
         slug: "middleware-pipeline",
         title: "The Middleware Pipeline",
         summary: "Why order matters — a top interview question — and how request/response flow through it.",
-        hasPage: true,
-        status: "mastered",
-      },
-      {
-        slug: "api-testing-tools",
-        title: "API Testing Tools: curl, Postman & Thunder Client",
-        summary: "Manually exploring and testing an API you're building — the terminal-based curl workflow used throughout this project so far, plus GUI tools (Postman, Thunder Client) and the plain-text .http file format they're both built around.",
         hasPage: true,
         status: "mastered",
       },
@@ -189,9 +189,9 @@ export const stages: Stage[] = [
       {
         slug: "testing-express",
         title: "Testing an Express App",
-        summary: "Unit + integration testing with Jest/Vitest and Supertest.",
-        hasPage: false,
-        status: "not-started",
+        summary: "Unit + integration testing with Jest and Supertest.",
+        hasPage: true,
+        status: "in-progress",
       },
       {
         slug: "logging-observability",

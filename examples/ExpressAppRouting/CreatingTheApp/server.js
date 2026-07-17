@@ -33,6 +33,9 @@ app.get("/", (req, res) => {
 // pathToFileURL is the real fix (see co-founder/build-conventions.md's ESM
 // main-module note for why a naive string comparison silently fails).
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  // A real, fixed, known port — so a person (or Postman) running this file
+  // directly always knows exactly where to send a request.
   const PORT = process.env.PORT ?? 4000;
+  // Actually starts the server for real, opening the port and listening.
   app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 }

@@ -6,13 +6,21 @@ import type { AccentKey } from "@/utils/accentColors";
 
 export interface StudySection {
   heading: string;
-  paragraphs: string[];
+  // Older sections use plain paragraphs. Newer (rebuilt) sections use `body`
+  // instead — full JSX (bold sub-headers, ConceptBreakdown, Callout, lists) —
+  // see co-founder/build-conventions.md's "detail-rebuild pass" entry.
+  paragraphs?: string[];
+  body?: ReactNode;
   extra?: ReactNode;
   filePointer?: { path: string; note?: string };
   filePointers?: { path: string; note?: string }[];
   demo?: ReactNode;
   demoCommand?: string; // the real command actually run to produce the demo's output, e.g. "node event-loop-order.js"
   demoSelfFramed?: boolean;
+  // A PostmanCheck (or similar) guide — only for sections whose example
+  // actually listens on a real, fixed port when run directly. See
+  // co-founder/build-conventions.md's Postman-guide entry.
+  postmanCheck?: ReactNode;
 }
 
 export default function StudyPage({
@@ -36,7 +44,8 @@ export default function StudyPage({
 
       {sections.map((section, i) => (
         <GuideSection key={i} number={i + 1} title={section.heading} accent={stageColor}>
-          {section.paragraphs.map((para, j) => (
+          {section.body}
+          {section.paragraphs?.map((para, j) => (
             <p key={j}>{para}</p>
           ))}
           {section.extra}
@@ -54,6 +63,7 @@ export default function StudyPage({
               )}
             </>
           )}
+          {section.postmanCheck}
         </GuideSection>
       ))}
     </div>

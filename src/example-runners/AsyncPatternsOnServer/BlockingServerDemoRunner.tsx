@@ -9,7 +9,7 @@ import { execSync } from "node:child_process";
 export default async function BlockingServerDemoRunner() {
   const output = execSync("node blocking-server-demo.js", {
     encoding: "utf-8",
-    cwd: process.cwd() + "/examples/AsyncPatternsOnServer/AsyncOnAServer",
+    cwd: process.cwd() + "/examples/AsyncPatternsOnServer/BlockingVsNonBlocking",
   });
 
   return <>{output}</>;
