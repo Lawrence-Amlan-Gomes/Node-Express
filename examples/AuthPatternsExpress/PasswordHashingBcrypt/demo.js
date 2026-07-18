@@ -1,36 +1,61 @@
-// Real password hashing with bcrypt. NEVER store a real password as
-// plaintext — if the database ever leaks, every user's real password
-// leaks with it. bcrypt turns a password into a one-way hash: easy to
-// verify a guess against, practically impossible to reverse.
-import bcrypt from "bcrypt";
+// Calls the real, running Express API (server.js) over real HTTP — this
+// file does NOT import bcrypt directly at all. A real backend dev
+// exercises password hashing this way: real register/login requests,
+// exactly like a frontend or Postman would. The real bcrypt.hash and
+// bcrypt.compare calls live in controllers/users.controller.js instead.
+import { app } from "./server.js";
 
-const password = "correct-horse-battery-staple";
+// Port 0 means "give me any free port" — resolve only once it's really listening.
+const server = await new Promise((resolve) => {
+  const s = app.listen(0, () => resolve(s));
+});
+// The real port the OS actually assigned, read back off the live server.
+const { port } = server.address();
+const base = `http://localhost:${port}`;
+// The one real password both registrations below deliberately reuse.
+const sharedPassword = "correct-horse-battery-staple";
 
-// SALT ROUNDS: how many times bcrypt runs its internal hashing work.
-// Higher = slower to compute = harder to brute-force guess at scale.
-// 10 is a real, common production default (bcrypt's own recommended
-// starting point) — deliberately slow enough to make guessing millions
-// of passwords per second impractical, fast enough for one real login.
-const SALT_ROUNDS = 10;
+// Register the FIRST real user with the shared password.
+const registerRes1 = await fetch(`${base}/users/register`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ username: "ada", password: sharedPassword }),
+});
+// Parse the real JSON body, including the real hash bcrypt actually produced.
+const user1 = await registerRes1.json();
+console.log(`Registered "${user1.username}" with password "${sharedPassword}":`);
+console.log(`hash 1: ${user1.passwordHash}`);
 
-// hash() generates a real, random SALT internally, then mixes it into
-// the hash — that's why the SAME password produces a DIFFERENT hash
-// every single time. This is what stops two users with the same
-// password from having identical, and thus guessable-by-comparison,
-// rows in a real database.
-const hash1 = await bcrypt.hash(password, SALT_ROUNDS);
-const hash2 = await bcrypt.hash(password, SALT_ROUNDS);
-console.log(`Same password "${password}", hashed twice:`);
-console.log(`hash 1: ${hash1}`);
-console.log(`hash 2: ${hash2}`);
-console.log(`Identical hashes? ${hash1 === hash2} (this is expected and correct — a real random salt is baked into each hash)`);
+// Register a SECOND real user with the EXACT SAME password.
+const registerRes2 = await fetch(`${base}/users/register`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ username: "grace", password: sharedPassword }),
+});
+// Parse the real JSON body — a genuinely different hash this time.
+const user2 = await registerRes2.json();
+console.log(`\nRegistered "${user2.username}" with the SAME password:`);
+console.log(`hash 2: ${user2.passwordHash}`);
+// Prove directly that the two real, stored hashes are NOT identical.
+console.log(`\nIdentical hashes? ${user1.passwordHash === user2.passwordHash} (this is expected and correct — a real random salt is baked into each hash)`);
 
-// compare() re-derives the hash using the SAME salt already embedded in
-// the stored hash, then checks if it matches — this is the real
-// verification step a login route runs, never a plain === comparison.
-const correctMatch = await bcrypt.compare(password, hash1);
-const wrongMatch = await bcrypt.compare("totally-wrong-guess", hash1);
-console.log(`\nDoes the REAL password match hash1? ${correctMatch}`);
-console.log(`Does a WRONG guess match hash1? ${wrongMatch}`);
+// A real login attempt with the REAL, correct password.
+const correctLoginRes = await fetch(`${base}/users/login`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ username: "ada", password: sharedPassword }),
+});
+console.log(`\nLogin with the REAL password => ${correctLoginRes.status}`);
 
-console.log("\nWhat actually gets stored in a real database: only the hash (e.g. the string above) — the real plaintext password is never written anywhere, not even temporarily.");
+// A real login attempt with a genuinely WRONG password.
+const wrongLoginRes = await fetch(`${base}/users/login`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ username: "ada", password: "totally-wrong-guess" }),
+});
+console.log(`Login with a WRONG password => ${wrongLoginRes.status}`);
+
+console.log("\nWhat actually gets stored server-side: only the hash (e.g. the strings above) — the real plaintext password is never written anywhere, not even temporarily.");
+
+// Required, not just tidy — a listening server keeps this script alive forever.
+server.close();

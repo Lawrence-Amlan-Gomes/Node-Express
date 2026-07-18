@@ -1,41 +1,30 @@
-// Real input validation with zod — a schema library that checks a
-// request body's ACTUAL shape at runtime (types, required fields,
-// formats) before any application code touches it. TypeScript's types
-// only exist at compile time and vanish once the code actually runs —
-// they can't stop a real network request from sending garbage. zod is
-// what closes that gap for real, live requests.
+// server.js's job in a layered app is small on purpose: create the app,
+// wire in global middleware, mount each resource's routes, and start
+// listening. It should NOT contain the actual logic for any single
+// endpoint — that lives in controllers/, one layer down.
 import express from "express";
-import { z } from "zod";
 import { pathToFileURL } from "node:url";
+import usersRouter from "./routes/users.routes.js";
 
+// Creates the real, empty Express app every route below attaches to.
 export const app = express();
+// Needed so POST /users can read req.body.
 app.use(express.json());
 
-// The real schema: every field's actual required shape, in one place.
-const createUserSchema = z.object({
-  name: z.string().min(1, "name is required"),
-  email: z.email("must be a valid email address"),
-  age: z.number().int().positive("age must be a positive whole number"),
-});
+// Every request under "/users" is handed off to the real users router.
+// server.js doesn't need to know or care what's inside that file — it
+// just hands off anything starting with "/users" to it.
+app.use("/users", usersRouter);
 
-app.post("/users", (req, res) => {
-  // safeParse never throws — it returns a real result object you check,
-  // instead of needing a try/catch around every validation.
-  const result = createUserSchema.safeParse(req.body);
-
-  if (!result.success) {
-    // z.flattenError turns zod's detailed internal issue list into a
-    // simple { field: [messages] } shape — genuinely useful for a
-    // frontend to show next to the right form field, not just a vague
-    // "invalid input" string.
-    return res.status(400).json({ errors: z.flattenError(result.error).fieldErrors });
-  }
-
-  // result.data is the validated, real data — safe to use as-is.
-  res.status(201).json({ id: 1, ...result.data });
-});
-
+// Only actually listen when this file is run directly (`node server.js`) —
+// demo.js imports { app } and controls its own ephemeral-port listener
+// instead. process.argv[1] is often a relative path while import.meta.url is
+// always an absolute file:// URL, so pathToFileURL is needed for a correct
+// comparison (see co-founder/build-conventions.md's ESM main-module note).
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const PORT = process.env.PORT ?? 4043;
+  // A real, fixed, known port — so a person (or Postman) running this
+  // file directly always knows exactly where to send a request.
+  const PORT = process.env.PORT ?? 4073;
+  // Actually starts the server for real, opening the port and listening.
   app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
 }

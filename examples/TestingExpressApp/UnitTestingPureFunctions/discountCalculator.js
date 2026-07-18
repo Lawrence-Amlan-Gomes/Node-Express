@@ -11,9 +11,12 @@
 // wrong number.
 export function calculateDiscountedPrice(priceInCents, discountPercent) {
   if (discountPercent < 0 || discountPercent > 100) {
+    // Bad input — throw a real Error instead of quietly computing a nonsense price.
     throw new Error(`discountPercent must be between 0 and 100, got ${discountPercent}`);
   }
+  // Round to the nearest whole cent — never leave a fractional cent lying around.
   const discountAmount = Math.round(priceInCents * (discountPercent / 100));
+  // The real final price: the original minus the real discount amount.
   return priceInCents - discountAmount;
 }
 
@@ -21,6 +24,8 @@ export function calculateDiscountedPrice(priceInCents, discountPercent) {
 // — never floating-point dollars, they round unpredictably) into a
 // real, human-readable price string like "$12.50".
 export function formatCurrency(cents) {
+  // Convert real whole cents into a real dollar string with 2 decimal places.
   const dollars = (cents / 100).toFixed(2);
+  // Prefix with a real "$" — this is the exact string a real UI would display.
   return `$${dollars}`;
 }

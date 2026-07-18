@@ -1,14 +1,25 @@
-// The real API — logs every single request that actually arrives,
-// including any OPTIONS request the BROWSER sends on its own before the
-// real one. This is how we can PROVE whether a preflight really
-// happened, instead of just asserting it.
+// api-server.js's job is small on purpose, same as every other topic's
+// server.js: create the app, wire in global middleware, mount the real
+// routes, and — here specifically — log every request that actually
+// arrives, so we can PROVE whether a preflight really happened instead
+// of just asserting it. The real route logic lives in controllers/, one
+// layer down.
 const express = require("express");
 const cors = require("cors");
+const createApiRoutes = require("./routes/api.routes");
 
+// A factory, not a plain module-level app, because demo.js needs to
+// supply the REAL allowed origin at runtime (the "frontend" server's
+// own real port, decided by demo.js, not known ahead of time here).
 function createApiServer(allowedOrigin) {
+  // Creates the real, empty Express app every route below attaches to.
   const app = express();
+  // Every request that actually arrives gets pushed here, in real order.
   const requestLog = [];
 
+  // Runs before anything else — records the real method + path of
+  // EVERY request that reaches this server, including any real OPTIONS
+  // preflight the browser sends on its own.
   app.use((req, res, next) => {
     requestLog.push(`${req.method} ${req.path}`);
     next();
@@ -18,23 +29,13 @@ function createApiServer(allowedOrigin) {
   // (never "*" once credentials/specific origins matter), handling the
   // real preflight OPTIONS response automatically.
   app.use(cors({ origin: allowedOrigin, methods: ["GET", "PUT", "POST"] }));
+  // Needed so POST /json-data can read req.body.
   app.use(express.json());
+  // Mounts the three real routes declared in routes/api.routes.js.
+  app.use(createApiRoutes());
 
-  // A "simple" request per the actual Fetch/CORS spec: GET, with no
-  // custom headers, no non-simple Content-Type. The browser sends this
-  // straight through — no preflight needed.
-  app.get("/simple-data", (req, res) => res.json({ data: "simple GET result" }));
-
-  // PUT is NOT one of the CORS-safelisted simple methods (only GET,
-  // HEAD, POST qualify) — a real browser sends a real OPTIONS preflight
-  // first, to ask permission, before ever sending this real PUT.
-  app.put("/complex-data", (req, res) => res.json({ data: "PUT result" }));
-
-  // A JSON POST is also non-simple — application/json is not one of the
-  // CORS-safelisted content types (only form-urlencoded, multipart, and
-  // text/plain qualify) — this also triggers a real preflight first.
-  app.post("/json-data", (req, res) => res.json({ data: "POST result", received: req.body }));
-
+  // Both are handed back to demo.js — the real app to serve, and the
+  // real log to read once every request has actually happened.
   return { app, requestLog };
 }
 

@@ -28,9 +28,11 @@ WebSockets/real-time (Socket.io), **background jobs & message queues made concre
 
 **All four Stage D topics are now built and mastered** (2026-07-16): "REST Conventions & Validation" (status codes, a measured ~300x real cursor-vs-offset pagination gap, idempotency keys, zod), "Authentication Patterns" (bcrypt, sessions, JWTs), "CORS — the Frontend Handshake" (the first topic needing a real headless browser via Playwright, since CORS is browser-enforced, not Node-enforced), and "OWASP API Security & Rate Limiting" (BOLA, SQL injection, rate limiting, helmet).
 
-**Stage E, topic 1 — "Testing an Express App" is now built** (2026-07-16, Jest + Supertest — Jest chosen directly over Vitest when asked): real Jest unit tests against a pure discount-calculator, real Supertest integration tests against a real tasks API (no `.listen()` needed), and real tests proving both a validation-middleware 400 and a genuinely-thrown-and-caught 404 (Express 5's automatic promise-rejection forwarding, now proven testable, not just described). **Not yet confirmed mastered** — built and verified for real, but no direct teaching/review session has happened on it yet; that's the very next thing to do.
+**Stage E, topic 1 — "Testing an Express App" is mastered** (built 2026-07-16, confirmed mastered 2026-07-18, Jest + Supertest — Jest chosen directly over Vitest when asked): real Jest unit tests against a pure discount-calculator, real Supertest integration tests against a real, layered tasks API (no `.listen()` needed), and real tests proving both a validation-middleware 400 and a genuinely-thrown-and-caught 404 (Express 5's automatic promise-rejection forwarding, now proven testable, not just described).
 
-Next unbuilt: **Stage E, topic 2 — Logging & Error Tracking** (pino/winston).
+**Stage E, topic 2 — "Logging & Error Tracking" is now built** (2026-07-18): real structured JSON logging with pino, real automatic per-request logging with pino-http (including a genuine, confirmed gotcha — a 500 response stays at "info" severity by default, unless `customLogLevel` is configured), and a real process-level `uncaughtException`/`unhandledRejection` safety net proven by spawning a real, separate crashing process. **Not yet confirmed mastered** — built and verified for real, no direct review session yet.
+
+Next unbuilt: **Stage E, topic 3 — Containerization & Deployment** (Docker + a real host — Render/Railway/Fly/VPS still TBD).
 
 ## 2026 web-research pass (2026-07-13)
 

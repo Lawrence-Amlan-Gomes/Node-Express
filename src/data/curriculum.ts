@@ -191,14 +191,14 @@ export const stages: Stage[] = [
         title: "Testing an Express App",
         summary: "Unit + integration testing with Jest and Supertest.",
         hasPage: true,
-        status: "in-progress",
+        status: "mastered",
       },
       {
         slug: "logging-observability",
         title: "Logging & Error Tracking",
         summary: "Structured logging (pino/winston) and catching errors in production.",
-        hasPage: false,
-        status: "not-started",
+        hasPage: true,
+        status: "in-progress",
       },
       {
         slug: "deployment-containers",

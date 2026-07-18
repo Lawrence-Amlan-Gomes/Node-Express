@@ -1,0 +1,19 @@
+{
+  "name": "structured-logging-with-pino-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof of structured JSON logging with pino — real log levels, real structured fields instead of glued-together strings, against a real Express API.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "pino": "^10.3.1"
+  }
+}

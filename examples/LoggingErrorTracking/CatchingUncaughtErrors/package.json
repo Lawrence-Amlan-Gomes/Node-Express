@@ -1,0 +1,19 @@
+{
+  "name": "catching-uncaught-errors-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof of a process-level safety net — a real, deliberately unhandled promise rejection outside any request, logged at pino's fatal level, then a real, deliberate process exit — spawned as a real separate process so the crash is genuinely observed, not survived in-process.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "pino": "^10.3.1"
+  }
+}

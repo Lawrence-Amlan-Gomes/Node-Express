@@ -10,9 +10,28 @@ export interface PostmanStep {
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   // Just the path — the full URL is built from runPort below, e.g. "/greet/Lawrence".
   path: string;
+  // Real request headers to set in Postman (e.g. { "X-User-Id": "1" }) —
+  // shown under the request, never folded into the expected response.
+  headers?: Record<string, string>;
   body?: string; // a real example request body, JSON as a string, only for methods that need one
+  // A short instruction/context line about THIS REQUEST specifically
+  // (e.g. "send with no X-User-Id header at all", "the 6th request in
+  // the same 60-second window") — shown next to the request, never
+  // appended to expectBody. Only for guidance the request/headers/body
+  // fields above can't already express on their own.
+  note?: string;
   expectStatus: number;
-  expectBody: string; // the real, already-verified response body (or a plain description of it)
+  // The real, already-verified response BODY ONLY — never append
+  // instructions or context here, that's what `note` above is for.
+  expectBody: string;
+  // Real, already-verified response headers worth checking, when the
+  // header IS the point (e.g. RateLimit-Remaining, X-Powered-By).
+  expectHeaders?: Record<string, string>;
+  // Overrides runPort for just this ONE step — only needed when a single
+  // run command starts more than one real server (e.g. a before/after
+  // comparison on two ports, see HelmetSecurityHeaders). Falls back to
+  // runPort when omitted, which covers every normal, single-port example.
+  port?: number;
 }
 
 // The absolute path to this project's own root on disk — used to build a
@@ -29,11 +48,16 @@ export default function PostmanCheck({
   folderPath,
   runCommand,
   runPort,
+  extraPorts,
   steps,
 }: {
   folderPath: string; // relative to the project root, e.g. "examples/ExpressAppRouting/CreatingTheApp"
   runCommand: string;
   runPort: number;
+  // Only needed when the SAME run command starts more than one real
+  // server at once (e.g. a before/after comparison on two ports) — each
+  // entry is rendered as an extra "also listens on" line under step 3.
+  extraPorts?: { port: number; label: string }[];
   steps: PostmanStep[];
 }) {
   return (
@@ -61,6 +85,15 @@ export default function PostmanCheck({
           </code>
           . Leave that terminal running.
         </div>
+        {extraPorts?.map((extra) => (
+          <div key={extra.port} className="text-body text-xs leading-relaxed">
+            <span className="font-semibold">Also listens on ({extra.label}):</span>{" "}
+            <code className="text-orange-500 bg-orange-500/10 px-1.5 py-0.5 rounded font-mono text-xs">
+              http://localhost:{extra.port}
+            </code>{" "}
+            — the SAME command above starts both real servers at once.
+          </div>
+        ))}
       </div>
 
       <div className="flex flex-col gap-2.5">
@@ -72,10 +105,22 @@ export default function PostmanCheck({
                 {step.method}
               </span>
               <code className="text-cyan-500 font-mono text-xs break-all">
-                http://localhost:{runPort}
+                http://localhost:{step.port ?? runPort}
                 {step.path}
               </code>
             </div>
+            {step.headers && (
+              <div className="mt-2">
+                <div className="text-sublabel text-[11px] uppercase tracking-wide mb-1">Headers</div>
+                <div className="flex flex-col gap-1">
+                  {Object.entries(step.headers).map(([name, value]) => (
+                    <code key={name} className="font-mono text-xs text-body bg-surface rounded px-2 py-1 border border-border w-fit">
+                      {name}: {value}
+                    </code>
+                  ))}
+                </div>
+              </div>
+            )}
             {step.body && (
               <div className="mt-2">
                 <div className="text-sublabel text-[11px] uppercase tracking-wide mb-1">Body (raw JSON)</div>
@@ -84,11 +129,21 @@ export default function PostmanCheck({
                 </pre>
               </div>
             )}
+            {step.note && <div className="mt-2 text-xs text-sublabel leading-relaxed italic">{step.note}</div>}
             <div className="mt-2 text-xs leading-relaxed">
               <span className="text-green-500 font-semibold">Expect: </span>
               <span className="font-mono text-green-500">{step.expectStatus}</span>{" "}
-              <span className="text-body">{step.expectBody}</span>
+              <span className="font-mono text-body">{step.expectBody}</span>
             </div>
+            {step.expectHeaders && (
+              <div className="mt-1 flex flex-col gap-1">
+                {Object.entries(step.expectHeaders).map(([name, value]) => (
+                  <code key={name} className="font-mono text-xs text-green-500 bg-green-500/10 rounded px-2 py-1 border border-green-500/30 w-fit">
+                    {name}: {value}
+                  </code>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>

@@ -1,0 +1,19 @@
+{
+  "name": "request-logging-with-pino-http-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof of pino-http's automatic per-request logging — including the real, confirmed gotcha that a 500 stays at level 30 (info) unless customLogLevel is configured.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "pino-http": "^11.0.0"
+  }
+}
