@@ -144,6 +144,13 @@ export const stages: Stage[] = [
         hasPage: true,
         status: "mastered",
       },
+      {
+        slug: "indexing-search-performance",
+        title: "Indexing & Search Performance",
+        summary: "B-tree indexes and EXPLAIN ANALYZE on real Postgres — measuring the actual query-time difference an index makes — plus Postgres full-text search (tsvector/tsquery, GIN indexes), with Elasticsearch covered as a conceptual comparison, not a hands-on build.",
+        hasPage: true,
+        status: "mastered",
+      },
     ],
   },
   {
@@ -179,6 +186,13 @@ export const stages: Stage[] = [
         hasPage: true,
         status: "mastered",
       },
+      {
+        slug: "file-uploads-blob-storage",
+        title: "File Uploads & Blob Storage",
+        summary: "The real pattern for handling uploads in production: presigned S3 URLs so the client uploads directly to blob storage instead of through your Express server, with a CDN in front for serving. Closes a gap where 'file uploads' was mentioned in the roadmap but never became a real topic.",
+        hasPage: true,
+        status: "mastered",
+      },
     ],
   },
   {
@@ -198,7 +212,7 @@ export const stages: Stage[] = [
         title: "Logging & Error Tracking",
         summary: "Structured logging (pino/winston) and catching errors in production.",
         hasPage: true,
-        status: "in-progress",
+        status: "mastered",
       },
       {
         slug: "deployment-containers",
@@ -217,7 +231,7 @@ export const stages: Stage[] = [
       {
         slug: "caching-scaling",
         title: "Caching & Scaling",
-        summary: "Redis caching, the cluster module (process-based, fault-isolated, for I/O-bound HTTP load) vs worker_threads (shared-memory, for CPU-bound work) — a clean, real interview distinction — plus PM2 and load balancers.",
+        summary: "Redis caching (cache-aside, invalidation, cache stampede), a real distributed lock with Redis (preventing double-processing — the same infra as the caching layer, no new install), the cluster module (process-based, fault-isolated, for I/O-bound HTTP load) vs worker_threads (shared-memory, for CPU-bound work) — a clean, real interview distinction — plus PM2 and load balancers.",
         hasPage: false,
         status: "not-started",
       },
@@ -231,7 +245,7 @@ export const stages: Stage[] = [
       {
         slug: "websockets-realtime",
         title: "WebSockets & Real-Time",
-        summary: "Socket.io and real-time communication patterns.",
+        summary: "The real-time progression — polling, then Server-Sent Events (SSE, one-way server-to-client, plain HTTP) — then Socket.io/WebSockets (two-way) when the use case actually needs it.",
         hasPage: false,
         status: "not-started",
       },
@@ -259,7 +273,7 @@ export const stages: Stage[] = [
       {
         slug: "backend-system-design",
         title: "Backend System Design Drills",
-        summary: "Live-coding a REST API under time pressure, and system design interview practice — pagination, idempotency, and rate-limiting choices are real discussion anchors here.",
+        summary: "Live-coding a REST API under time pressure, and system design interview practice — pagination, idempotency, and rate-limiting choices are real discussion anchors here. Framing lenses covered as talking points, not hands-on builds: CAP theorem (mapped onto the real Postgres-vs-Mongo tradeoffs already built), sharding and consistent hashing (shard key choice, hash rings, cross-shard cost), and the classic latency-numbers-every-engineer-should-know table.",
         hasPage: false,
         status: "not-started",
       },
