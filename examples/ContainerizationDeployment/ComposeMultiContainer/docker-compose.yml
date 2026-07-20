@@ -1,0 +1,32 @@
+# docker-compose.yml describes MULTIPLE real containers that should run
+# together, as one unit, on one shared private network Compose creates
+# automatically. "docker compose up" reads this one file and starts
+# every service in it.
+services:
+  # The real Express app, built from this folder's own Dockerfile.
+  app:
+    build: .
+    ports:
+      # HOST:CONTAINER — publishes the container's port 4091 to this
+      # machine's own port 4091, exactly like "docker run -p" does.
+      - "4091:4091"
+    environment:
+      # This is the real point of this section: "redis" is not localhost,
+      # not an IP address — it's the OTHER service's name, directly below.
+      # Docker Compose's built-in DNS resolves it automatically.
+      - REDIS_HOST=redis
+      - PORT=4091
+    depends_on:
+      # Tells Compose to start "redis" before "app" — real startup
+      # ordering, though not a guarantee Redis has finished booting yet
+      # (this demo's own code retries the connection to handle that).
+      - redis
+
+  # A real, official Redis image — no Dockerfile needed, since we're not
+  # customizing it at all.
+  redis:
+    image: redis:7-alpine
+    # Deliberately NO "ports:" here — Redis is reachable from the "app"
+    # container over the internal Docker network, but NOT from this Mac's
+    # own localhost. Proves containers can talk to each other without
+    # ever publishing a port to the host.

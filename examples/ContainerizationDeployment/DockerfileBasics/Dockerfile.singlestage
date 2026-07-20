@@ -1,0 +1,23 @@
+# THE NAIVE WAY — a genuinely real, genuinely working, but bloated
+# single-stage Dockerfile. This file is built for real by this section's
+# demo, specifically so the size gap below is a real MEASURED number, not
+# an assumed one — same discipline as this project's other before/after
+# demos (e.g. the real EXPLAIN ANALYZE gap on "Indexing & Search
+# Performance"). It is never used as this app's actual shipped image.
+
+# node:22 (no "-alpine") is the REAL full Debian-based image — hundreds
+# of MB of OS packages, compilers, and libraries this Express app never
+# touches at runtime.
+FROM node:22
+WORKDIR /app
+# Copying the WHOLE project directory before installing anything means
+# ANY file change (even editing this comment) invalidates Docker's layer
+# cache for the npm install step below — a real, measurable build-speed
+# cost, on top of the size cost.
+COPY . .
+# Plain "npm install" (not "npm ci --omit=dev") installs devDependencies
+# too — nodemon, a real tool this running app never needs, ships inside
+# the image anyway.
+RUN npm install
+EXPOSE 4090
+CMD ["node", "server.js"]

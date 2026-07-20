@@ -217,9 +217,9 @@ export const stages: Stage[] = [
       {
         slug: "deployment-containers",
         title: "Containerization & Deployment",
-        summary: "Docker basics and shipping to a real host (Render/Railway/Fly/VPS — TBD).",
-        hasPage: false,
-        status: "not-started",
+        summary: "Real multi-stage Dockerfiles, Docker Compose for multi-container apps, and shipping the same image to a real, self-hosted Coolify server.",
+        hasPage: true,
+        status: "in-progress",
       },
       {
         slug: "debugging-memory-profiling",

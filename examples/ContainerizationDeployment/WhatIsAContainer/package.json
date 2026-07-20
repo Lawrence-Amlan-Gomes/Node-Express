@@ -1,0 +1,11 @@
+{
+  "name": "what-is-a-container-example",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "The simplest possible real proof that a Docker container is a genuinely separate, isolated environment.",
+  "main": "isolation-proof.js",
+  "scripts": {
+    "start": "node isolation-proof.js"
+  }
+}
