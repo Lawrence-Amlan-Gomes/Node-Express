@@ -1,0 +1,10 @@
+import { execSync } from "node:child_process";
+
+export default async function SplitIntoServicesRunner() {
+  const output = execSync("node demo.js", {
+    encoding: "utf-8",
+    cwd: process.cwd() + "/examples/MicroservicesVsMonolith/SplitIntoServices",
+  });
+
+  return <>{output}</>;
+}

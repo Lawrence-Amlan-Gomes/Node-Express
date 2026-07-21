@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2022", // which JS version tsc's OUTPUT (and type-checking) targets
+    "module": "nodenext", // matches Node's own real module system
+    "moduleResolution": "nodenext", // matches Node's own real import-resolution rules
+    "types": ["node"], // pulls in real type info for process, node:url, etc.
+    "strict": true, // the real safety net this whole section depends on
+    "rewriteRelativeImportExtensions": true, // lets "./server.ts" resolve correctly
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  // only the real, correct files — broken-usage.ts is deliberately left
+  // out, so it can never affect this project's own clean typecheck.
+  "include": ["server.ts", "client.ts"]
+}

@@ -1,0 +1,17 @@
+This real Mac's own hostname:
+  Lawrences-MacBook-Air.local
+This real Mac's own platform:
+  darwin
+
+A real Docker container's hostname (same question, asked INSIDE the container):
+  6ab61e7ce1fc
+
+That same container's real operating system (this Mac doesn't even have this file):
+NAME="Alpine Linux"
+ID=alpine
+VERSION_ID=3.24.1
+PRETTY_NAME="Alpine Linux v3.24"
+HOME_URL="https://alpinelinux.org/"
+BUG_REPORT_URL="https://gitlab.alpinelinux.org/alpine/aports/-/issues"
+
+Same laptop, two completely different real answers — "Lawrences-MacBook-Air.local" outside, "6ab61e7ce1fc" inside. That's not a trick: the container is a real, separate, sealed environment.

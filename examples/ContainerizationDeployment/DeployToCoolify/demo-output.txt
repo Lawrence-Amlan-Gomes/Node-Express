@@ -1,0 +1,22 @@
+Building the real image (the exact one Coolify builds too)...
+Running it as a real local container...
+
+GET / — real response from the real local container:
+{
+  "status": 200,
+  "body": {
+    "message": "Hello from a real, deployed Docker container!",
+    "hostname": "4fe48582fdb2",
+    "nodeVersion": "v22.23.1",
+    "environment": "production",
+    "timestamp": "2026-07-21T03:25:31.443Z"
+  }
+}
+
+GET /health — the same real endpoint a real host polls to know this container is alive:
+{
+  "status": 200,
+  "body": {
+    "status": "ok"
+  }
+}

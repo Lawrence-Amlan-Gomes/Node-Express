@@ -4,9 +4,9 @@ Internal record so a new session knows what "my port" refers to, per the port-ma
 
 ## Current state
 
-- **Server running:** no — killed at `End Today`, 2026-07-20. Was port 3000 (`http://localhost:3000`), last PID 50995.
+- **Server running:** no — killed at `End Today`, 2026-07-21. Was port 3000 (`http://localhost:3000`), last PID 68004.
 - **Start command:** `npm run dev` (from project root — starts the Next.js viewer app via Turbopack)
-- **Started by me this session:** yes (2026-07-20). Port 3000 was free all session. Restarted twice (PID 26883 → 44788 → 50995) for clean `rm -rf .next && npm run build` verification passes — first after building "Containerization & Deployment," second after adding the ground-zero "What Even Is a Container?" section and simplifying the rest of the page's language. Killed cleanly at close; port 3000 confirmed clear.
+- **Started by me this session:** yes (2026-07-21, new session). Port 3000 was free at session start. Restarted four times (PID 67189 → 86774 → 10330 → 29421 → 68004) for clean `rm -rf .next && npm run build` verification passes — after "WebSockets & Real-Time" (Stage F topic 1), "Background Jobs & Message Queues" (Stage F topic 2), "Microservices vs Monolith" (Stage F topic 3), and "Beyond REST: GraphQL & tRPC Awareness" (Stage F topic 4). Killed cleanly at close; port 3000 confirmed clear.
 
 ## History
 
@@ -38,3 +38,5 @@ Internal record so a new session knows what "my port" refers to, per the port-ma
 - 2026-07-18 — New session via `@skillCoFounderMentor.md`. Port 3000 occupied by a different project (`English`), started on 3001 instead. Long session completing the detail-rebuild pass (Stage D full rebuild + Stage E topic 1 rebuild/mastered) and building Stage E topic 2 fresh. Killed cleanly at `End Today`.
 - 2026-07-19 — New session via `@skillCoFounderMentor.md`. Port 3000 occupied by a different, unrelated project (`next-server`, cwd `/Users/lawrencealangomes/Documents/MySelf`) — left untouched. Started this project on port 3001 (PID 8973), verified `✓ Ready` in the startup log.
 - 2026-07-20 — New session via `@skillCoFounderMentor.md`. Port 3000 was free. Started fresh (PID 26883), verified `✓ Ready` in the startup log. Built Stage E topic 3, "Containerization & Deployment" — restarted twice for clean build-verification passes (PID 26883 → 44788 → 50995), also installed Docker Desktop (new real infra) and deployed a real app to the user's Coolify instance during the session. Killed cleanly at `End Today`.
+- 2026-07-21 — Long session (see current-state.md's own 2026-07-21 entry): built Debugging & Memory Profiling and Caching & Scaling, plus a Remotion pilot built then fully reverted. Killed cleanly at `End Today`.
+- 2026-07-21 — New session via `@skillCoFounderMentor.md`. Port 3000 was free. Started fresh (PID 67189), verified `✓ Ready in 325ms` in the startup log. Long session (see current-state.md): built and mastered "WebSockets & Real-Time," "Background Jobs & Message Queues," "Microservices vs Monolith," and "Beyond REST: GraphQL & tRPC Awareness" — restarted 4 times for clean build-verification passes (PID 67189 → 86774 → 10330 → 29421 → 68004). Killed cleanly at `End Today`.

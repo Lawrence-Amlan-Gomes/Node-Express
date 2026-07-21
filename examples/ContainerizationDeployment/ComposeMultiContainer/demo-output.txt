@@ -1,0 +1,21 @@
+Starting the real app + redis containers (docker compose up)...
+
+First real request to /fib/40 — expect a genuine cache MISS:
+{
+  "n": 40,
+  "result": 102334155,
+  "source": "computed",
+  "tookMs": 968
+}
+
+Second real request to /fib/40 — expect a genuine cache HIT:
+{
+  "n": 40,
+  "result": 102334155,
+  "source": "cache",
+  "tookMs": 0
+}
+
+Real measured speed-up from the cache hit: ~968.0x faster.
+
+Stopping the real containers (docker compose down)...

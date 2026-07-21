@@ -1,0 +1,12 @@
+{
+  "name": "distributed-lock",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node demo.js"
+  },
+  "dependencies": {
+    "redis": "^4.7.0"
+  }
+}

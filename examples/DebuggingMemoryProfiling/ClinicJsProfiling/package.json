@@ -1,0 +1,17 @@
+{
+  "name": "clinic-js-profiling",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "profile": "clinic doctor --autocannon [ /blocking ] --open=false -- node server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "clinic": "^13.0.0",
+    "autocannon": "^8.0.0"
+  }
+}

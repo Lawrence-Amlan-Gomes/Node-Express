@@ -1,0 +1,23 @@
+{
+  "name": "trpc-end-to-end-types",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.ts",
+    "typecheck": "tsc --noEmit",
+    "check-broken-usage": "tsc -p tsconfig.errordemo.json"
+  },
+  "dependencies": {
+    "@trpc/server": "^11.18.0",
+    "@trpc/client": "^11.18.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "@types/node": "^26.1.1"
+  },
+  "engines": {
+    "node": ">=22.6.0"
+  }
+}

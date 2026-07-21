@@ -1,0 +1,20 @@
+Building the multi-stage image (Dockerfile)...
+Building the single-stage image (Dockerfile.singlestage)...
+Running the multi-stage image as a real container...
+
+Real response from inside the running container:
+{
+  "status": 200,
+  "body": {
+    "message": "Hello from inside a real Docker container!",
+    "hostname": "9aab5f20ff9e",
+    "nodeVersion": "v22.23.1",
+    "platform": "linux",
+    "uptimeSeconds": 1
+  }
+}
+
+Real measured image sizes (docker image inspect):
+  Multi-stage  (Dockerfile):            56.0 MB
+  Single-stage (Dockerfile.singlestage): 383.6 MB
+  Real ratio: the single-stage image is 6.8x larger.
