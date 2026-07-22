@@ -1,0 +1,18 @@
+{
+  "name": "mocking-with-prism",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A real mock server (Prism, the standard OpenAPI mock tool) generated straight from openapi.yaml — proving a frontend dev can start real work against a backend that doesn't exist as real code yet.",
+  "type": "module",
+  "main": "demo.js",
+  "scripts": {
+    "mock": "prism mock openapi.yaml -p 4122",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@stoplight/prism-cli": "^5.16.0"
+  }
+}

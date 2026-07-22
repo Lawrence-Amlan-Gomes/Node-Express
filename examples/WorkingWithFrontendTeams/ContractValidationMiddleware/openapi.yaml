@@ -1,0 +1,43 @@
+# The real contract this section actually ENFORCES, not just describes —
+# express-openapi-validator (server.js, one folder over) reads this exact
+# file and rejects any real request that doesn't match it, automatically.
+openapi: 3.0.3
+info:
+  title: Orders API
+  version: 1.0.0
+paths:
+  /orders:
+    post:
+      summary: Create a real order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [productId, quantity]
+              properties:
+                productId:
+                  type: integer
+                quantity:
+                  type: integer
+                  minimum: 1
+      responses:
+        "201":
+          description: The real, newly-created order
+        "400":
+          description: The real request didn't match this spec
+  /orders/{id}:
+    get:
+      summary: Get one real order by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: The real matching order
+        "404":
+          description: No order with that real id

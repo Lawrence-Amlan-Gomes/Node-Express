@@ -1,0 +1,19 @@
+{
+  "name": "live-coding-drill",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A real Bookmarks API, built the way a 30-45 minute live-coding interview round expects: routes/controllers split, cursor pagination, zod validation, correct status codes — all reused from already-mastered patterns, not invented fresh under pressure.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "zod": "^4.4.3"
+  }
+}

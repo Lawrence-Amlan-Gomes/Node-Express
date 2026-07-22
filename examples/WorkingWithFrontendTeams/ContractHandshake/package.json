@@ -1,0 +1,18 @@
+{
+  "name": "contract-handshake",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Two real, tiny Express apps proving why an API contract matters: v1 honors it, v2 silently renames a field — and a real frontend-style consumer breaks against v2 with no warning.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

@@ -1,0 +1,81 @@
+# A real OpenAPI 3.0 spec — a plain-text, language-agnostic description of
+# this API a frontend dev can read (or feed into a tool) WITHOUT ever
+# opening this project's own Express code.
+openapi: 3.0.3
+info:
+  title: Products API
+  version: 1.0.0
+  description: A real, small Products API — the spec below matches routes/controllers/products.controller.js exactly.
+servers:
+  - url: http://localhost:4121
+paths:
+  /products:
+    get:
+      summary: List every real product
+      responses:
+        "200":
+          description: A real array of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+    post:
+      summary: Create a real product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewProduct"
+      responses:
+        "201":
+          description: The real, newly-created product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+  /products/{id}:
+    get:
+      summary: Get one real product by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: The real matching product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: No product with that real id
+components:
+  schemas:
+    Product:
+      type: object
+      required: [id, name, price]
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Mechanical Keyboard
+        price:
+          type: number
+          example: 89.99
+    NewProduct:
+      type: object
+      required: [name, price]
+      properties:
+        name:
+          type: string
+          example: Mechanical Keyboard
+        price:
+          type: number
+          example: 89.99

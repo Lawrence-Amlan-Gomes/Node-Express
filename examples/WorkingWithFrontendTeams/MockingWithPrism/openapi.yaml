@@ -1,0 +1,75 @@
+# A real spec for a "Reviews" API that does NOT exist as real backend
+# code anywhere in this project yet — on purpose. This section proves a
+# frontend dev can start building against realistic responses BEFORE the
+# real Express implementation is written, using nothing but this spec.
+openapi: 3.0.3
+info:
+  title: Reviews API (not built yet)
+  version: 1.0.0
+  description: The real backend for this doesn't exist. A real mock server, generated straight from this spec, stands in for it below.
+paths:
+  /reviews:
+    get:
+      summary: List every real review for a product
+      responses:
+        "200":
+          description: A real array of reviews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Review"
+              example:
+                - id: 1
+                  productId: 42
+                  rating: 5
+                  comment: "Genuinely great — would buy again."
+                - id: 2
+                  productId: 42
+                  rating: 3
+                  comment: "Fine, nothing special."
+    post:
+      summary: Submit a real review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewReview"
+      responses:
+        "201":
+          description: The real, newly-created review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+              example:
+                id: 3
+                productId: 42
+                rating: 4
+                comment: "Solid, real value for the price."
+components:
+  schemas:
+    Review:
+      type: object
+      required: [id, productId, rating, comment]
+      properties:
+        id:
+          type: integer
+        productId:
+          type: integer
+        rating:
+          type: integer
+        comment:
+          type: string
+    NewReview:
+      type: object
+      required: [productId, rating, comment]
+      properties:
+        productId:
+          type: integer
+        rating:
+          type: integer
+        comment:
+          type: string
