@@ -1,0 +1,34 @@
+# Three real services on ONE private Docker network:
+#  - app            → the real Express app, no published port (only
+#                      reachable from other containers on this network,
+#                      same pattern as the Redis container earlier in
+#                      this same topic).
+#  - nginx-naive     → proxies to "app" using the BROKEN, no-resolver config.
+#  - nginx-dynamic   → proxies to "app" using the FIXED, resolver-aware config.
+# Both Nginx containers point at the exact same "app" service — the only
+# difference this demo tests is which nginx*.conf each one loads.
+services:
+  app:
+    build: ./app
+    networks: [demo-net]
+
+  nginx-naive:
+    image: nginx:1.27-alpine
+    volumes:
+      - ./nginx-naive.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "4124:80"
+    networks: [demo-net]
+    depends_on: [app]
+
+  nginx-dynamic:
+    image: nginx:1.27-alpine
+    volumes:
+      - ./nginx-dynamic.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "4125:80"
+    networks: [demo-net]
+    depends_on: [app]
+
+networks:
+  demo-net:

@@ -1,0 +1,10 @@
+{
+  "name": "nginx-docker-dns-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

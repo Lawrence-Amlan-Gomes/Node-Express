@@ -4,9 +4,9 @@ Internal record so a new session knows what "my port" refers to, per the port-ma
 
 ## Current state
 
-- **Server running:** no — killed at `End Today`, 2026-07-22. Was port 3002 (`http://localhost:3002`), last PID 44227.
-- **Start command:** `npm run dev -- -p 3002` (from project root — starts the Next.js viewer app via Turbopack)
-- **Started by me this session:** yes (2026-07-22). Ports 3000 (`MySelf`, PID 6127) and 3001 (`English`, PID 65339) were both occupied by unrelated projects not started by this session — left untouched per the never-kill-what-you-didn't-start rule. Started fresh on 3002 (PID 93638), restarted once (PID 11921) after "Backend System Design Drills," restarted again (PID 44227) after "Working With a Frontend Team." Killed cleanly at close; port 3002 confirmed clear.
+- **Server running:** no — killed at `End Today`, 2026-07-23. Was port 3001 (`http://localhost:3001`), last PID 41369.
+- **Start command:** `npm run dev -- -p 3001` (from project root — starts the Next.js viewer app via Turbopack)
+- **Started by me this session:** yes (2026-07-23). Port 3000 was occupied by an unrelated project (`MySelf`, PID 61692) not started by this session — left untouched per the never-kill-what-you-didn't-start rule. Started fresh on 3001 (PID 19679), restarted once (new PID 41369) for a clean `rm -rf .next && npm run build` verification pass after adding the Nginx/Docker-DNS section to Containerization & Deployment. Verified 200 via `curl`, plus 3 concurrent loads all 200. Killed cleanly at close; port 3001 confirmed clear. Also confirmed no stray `NginxDockerDns` Docker containers left running.
 
 ## History
 

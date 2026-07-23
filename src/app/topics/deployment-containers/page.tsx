@@ -8,6 +8,7 @@ import DockerfileBasicsRunner from "@/example-runners/ContainerizationDeployment
 import ComposeMultiContainerRunner from "@/example-runners/ContainerizationDeployment/ComposeMultiContainerRunner";
 import DeployToCoolifyRunner from "@/example-runners/ContainerizationDeployment/DeployToCoolifyRunner";
 import WhatIsAContainerRunner from "@/example-runners/ContainerizationDeployment/WhatIsAContainerRunner";
+import NginxDockerDnsRunner from "@/example-runners/ContainerizationDeployment/NginxDockerDnsRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per
 // the standing rule in co-founder/build-conventions.md.
@@ -208,6 +209,97 @@ function ComposeNetworkDiagram() {
   );
 }
 
+function NginxDnsCachingDiagram() {
+  return (
+    <div className="rounded-card border border-dashed border-red-500 bg-surface p-4 my-4">
+      <div className="text-xs uppercase tracking-wide text-sublabel mb-3">Same real setup, one config line different — one survives a container swap, one doesn&apos;t</div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="rounded-card border border-red-500 bg-red-500/3 px-3 py-2.5">
+          <div className="font-mono text-xs text-red-500 font-semibold mb-1">nginx-naive.conf — resolves ONCE, at startup</div>
+          <div className="text-body text-xs leading-relaxed mb-2">
+            <code className="text-red-500">proxy_pass http://app:3000;</code> — a plain, static hostname. Nginx looks up
+            &quot;app&quot;&apos;s real IP one time when it starts, then reuses that same IP for EVERY request forever, even after
+            the real container behind it is gone.
+          </div>
+          <div className="font-mono text-xs text-red-500">Real measured result: 504 Gateway Time-out after the swap.</div>
+        </div>
+        <div className="rounded-card border border-green-500 bg-green-500/3 px-3 py-2.5">
+          <div className="font-mono text-xs text-green-500 font-semibold mb-1">nginx-dynamic.conf — re-checks every 5 real seconds</div>
+          <div className="text-body text-xs leading-relaxed mb-2">
+            <code className="text-green-500">resolver 127.0.0.11 valid=5s;</code> plus a variable instead of a plain
+            string forces Nginx to ask Docker&apos;s own real internal DNS again, instead of trusting an old answer forever.
+          </div>
+          <div className="font-mono text-xs text-green-500">Real measured result: still 200, new container&apos;s real hostname.</div>
+        </div>
+      </div>
+      <div className="rounded-card border border-yellow-500 bg-yellow-500/3 px-3 py-2 mt-3 text-center">
+        <span className="text-yellow-500 text-xs">
+          127.0.0.11 isn&apos;t a made-up placeholder — it&apos;s the real, fixed address Docker gives every container for its
+          own internal DNS server.
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function TryNginxSwapYourself() {
+  return (
+    <div className="rounded-card border border-orange-500/40 bg-orange-500/5 px-4 py-3.5 my-4">
+      <div className="flex items-center gap-2 mb-3">
+        <span className="w-2.5 h-2.5 rounded-sm bg-orange-500 shrink-0" />
+        <span className="text-title text-sm font-semibold">Try It Yourself — Break the Naive One, Watch the Fixed One Survive</span>
+      </div>
+      <div className="text-body text-xs leading-relaxed mb-3">
+        This needs a real terminal, since it involves swapping a real running container mid-way through — the demo
+        above already ran these exact real steps once and cached the result, but running it yourself lets you watch
+        it happen live.
+      </div>
+      <div className="flex flex-col gap-2.5">
+        <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
+          <div className="text-sublabel text-xs uppercase tracking-wide mb-1">1. Terminal</div>
+          <code className="text-cyan-500 font-mono text-xs break-all block">
+            cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/ContainerizationDeployment/NginxDockerDns&quot;
+          </code>
+        </div>
+        <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
+          <div className="text-sublabel text-xs uppercase tracking-wide mb-1">2. Start all 3 real containers (the app + both real Nginx configs)</div>
+          <code className="text-cyan-500 font-mono text-xs break-all block">
+            docker compose -p ngdns up -d --build
+          </code>
+        </div>
+        <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
+          <div className="text-sublabel text-xs uppercase tracking-wide mb-1">3. Confirm both real proxies work — same real container answers both</div>
+          <code className="text-cyan-500 font-mono text-xs break-all block">
+            curl http://localhost:4124/ &amp;&amp; curl http://localhost:4125/
+          </code>
+        </div>
+        <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
+          <div className="text-sublabel text-xs uppercase tracking-wide mb-1">4. Simulate a real redeploy — start a replacement, then remove the original</div>
+          <code className="text-cyan-500 font-mono text-xs break-all block whitespace-pre-wrap">
+            {"docker run -d --network ngdns_demo-net --network-alias app --name ngdns-app-replacement ngdns-app\ndocker rm -f ngdns-app-1"}
+          </code>
+        </div>
+        <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
+          <div className="text-sublabel text-xs uppercase tracking-wide mb-1">5. Hit both proxies again</div>
+          <code className="text-cyan-500 font-mono text-xs break-all block">
+            curl http://localhost:4124/ &amp;&amp; curl http://localhost:4125/
+          </code>
+          <div className="mt-1.5 text-xs text-body leading-relaxed">
+            Expect the naive one (4124) to fail with a real 502 or 504, and the dynamic one (4125) to keep working —
+            with a NEW container hostname in its response.
+          </div>
+        </div>
+        <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
+          <div className="text-sublabel text-xs uppercase tracking-wide mb-1">6. Clean up</div>
+          <code className="text-cyan-500 font-mono text-xs break-all block whitespace-pre-wrap">
+            {"docker rm -f ngdns-app-replacement\ndocker compose -p ngdns down -v"}
+          </code>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const sections: StudySection[] = [
   {
     heading: "Start Here: What Even IS a Container?",
@@ -390,6 +482,83 @@ const sections: StudySection[] = [
     ),
   },
   {
+    heading: "The Nginx/Docker DNS Gotcha (a Real Production Trap)",
+    body: (
+      <>
+        <ConceptBreakdown
+          accent="red"
+          items={[
+            {
+              label: "Real Deployments Almost Always Add a Reverse Proxy",
+              description: "A real host rarely lets the outside world talk straight to your app's container. Instead, something like Nginx sits in front — it's the one thing with a public address, and it forwards real requests inward to the real app container by its Compose service name (\"app\"), the exact same by-name trick from the previous section.",
+            },
+            {
+              label: "Here's the Trap: Nginx Can Resolve That Name ONCE, and Never Again",
+              description: "Without telling it otherwise, Nginx looks up \"app\"'s real IP address ONE TIME — when it starts — and then just keeps using that same IP for every request afterward. It never checks again on its own.",
+            },
+            {
+              label: "A Real Redeploy Gives the App a Brand-New Real IP",
+              description: "Every time a container gets replaced (a redeploy, a crash-restart, a rolling update — all real, normal, everyday events), Docker hands the new container a genuinely different internal IP address. The name \"app\" stays the same; the real address behind it does not.",
+              example: "This is exactly what Coolify does on every single deploy from the previous section — a fresh container, a fresh real IP, same service name.",
+            },
+            {
+              label: "The Fix: Tell Nginx to Keep Checking",
+              description: "One real config change — a \"resolver\" line pointed at Docker's own real internal DNS server (127.0.0.11, on every Docker network, always), plus writing the hostname as a variable instead of plain text — makes Nginx re-look-up the name every few real seconds instead of trusting its first answer forever.",
+            },
+          ]}
+        />
+        <Callout title="The Bottom Line" accent="red">
+          A name like &quot;app&quot; isn&apos;t a fixed address — it&apos;s a question Nginx can either ask ONCE and
+          never again, or keep asking. Ask once, and a normal, healthy redeploy quietly turns your reverse proxy into
+          a dead end. Keep asking, and the exact same redeploy is invisible to it.
+        </Callout>
+        <p>
+          The demo below runs a real Docker Compose setup — one real app container, and TWO real Nginx containers in
+          front of it, identical except for that one resolver difference. It proves both real proxies work
+          identically at first, then simulates a real redeploy (starts a genuinely new app container, removes the
+          old one), and hits both proxies again to show the real, different outcome.
+        </p>
+      </>
+    ),
+    extra: <NginxDnsCachingDiagram />,
+    demo: <NginxDockerDnsRunner />,
+    demoCommand: "node demo.js",
+    filePointers: [
+      { path: "examples/ContainerizationDeployment/NginxDockerDns/nginx-naive.conf", note: "The broken config — a plain, static hostname, resolved once and cached forever." },
+      { path: "examples/ContainerizationDeployment/NginxDockerDns/nginx-dynamic.conf", note: "The fix — a real \"resolver\" line pointed at Docker's own internal DNS, plus a variable instead of a plain string." },
+      { path: "examples/ContainerizationDeployment/NginxDockerDns/docker-compose.yml", note: "One real app container, and both real Nginx containers side by side on the same network, so the only real difference under test is the config file each one loads." },
+      { path: "examples/ContainerizationDeployment/NginxDockerDns/demo.js", note: "Starts all 3 real containers, proves both proxies work, swaps the real app container for a genuinely new one, then proves only the fixed config survives." },
+    ],
+    postmanCheck: (
+      <>
+        <PostmanCheck
+          folderPath="examples/ContainerizationDeployment/NginxDockerDns"
+          runCommand="docker compose -p ngdns up --build"
+          runPort={4124}
+          extraPorts={[{ port: 4125, label: "the fixed, resolver-aware Nginx config" }]}
+          steps={[
+            {
+              method: "GET",
+              path: "/",
+              note: "Hits the NAIVE Nginx config, before any container swap.",
+              expectStatus: 200,
+              expectBody: 'A real JSON object: {"message":"Hello from behind Nginx","containerHostname":"<the real app container\'s ID>","timestamp":"<a real current timestamp>"}',
+            },
+            {
+              method: "GET",
+              path: "/",
+              port: 4125,
+              note: "Hits the DYNAMIC (fixed) Nginx config, before any container swap — same real container answers both right now.",
+              expectStatus: 200,
+              expectBody: 'A real JSON object: {"message":"Hello from behind Nginx","containerHostname":"<the SAME real container ID as the step above>","timestamp":"<a real current timestamp>"}',
+            },
+          ]}
+        />
+        <TryNginxSwapYourself />
+      </>
+    ),
+  },
+  {
     heading: "Shipping to a Real Host (Coolify)",
     body: (
       <>
@@ -470,15 +639,18 @@ const sections: StudySection[] = [
         second, much smaller stage — measured directly on this page, a 6.8x real size difference for the identical
         running app. Docker Compose extends the same idea to MULTIPLE real containers that need to run together,
         giving them a private network where they reach each other by service name, not by IP or localhost — proven
-        here with a real Redis cache giving a ~940x real speed-up on a repeated request. And the whole point of
-        packaging an app into a container is that the exact same image runs identically anywhere a container can
-        run — proven end to end by taking the identical Dockerfile from this laptop to a real, live, publicly
-        reachable deployment on a real Coolify server, with zero code changes.
+        here with a real Redis cache giving a ~940x real speed-up on a repeated request. A real reverse proxy
+        (Nginx) sitting in front of that same by-name networking has its own real trap: it can resolve a service
+        name ONCE and cache it forever, silently breaking on the next ordinary redeploy — proven here with a real
+        502/504 on the naive config and a real, unbroken 200 on the fixed one, same redeploy, same instant. And the
+        whole point of packaging an app into a container is that the exact same image runs identically anywhere a
+        container can run — proven end to end by taking the identical Dockerfile from this laptop to a real, live,
+        publicly reachable deployment on a real Coolify server, with zero code changes.
       </p>
     ),
     extra: (
       <>
-        <FlowChain steps={["write a real Dockerfile", "multi-stage: build stage vs. production stage", "docker build → one real, portable image", "docker compose for multiple real containers, networked by name", "the SAME image, deployed to a real host (Coolify)"]} />
+        <FlowChain steps={["write a real Dockerfile", "multi-stage: build stage vs. production stage", "docker build → one real, portable image", "docker compose for multiple real containers, networked by name", "a real reverse proxy (Nginx) must re-resolve that name, not cache it", "the SAME image, deployed to a real host (Coolify)"]} />
         <ComparisonCard
           tone="good"
           title="What to say in the interview"
@@ -486,6 +658,7 @@ const sections: StudySection[] = [
             "Multi-stage builds exist to keep build-time tools and devDependencies OUT of the final image — the real, measured gap here was 6.8x, not a hand-wavy 'it's smaller.'",
             "Alpine base images are a real, minimal Linux distro (musl libc, not glibc) — not a magic flag, an actual different, much smaller OS underneath Node.",
             "Docker Compose's real value for an interview answer: automatic private networking between containers, reachable by SERVICE NAME (real DNS Compose manages), with zero manual IP wiring — and nothing is reachable from outside unless a port is deliberately published.",
+            "The Nginx/Docker DNS gotcha is a real, senior-level signal: a reverse proxy that resolves an upstream hostname once at startup will silently break on the next redeploy, since the replacement container gets a new real IP under the same name — fixed with a `resolver` directive pointed at Docker's own internal DNS (127.0.0.11) plus a variable instead of a static hostname.",
             "Secrets/config discipline is a real interview signal: never bake a secret into an image at build time (COPY .env, a hardcoded ENV). Real hosts inject environment variables into the container at START time instead — this project already established the same discipline for Prisma/.env and the AWS SDK's credentials.",
             "'Works on my machine' vs 'works in production' is exactly the problem containers solve — the strongest answer is naming that you've actually verified it: the identical image built locally is the one a real host deployed, unmodified.",
           ]}

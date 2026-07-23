@@ -1,0 +1,24 @@
+== Starting the real app + both real Nginx configs via docker compose ==
+
+== Waiting for both real Nginx proxies to come up ==
+Naive nginx   -> status 200 body: {"message":"Hello from behind Nginx","containerHostname":"33ee6c0475fc","timestamp":"2026-07-23T07:06:19.219Z"}
+Dynamic nginx -> status 200 body: {"message":"Hello from behind Nginx","containerHostname":"33ee6c0475fc","timestamp":"2026-07-23T07:06:19.240Z"}
+
+== Simulating a real container replacement (the same thing a redeploy does) ==
+
+== Hitting both proxies again, right after the swap ==
+Naive nginx   -> status 504 body: <html>
+<head><title>504 Gateway Time-out</title></head>
+<body>
+<center><h1>504 Gateway Time-out</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+Dynamic nginx -> status 200 body: {"message":"Hello from behind Nginx","containerHostname":"00673f2adbe5","timestamp":"2026-07-23T07:06:26.781Z"}
+
+== Real result ==
+Naive config: BROKEN (504) — still pointed at the container that no longer exists.
+Dynamic config: STILL WORKING — re-resolved "app" to the new real container automatically.
+
+== Cleaning up every real container/network this demo created ==
