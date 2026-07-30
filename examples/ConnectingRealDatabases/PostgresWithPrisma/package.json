@@ -4,11 +4,10 @@
   "version": "0.1.0",
   "description": "Real, runnable proof of connecting to a real remote PostgreSQL database with Prisma and running real CRUD operations against it.",
   "type": "commonjs",
-  "main": "demo.js",
+  "main": "server.js",
   "scripts": {
     "db:push": "prisma db push",
-    "start": "node server.js",
-    "demo": "node demo.js"
+    "start": "node server.js"
   },
   "engines": {
     "node": ">=18.0.0"

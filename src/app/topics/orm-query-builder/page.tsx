@@ -4,9 +4,6 @@ import FlowChain from "@/components/FlowChain";
 import ConceptBreakdown from "@/components/ConceptBreakdown";
 import Callout from "@/components/Callout";
 import PostmanCheck from "@/components/PostmanCheck";
-import PostgresWithPrismaRunner from "@/example-runners/ConnectingRealDatabases/PostgresWithPrismaRunner";
-import MongoWithMongooseRunner from "@/example-runners/ConnectingRealDatabases/MongoWithMongooseRunner";
-import CrudSideBySideRunner from "@/example-runners/ConnectingRealDatabases/CrudSideBySideRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per the
 // standing rule in co-founder/build-conventions.md. Rewritten 2026-07-17.
@@ -119,13 +116,10 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <PrismaFlowDiagram />,
-    demo: <PostgresWithPrismaRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/ConnectingRealDatabases/PostgresWithPrisma/prisma/schema.prisma", note: "The real Prisma schema — declares the Task model and which schema/database to target." },
       { path: "examples/ConnectingRealDatabases/PostgresWithPrisma/routes/tasks.routes.js", note: "Declares which path/method maps to which controller function — no Prisma code here at all." },
       { path: "examples/ConnectingRealDatabases/PostgresWithPrisma/controllers/tasks.controller.js", note: "The ONLY file that talks to Prisma — real CRUD, run for real against the remote Postgres server." },
-      { path: "examples/ConnectingRealDatabases/PostgresWithPrisma/demo.js", note: "Calls the real, running API over real HTTP — this file never imports Prisma at all." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -180,13 +174,10 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <MongooseFlowDiagram />,
-    demo: <MongoWithMongooseRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/ConnectingRealDatabases/MongoWithMongoose/task-model.js", note: "The real Mongoose schema/model, pinned to the \"learning_tasks\" collection." },
       { path: "examples/ConnectingRealDatabases/MongoWithMongoose/routes/tasks.routes.js", note: "Declares which path/method maps to which controller function — no Mongoose code here at all." },
       { path: "examples/ConnectingRealDatabases/MongoWithMongoose/controllers/tasks.controller.js", note: "The ONLY file that talks to Mongoose — real CRUD, run for real against the remote MongoDB Atlas cluster." },
-      { path: "examples/ConnectingRealDatabases/MongoWithMongoose/demo.js", note: "Calls the real, running API over real HTTP — this file never imports Mongoose at all." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -236,13 +227,10 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <ShapeComparisonDiagram />,
-    demo: <CrudSideBySideRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/ConnectingRealDatabases/CrudSideBySide/prisma/schema.prisma", note: "Same Task shape, same real schema — but its own separate table (SideBySideTask), since running two mini-projects' demos against the literal same table is a real concurrency risk (see build-conventions.md)." },
       { path: "examples/ConnectingRealDatabases/CrudSideBySide/controllers/postgres-tasks.controller.js", note: "The ONLY file that talks to Prisma, mounted at /postgres-tasks." },
       { path: "examples/ConnectingRealDatabases/CrudSideBySide/controllers/mongo-tasks.controller.js", note: "The ONLY file that talks to Mongoose, mounted at /mongo-tasks." },
-      { path: "examples/ConnectingRealDatabases/CrudSideBySide/demo.js", note: "Calls both real URL prefixes over real HTTP and prints both real results together." },
     ],
     postmanCheck: (
       <PostmanCheck

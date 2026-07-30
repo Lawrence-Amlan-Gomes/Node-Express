@@ -4,9 +4,6 @@ import FlowChain from "@/components/FlowChain";
 import ConceptBreakdown from "@/components/ConceptBreakdown";
 import Callout from "@/components/Callout";
 import PostmanCheck from "@/components/PostmanCheck";
-import AutomaticForwardingRunner from "@/example-runners/ErrorHandlingExpress/AutomaticForwardingRunner";
-import CentralizedErrorMiddlewareRunner from "@/example-runners/ErrorHandlingExpress/CentralizedErrorMiddlewareRunner";
-import LegacyTryCatchRunner from "@/example-runners/ErrorHandlingExpress/LegacyTryCatchRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per the
 // standing rule in co-founder/build-conventions.md. Rewritten 2026-07-17.
@@ -120,8 +117,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <AutoForwardDiagram />,
-    demo: <AutomaticForwardingRunner />,
-    demoCommand: "node demo.js",
     filePointer: {
       path: "examples/ErrorHandlingExpress/AutomaticForwarding/server.js",
       note: "A real, self-contained Express 5 app — a route that throws with no try/catch, a real error middleware it forwards into, and a healthy route to prove the process survived.",
@@ -182,8 +177,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <ErrorMiddlewareShapeDiagram />,
-    demo: <CentralizedErrorMiddlewareRunner />,
-    demoCommand: "node demo.js",
     filePointer: {
       path: "examples/ErrorHandlingExpress/CentralizedErrorMiddleware/server.js",
       note: "A real, self-contained Express 5 app — an AppError class, two routes that fail in different ways, one centralized 4-argument error middleware.",
@@ -240,8 +233,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <FootgunDiagram />,
-    demo: <LegacyTryCatchRunner />,
-    demoCommand: "node demo.js",
     filePointer: {
       path: "examples/ErrorHandlingExpress/LegacyTryCatch/server.js",
       note: "A real, self-contained Express 4 app (its own package.json pins express@4, unlike every other example here) — the correct try/catch + next(err) pattern is the only code that actually runs; the crash-causing mistake is written out only as a comment.",

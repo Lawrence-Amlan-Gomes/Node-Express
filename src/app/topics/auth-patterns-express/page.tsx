@@ -4,9 +4,6 @@ import FlowChain from "@/components/FlowChain";
 import ConceptBreakdown from "@/components/ConceptBreakdown";
 import Callout from "@/components/Callout";
 import PostmanCheck from "@/components/PostmanCheck";
-import PasswordHashingBcryptRunner from "@/example-runners/AuthPatternsExpress/PasswordHashingBcryptRunner";
-import SessionBasedAuthRunner from "@/example-runners/AuthPatternsExpress/SessionBasedAuthRunner";
-import JwtBasedAuthRunner from "@/example-runners/AuthPatternsExpress/JwtBasedAuthRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per the
 // standing rule in co-founder/build-conventions.md. Rewritten 2026-07-18.
@@ -150,12 +147,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <SaltRandomnessDiagram />,
-    demo: <PasswordHashingBcryptRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/AuthPatternsExpress/PasswordHashingBcrypt/routes/users.routes.js", note: "Declares which path/method maps to which controller function — no bcrypt code here at all." },
       { path: "examples/AuthPatternsExpress/PasswordHashingBcrypt/controllers/users.controller.js", note: "The ONLY file that calls bcrypt.hash and bcrypt.compare — real salted hashing and verification." },
-      { path: "examples/AuthPatternsExpress/PasswordHashingBcrypt/demo.js", note: "Calls the real, running API over real HTTP — this file never imports bcrypt at all." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -226,12 +220,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <SessionLifecycleDiagram />,
-    demo: <SessionBasedAuthRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/AuthPatternsExpress/SessionBasedAuth/routes/auth.routes.js", note: "Declares which path/method maps to which controller function — no session code here at all." },
       { path: "examples/AuthPatternsExpress/SessionBasedAuth/controllers/auth.controller.js", note: "The ONLY file that reads or writes req.session — real login, /me, and logout logic." },
-      { path: "examples/AuthPatternsExpress/SessionBasedAuth/demo.js", note: "Captures the real Set-Cookie header and proves the full session lifecycle over real HTTP." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -291,12 +282,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <JwtLifecycleDiagram />,
-    demo: <JwtBasedAuthRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/AuthPatternsExpress/JwtBasedAuth/routes/auth.routes.js", note: "Declares which path/method maps to which controller function, including requireAuth as real route middleware." },
       { path: "examples/AuthPatternsExpress/JwtBasedAuth/controllers/auth.controller.js", note: "The ONLY file that calls jwt.sign/jwt.verify — real signing, verification, and the requireAuth middleware itself." },
-      { path: "examples/AuthPatternsExpress/JwtBasedAuth/demo.js", note: "Decodes a real payload, then proves a tampered token is really rejected, all over real HTTP." },
     ],
     postmanCheck: (
       <PostmanCheck

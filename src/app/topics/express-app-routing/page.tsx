@@ -4,9 +4,6 @@ import FlowChain from "@/components/FlowChain";
 import ConceptBreakdown from "@/components/ConceptBreakdown";
 import Callout from "@/components/Callout";
 import PostmanCheck from "@/components/PostmanCheck";
-import BasicExpressAppRunner from "@/example-runners/ExpressAppRouting/BasicExpressAppRunner";
-import RootRouteDemoRunner from "@/example-runners/ExpressAppRouting/RootRouteDemoRunner";
-import NamedWildcardsRunner from "@/example-runners/ExpressAppRouting/NamedWildcardsRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per the
 // standing rule in co-founder/build-conventions.md (every section needs its
@@ -117,8 +114,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <ExpressVsNextDiagram />,
-    demo: <RootRouteDemoRunner />,
-    demoCommand: "node demo.js",
     filePointer: {
       path: "examples/ExpressAppRouting/CreatingTheApp/server.js",
       note: "A real, self-contained Express app just for this — one route, nothing else, with plain-English comments explaining every piece.",
@@ -163,8 +158,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <RequestAnatomyDiagram />,
-    demo: <BasicExpressAppRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/ExpressAppRouting/RoutesParamsQueryBody/api-routes.js", note: "A real, separate routes file — this is what \"splitting routes across files\" actually looks like, not just a description of it." },
       { path: "examples/ExpressAppRouting/RoutesParamsQueryBody/server.js", note: "A real, self-contained Express app just for this — params, query, body, and the mounted router, nothing else." },
@@ -221,8 +214,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <WildcardChangeDiagram />,
-    demo: <NamedWildcardsRunner />,
-    demoCommand: "node demo.js",
     filePointer: {
       path: "examples/ExpressAppRouting/NamedWildcards/server.js",
       note: "A real, self-contained Express app just for this — the one named-wildcard route, nothing else.",

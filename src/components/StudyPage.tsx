@@ -21,6 +21,11 @@ export interface StudySection {
   // actually listens on a real, fixed port when run directly. See
   // co-founder/build-conventions.md's Postman-guide entry.
   postmanCheck?: ReactNode;
+  // A PgAdminCheck guide — only for sections whose example writes to a
+  // real Postgres table, so the reader can see the real row/data itself
+  // in a database GUI, not just through the API. Rendered after
+  // postmanCheck. See co-founder/build-conventions.md's pgAdmin4 entry.
+  pgAdminCheck?: ReactNode;
 }
 
 export default function StudyPage({
@@ -64,6 +69,7 @@ export default function StudyPage({
             </>
           )}
           {section.postmanCheck}
+          {section.pgAdminCheck}
         </GuideSection>
       ))}
     </div>

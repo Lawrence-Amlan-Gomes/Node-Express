@@ -4,10 +4,6 @@ import FlowChain from "@/components/FlowChain";
 import ConceptBreakdown from "@/components/ConceptBreakdown";
 import Callout from "@/components/Callout";
 import PostmanCheck from "@/components/PostmanCheck";
-import StatusCodesVersioningRunner from "@/example-runners/RestConventionsValidation/StatusCodesVersioningRunner";
-import CursorVsOffsetPaginationRunner from "@/example-runners/RestConventionsValidation/CursorVsOffsetPaginationRunner";
-import IdempotencyKeysRunner from "@/example-runners/RestConventionsValidation/IdempotencyKeysRunner";
-import ZodValidationRunner from "@/example-runners/RestConventionsValidation/ZodValidationRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per the
 // standing rule in co-founder/build-conventions.md. Rewritten 2026-07-18.
@@ -146,12 +142,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <StatusCodeMeaningDiagram />,
-    demo: <StatusCodesVersioningRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/RestConventionsValidation/StatusCodesVersioning/routes/todos.routes.js", note: "Declares which path/method maps to which controller function — no status-code logic here at all." },
       { path: "examples/RestConventionsValidation/StatusCodesVersioning/controllers/todos.controller.js", note: "The ONLY file that decides which real status code each outcome gets." },
-      { path: "examples/RestConventionsValidation/StatusCodesVersioning/demo.js", note: "Calls the real, running API over real HTTP and prints every real status code returned." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -212,12 +205,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <PaginationCostDiagram />,
-    demo: <CursorVsOffsetPaginationRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/RestConventionsValidation/CursorVsOffsetPagination/routes/todos.routes.js", note: "Declares which path/method maps to which controller function — no Prisma code here at all." },
       { path: "examples/RestConventionsValidation/CursorVsOffsetPagination/controllers/todos.controller.js", note: "The ONLY file that talks to Prisma — runs EXPLAIN ANALYZE for both the offset and the cursor query." },
-      { path: "examples/RestConventionsValidation/CursorVsOffsetPagination/demo.js", note: "Calls the real, running API over real HTTP — this file never imports Prisma at all." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -267,12 +257,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <IdempotencyKeyFlowDiagram />,
-    demo: <IdempotencyKeysRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/RestConventionsValidation/IdempotencyKeys/routes/charges.routes.js", note: "Declares which path/method maps to which controller function — no idempotency logic here at all." },
       { path: "examples/RestConventionsValidation/IdempotencyKeys/controllers/charges.controller.js", note: "The ONLY file that checks the Idempotency-Key map — real charge-or-replay logic lives here." },
-      { path: "examples/RestConventionsValidation/IdempotencyKeys/demo.js", note: "Calls the real, running API over real HTTP and proves a retried request returns the cached result instead of double-charging." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -333,12 +320,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <CompileTimeVsRuntimeDiagram />,
-    demo: <ZodValidationRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/RestConventionsValidation/ZodValidation/routes/users.routes.js", note: "Declares which path/method maps to which controller function — no zod logic here at all." },
       { path: "examples/RestConventionsValidation/ZodValidation/controllers/users.controller.js", note: "The ONLY file that imports zod — the real schema and safeParse validation live here." },
-      { path: "examples/RestConventionsValidation/ZodValidation/demo.js", note: "Calls the real, running API over real HTTP, proving the real 400/201 responses." },
     ],
     postmanCheck: (
       <PostmanCheck

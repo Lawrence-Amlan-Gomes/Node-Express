@@ -4,10 +4,7 @@ import Callout from "@/components/Callout";
 import ComparisonCard from "@/components/ComparisonCard";
 import FlowChain from "@/components/FlowChain";
 import PostmanCheck from "@/components/PostmanCheck";
-import InspectorProtocolRunner from "@/example-runners/DebuggingMemoryProfiling/InspectorProtocolRunner";
 import HeapSnapshotComparisonRunner from "@/example-runners/DebuggingMemoryProfiling/HeapSnapshotComparisonRunner";
-import DanglingEventListenersRunner from "@/example-runners/DebuggingMemoryProfiling/DanglingEventListenersRunner";
-import UnboundedCacheRunner from "@/example-runners/DebuggingMemoryProfiling/UnboundedCacheRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per
 // the standing rule in co-founder/build-conventions.md.
@@ -299,12 +296,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <InspectorProtocolDiagram />,
-    demo: <InspectorProtocolRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/DebuggingMemoryProfiling/InspectorProtocol/server.js", note: "A plain Express app — nothing in it is debugger-specific. Attaching a debugger never requires changing app code." },
       { path: "examples/DebuggingMemoryProfiling/InspectorProtocol/controllers/compute.controller.js", note: "Real state on globalThis, so a debugger session can actually read it live." },
-      { path: "examples/DebuggingMemoryProfiling/InspectorProtocol/demo.js", note: "Opens the real inspector protocol, evaluates real code live, and reads the server's real live state through it." },
     ],
     postmanCheck: <TryInChromeDevTools />,
   },
@@ -384,13 +378,10 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <EventListenerLeakDiagram />,
-    demo: <DanglingEventListenersRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/DebuggingMemoryProfiling/DanglingEventListeners/broadcaster.js", note: "One real, shared EventEmitter — both routes below register on the exact same instance." },
       { path: "examples/DebuggingMemoryProfiling/DanglingEventListeners/controllers/listeners.controller.js", note: "The buggy version (listener added inside the handler) right next to the fixed version (listener added once, at module load)." },
       { path: "examples/DebuggingMemoryProfiling/DanglingEventListeners/routes/listeners.routes.js", note: "Three real routes: the buggy subscribe, the fixed subscribe, and a real listener-count check." },
-      { path: "examples/DebuggingMemoryProfiling/DanglingEventListeners/demo.js", note: "Spawns the real server as its own process specifically to capture Node's real stderr warning." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -468,12 +459,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <UnboundedCacheDiagram />,
-    demo: <UnboundedCacheRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/DebuggingMemoryProfiling/UnboundedCache/caches.js", note: "Two real, separate Maps and a real cap — the only difference between the buggy and fixed routes is which one they use." },
       { path: "examples/DebuggingMemoryProfiling/UnboundedCache/controllers/cache.controller.js", note: "The buggy version (no eviction) right next to the fixed version (evicts the oldest real entry once the cap is hit)." },
-      { path: "examples/DebuggingMemoryProfiling/UnboundedCache/demo.js", note: "Requests 20 unique ids against each real route, then compares the two real final cache sizes." },
     ],
     postmanCheck: (
       <PostmanCheck

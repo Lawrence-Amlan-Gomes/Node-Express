@@ -1,0 +1,20 @@
+{
+  "name": "postgres-connection-and-types-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof of connecting to real PostgreSQL with the raw pg driver (no ORM yet), creating a real table with several real column types, and seeing exactly what JS type each one comes back as.",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "setup": "node setup.js",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
+  }
+}

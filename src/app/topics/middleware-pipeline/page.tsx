@@ -4,9 +4,6 @@ import FlowChain from "@/components/FlowChain";
 import ConceptBreakdown from "@/components/ConceptBreakdown";
 import Callout from "@/components/Callout";
 import PostmanCheck from "@/components/PostmanCheck";
-import OrderTestDemoRunner from "@/example-runners/MiddlewarePipeline/OrderTestDemoRunner";
-import AuthOrderDemoRunner from "@/example-runners/MiddlewarePipeline/AuthOrderDemoRunner";
-import NextCalledDemoRunner from "@/example-runners/MiddlewarePipeline/NextCalledDemoRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per the
 // standing rule in co-founder/build-conventions.md (every section needs its
@@ -117,8 +114,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <RegistrationOrderDiagram />,
-    demo: <OrderTestDemoRunner />,
-    demoCommand: "node demo.js",
     filePointer: {
       path: "examples/MiddlewarePipeline/OrderOfExecution/server.js",
       note: "A real, self-contained Express app just for this — two middlewares and one route, nothing else.",
@@ -175,8 +170,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <AuthPositionDiagram />,
-    demo: <AuthOrderDemoRunner />,
-    demoCommand: "node demo.js",
     filePointer: {
       path: "examples/MiddlewarePipeline/AuthOrderMatters/server.js",
       note: "A real, self-contained Express app just for this — the correct requireAuth-before-route pattern is the only code that actually runs; the broken order is written out only as a comment.",
@@ -235,8 +228,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <NextContractDiagram />,
-    demo: <NextCalledDemoRunner />,
-    demoCommand: "node demo.js",
     filePointer: {
       path: "examples/MiddlewarePipeline/ForgottenNext/server.js",
       note: "A real, self-contained Express app just for this — the correct next()-calling middleware is the only code that actually runs; the forgotten-next() mistake is written out only as a comment.",

@@ -4,8 +4,6 @@ import FlowChain from "@/components/FlowChain";
 import ConceptBreakdown from "@/components/ConceptBreakdown";
 import Callout from "@/components/Callout";
 import PostmanCheck from "@/components/PostmanCheck";
-import BTreeIndexQueryPlanRunner from "@/example-runners/IndexingSearchPerformance/BTreeIndexQueryPlanRunner";
-import PostgresFullTextSearchRunner from "@/example-runners/IndexingSearchPerformance/PostgresFullTextSearchRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per the
 // standing rule in co-founder/build-conventions.md.
@@ -112,12 +110,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <SeqScanVsIndexScanDiagram />,
-    demo: <BTreeIndexQueryPlanRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/IndexingSearchPerformance/BTreeIndexQueryPlan/routes/customers.routes.js", note: "Declares which path/method maps to which controller function — no Prisma code here at all." },
       { path: "examples/IndexingSearchPerformance/BTreeIndexQueryPlan/controllers/customers.controller.js", note: "The ONLY file that talks to Prisma — seeds 100,000 rows, runs EXPLAIN ANALYZE, and creates/drops the real index." },
-      { path: "examples/IndexingSearchPerformance/BTreeIndexQueryPlan/demo.js", note: "Calls the real, running API over real HTTP — this file never imports Prisma at all." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -204,12 +199,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <TsvectorGinDiagram />,
-    demo: <PostgresFullTextSearchRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/IndexingSearchPerformance/PostgresFullTextSearch/routes/articles.routes.js", note: "Declares which path/method maps to which controller function — no Prisma code here at all." },
       { path: "examples/IndexingSearchPerformance/PostgresFullTextSearch/controllers/articles.controller.js", note: "The ONLY file that talks to Prisma — seeds 50,000 rows, runs the real searches, and adds/drops the real generated column and GIN index." },
-      { path: "examples/IndexingSearchPerformance/PostgresFullTextSearch/demo.js", note: "Calls the real, running API over real HTTP — this file never imports Prisma at all." },
     ],
     postmanCheck: (
       <PostmanCheck

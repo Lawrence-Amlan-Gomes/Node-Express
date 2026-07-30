@@ -4,8 +4,6 @@ import FlowChain from "@/components/FlowChain";
 import ConceptBreakdown from "@/components/ConceptBreakdown";
 import Callout from "@/components/Callout";
 import PostmanCheck from "@/components/PostmanCheck";
-import PrismaMigrateWorkflowRunner from "@/example-runners/MigrationsSchemaDesign/PrismaMigrateWorkflowRunner";
-import MongooseEmbedVsReferenceRunner from "@/example-runners/MigrationsSchemaDesign/MongooseEmbedVsReferenceRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per the
 // standing rule in co-founder/build-conventions.md. Rewritten 2026-07-17.
@@ -95,14 +93,11 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <MigrationHistoryDiagram />,
-    demo: <PrismaMigrateWorkflowRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/MigrationsSchemaDesign/PrismaMigrateWorkflow/prisma/migrations/20260715184508_init_post/migration.sql", note: "Real migration #1 — creates the Post table." },
       { path: "examples/MigrationsSchemaDesign/PrismaMigrateWorkflow/prisma/migrations/20260715184547_add_published_flag/migration.sql", note: "Real migration #2 — adds the published column with a real default." },
       { path: "examples/MigrationsSchemaDesign/PrismaMigrateWorkflow/routes/posts.routes.js", note: "Declares which path/method maps to which controller function — no Prisma code here at all." },
       { path: "examples/MigrationsSchemaDesign/PrismaMigrateWorkflow/controllers/posts.controller.js", note: "The ONLY file that talks to Prisma — real CRUD against the current, post-migration shape." },
-      { path: "examples/MigrationsSchemaDesign/PrismaMigrateWorkflow/demo.js", note: "Calls the real, running API over real HTTP — this file never imports Prisma at all." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -160,14 +155,11 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <EmbedVsReferenceDiagram />,
-    demo: <MongooseEmbedVsReferenceRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/MigrationsSchemaDesign/MongooseEmbedVsReference/embedded-models.js", note: "The embedded approach — comments live inside the post's own array field." },
       { path: "examples/MigrationsSchemaDesign/MongooseEmbedVsReference/referenced-models.js", note: "The referenced approach — a separate comments collection, linked by the post's real _id." },
       { path: "examples/MigrationsSchemaDesign/MongooseEmbedVsReference/controllers/embedded.controller.js", note: "The ONLY file that talks to Mongoose for the embedded approach, mounted at /posts-embedded." },
       { path: "examples/MigrationsSchemaDesign/MongooseEmbedVsReference/controllers/referenced.controller.js", note: "The ONLY file that talks to Mongoose for the referenced approach, mounted at /posts-referenced." },
-      { path: "examples/MigrationsSchemaDesign/MongooseEmbedVsReference/demo.js", note: "Calls both real URL prefixes over real HTTP and prints both real results together." },
     ],
     postmanCheck: (
       <PostmanCheck

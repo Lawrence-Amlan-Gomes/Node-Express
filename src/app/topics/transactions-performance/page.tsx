@@ -4,9 +4,6 @@ import FlowChain from "@/components/FlowChain";
 import ConceptBreakdown from "@/components/ConceptBreakdown";
 import Callout from "@/components/Callout";
 import PostmanCheck from "@/components/PostmanCheck";
-import PostgresTransactionsRunner from "@/example-runners/TransactionsPerformance/PostgresTransactionsRunner";
-import PostgresNPlusOneRunner from "@/example-runners/TransactionsPerformance/PostgresNPlusOneRunner";
-import MongoTransactionsRunner from "@/example-runners/TransactionsPerformance/MongoTransactionsRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per the
 // standing rule in co-founder/build-conventions.md. Rewritten 2026-07-17.
@@ -112,12 +109,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <RollbackDiagram />,
-    demo: <PostgresTransactionsRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/TransactionsPerformance/PostgresTransactions/routes/accounts.routes.js", note: "Declares which path/method maps to which controller function — no Prisma code here at all." },
       { path: "examples/TransactionsPerformance/PostgresTransactions/controllers/accounts.controller.js", note: "The ONLY file that talks to Prisma — real $transaction usage, a successful transfer, then a forced failure that really rolls back." },
-      { path: "examples/TransactionsPerformance/PostgresTransactions/demo.js", note: "Calls the real, running API over real HTTP — this file never imports Prisma at all." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -171,12 +165,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <NPlusOneDiagram />,
-    demo: <PostgresNPlusOneRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/TransactionsPerformance/PostgresNPlusOne/routes/posts.routes.js", note: "Declares which path/method maps to which controller function — no Prisma code here at all." },
       { path: "examples/TransactionsPerformance/PostgresNPlusOne/controllers/posts.controller.js", note: "The ONLY file that talks to Prisma — real query-count instrumentation comparing the naive loop against include." },
-      { path: "examples/TransactionsPerformance/PostgresNPlusOne/demo.js", note: "Calls the real, running API over real HTTP — this file never imports Prisma at all." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -225,12 +216,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <MongoTransactionDiagram />,
-    demo: <MongoTransactionsRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/TransactionsPerformance/MongoTransactions/routes/accounts.routes.js", note: "Declares which path/method maps to which controller function — no Mongoose code here at all." },
       { path: "examples/TransactionsPerformance/MongoTransactions/controllers/accounts.controller.js", note: "The ONLY file that talks to Mongoose — real session.withTransaction usage, a successful transfer, then a forced failure that really rolls back." },
-      { path: "examples/TransactionsPerformance/MongoTransactions/demo.js", note: "Calls the real, running API over real HTTP — this file never imports Mongoose at all." },
     ],
     postmanCheck: (
       <PostmanCheck

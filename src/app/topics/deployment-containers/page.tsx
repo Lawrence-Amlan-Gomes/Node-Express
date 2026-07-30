@@ -4,11 +4,7 @@ import Callout from "@/components/Callout";
 import ComparisonCard from "@/components/ComparisonCard";
 import FlowChain from "@/components/FlowChain";
 import PostmanCheck from "@/components/PostmanCheck";
-import DockerfileBasicsRunner from "@/example-runners/ContainerizationDeployment/DockerfileBasicsRunner";
-import ComposeMultiContainerRunner from "@/example-runners/ContainerizationDeployment/ComposeMultiContainerRunner";
-import DeployToCoolifyRunner from "@/example-runners/ContainerizationDeployment/DeployToCoolifyRunner";
 import WhatIsAContainerRunner from "@/example-runners/ContainerizationDeployment/WhatIsAContainerRunner";
-import NginxDockerDnsRunner from "@/example-runners/ContainerizationDeployment/NginxDockerDnsRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per
 // the standing rule in co-founder/build-conventions.md.
@@ -380,14 +376,11 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <MultiStageBuildDiagram />,
-    demo: <DockerfileBasicsRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/ContainerizationDeployment/DockerfileBasics/Dockerfile", note: "The real, production-worthy multi-stage build — what this app actually ships." },
       { path: "examples/ContainerizationDeployment/DockerfileBasics/Dockerfile.singlestage", note: "The naive comparison build — real and genuinely built, only to measure the real size gap." },
       { path: "examples/ContainerizationDeployment/DockerfileBasics/.dockerignore", note: "Keeps node_modules, .git, and .env out of the build context entirely — never sent to Docker in the first place." },
       { path: "examples/ContainerizationDeployment/DockerfileBasics/server.js", note: "A plain Express app — nothing in it is Docker-specific. Docker wraps this file; it never changes it." },
-      { path: "examples/ContainerizationDeployment/DockerfileBasics/demo.js", note: "Builds both real images, measures their real sizes, and proves the shipped one actually runs." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -442,13 +435,10 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <ComposeNetworkDiagram />,
-    demo: <ComposeMultiContainerRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/ContainerizationDeployment/ComposeMultiContainer/docker-compose.yml", note: "Describes both real services — the app (built from this folder's Dockerfile) and Redis (a real official image, no Dockerfile needed)." },
       { path: "examples/ContainerizationDeployment/ComposeMultiContainer/controllers/fibonacci.controller.js", note: "The only file that talks to Redis — checks the real cache first, falls back to a real, deliberately slow computation on a genuine miss." },
       { path: "examples/ContainerizationDeployment/ComposeMultiContainer/Dockerfile", note: "The same real multi-stage pattern from the previous section, applied here too — not regressed back to single-stage." },
-      { path: "examples/ContainerizationDeployment/ComposeMultiContainer/demo.js", note: "Starts the real multi-container setup, proves a real cache miss then a real cache hit, tears it back down." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -521,13 +511,10 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <NginxDnsCachingDiagram />,
-    demo: <NginxDockerDnsRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/ContainerizationDeployment/NginxDockerDns/nginx-naive.conf", note: "The broken config — a plain, static hostname, resolved once and cached forever." },
       { path: "examples/ContainerizationDeployment/NginxDockerDns/nginx-dynamic.conf", note: "The fix — a real \"resolver\" line pointed at Docker's own internal DNS, plus a variable instead of a plain string." },
       { path: "examples/ContainerizationDeployment/NginxDockerDns/docker-compose.yml", note: "One real app container, and both real Nginx containers side by side on the same network, so the only real difference under test is the config file each one loads." },
-      { path: "examples/ContainerizationDeployment/NginxDockerDns/demo.js", note: "Starts all 3 real containers, proves both proxies work, swaps the real app container for a genuinely new one, then proves only the fixed config survives." },
     ],
     postmanCheck: (
       <>
@@ -597,8 +584,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <LocalToProductionDiagram />,
-    demo: <DeployToCoolifyRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/ContainerizationDeployment/DeployToCoolify/Dockerfile", note: "The exact same real Dockerfile Coolify built on the real server — no platform-specific rewrite needed." },
       { path: "examples/ContainerizationDeployment/DeployToCoolify/controllers/deploy.controller.js", note: "Real GET / and GET /health handlers — identical whether running on this laptop or on the real deployed server." },

@@ -4,13 +4,9 @@ import Callout from "@/components/Callout";
 import ComparisonCard from "@/components/ComparisonCard";
 import FlowChain from "@/components/FlowChain";
 import PostmanCheck from "@/components/PostmanCheck";
-import CacheAsideRunner from "@/example-runners/CachingScaling/CacheAsideRunner";
-import CacheInvalidationRunner from "@/example-runners/CachingScaling/CacheInvalidationRunner";
 import CacheStampedeRunner from "@/example-runners/CachingScaling/CacheStampedeRunner";
 import DistributedLockRunner from "@/example-runners/CachingScaling/DistributedLockRunner";
-import ClusterHttpRunner from "@/example-runners/CachingScaling/ClusterHttpRunner";
 import WorkerThreadsCpuRunner from "@/example-runners/CachingScaling/WorkerThreadsCpuRunner";
-import PM2ProcessManagementRunner from "@/example-runners/CachingScaling/PM2ProcessManagementRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per
 // the standing rule in co-founder/build-conventions.md.
@@ -278,12 +274,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <CacheAsideDiagram />,
-    demo: <CacheAsideRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/CachingScaling/CacheAside/redisClient.js", note: "The only file that talks to Redis directly — same one-file-owns-the-client pattern as this project's Prisma/Mongoose/S3 controllers." },
       { path: "examples/CachingScaling/CacheAside/controllers/product.controller.js", note: "The real cache-aside logic: check Redis, fall back to a real simulated slow fetch, store the real result with a real TTL." },
-      { path: "examples/CachingScaling/CacheAside/demo.js", note: "Requests the same real product twice and measures the real cache-hit speed-up." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -342,11 +335,8 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <CacheInvalidationDiagram />,
-    demo: <CacheInvalidationRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/CachingScaling/CacheInvalidation/controllers/product.controller.js", note: "getProduct does cache-aside; updateProduct updates the real source of truth AND deletes the real cache entry, in the same handler." },
-      { path: "examples/CachingScaling/CacheInvalidation/demo.js", note: "GET, GET, PUT, GET — proves the cache never serves the old price after the real update." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -497,12 +487,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <ClusterDiagram />,
-    demo: <ClusterHttpRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/CachingScaling/ClusterHttp/server.js", note: "cluster.isPrimary forks 3 real workers; the real 'exit' handler forks a replacement whenever any worker really dies." },
       { path: "examples/CachingScaling/ClusterHttp/controllers/status.controller.js", note: "Every response reports its own real process.pid — the only way to prove multiple real processes share this port." },
-      { path: "examples/CachingScaling/ClusterHttp/demo.js", note: "Collects real distinct worker PIDs, triggers a real crash, and proves the pool keeps answering requests." },
     ],
     postmanCheck: <TryClusterYourself />,
   },
@@ -581,11 +568,8 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <Pm2LoadBalancerDiagram />,
-    demo: <PM2ProcessManagementRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/CachingScaling/PM2ProcessManagement/server.js", note: "A plain Express app — nothing PM2-specific in it at all, proving PM2 wraps real apps without needing them rewritten." },
-      { path: "examples/CachingScaling/PM2ProcessManagement/demo.js", note: "Drives the real pm2 CLI directly: start, describe, a real simulated crash, and confirms the real auto-restart." },
     ],
     postmanCheck: <TryPm2Yourself />,
   },

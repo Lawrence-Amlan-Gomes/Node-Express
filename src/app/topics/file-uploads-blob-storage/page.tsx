@@ -4,7 +4,6 @@ import FlowChain from "@/components/FlowChain";
 import ConceptBreakdown from "@/components/ConceptBreakdown";
 import Callout from "@/components/Callout";
 import PostmanCheck from "@/components/PostmanCheck";
-import PresignedS3UploadsRunner from "@/example-runners/FileUploadsBlobStorage/PresignedS3UploadsRunner";
 
 const PROJECT_ROOT = "/Users/lawrencealangomes/Documents/Node Express";
 
@@ -163,13 +162,10 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <DirectUploadBypassDiagram />,
-    demo: <PresignedS3UploadsRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/FileUploadsBlobStorage/PresignedS3Uploads/routes/photos.routes.js", note: "Declares which path/method maps to which controller function — no AWS SDK code here at all." },
       { path: "examples/FileUploadsBlobStorage/PresignedS3Uploads/controllers/photos.controller.js", note: "The ONLY file that talks to S3 — generates the real presigned URL, lists, and deletes." },
-      { path: "examples/FileUploadsBlobStorage/PresignedS3Uploads/demo.js", note: "Calls the real API for a URL, then uploads and reads the real file DIRECTLY against the bucket — not through Express." },
-      { path: "examples/FileUploadsBlobStorage/PresignedS3Uploads/public/demo-photo.png", note: "A real, valid 400×300 PNG — the exact file the demo above uploads, and the one to pick in Postman's own file picker when trying this yourself." },
+      { path: "examples/FileUploadsBlobStorage/PresignedS3Uploads/public/demo-photo.png", note: "A real, valid 400×300 PNG — the file to pick in Postman's own file picker when trying this yourself." },
     ],
     postmanCheck: (
       <>

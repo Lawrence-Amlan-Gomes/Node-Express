@@ -4,9 +4,6 @@ import FlowChain from "@/components/FlowChain";
 import ConceptBreakdown from "@/components/ConceptBreakdown";
 import Callout from "@/components/Callout";
 import PostmanCheck from "@/components/PostmanCheck";
-import LayeredRoutesControllersRunner from "@/example-runners/ProjectStructureConfig/LayeredRoutesControllersRunner";
-import StaticAssetsAndJsonRunner from "@/example-runners/ProjectStructureConfig/StaticAssetsAndJsonRunner";
-import EnvConfigWithDotenvRunner from "@/example-runners/ProjectStructureConfig/EnvConfigWithDotenvRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per the
 // standing rule in co-founder/build-conventions.md. Rewritten 2026-07-17.
@@ -124,8 +121,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <LayersDiagram />,
-    demo: <LayeredRoutesControllersRunner />,
-    demoCommand: "node demo.js",
     filePointer: {
       path: "examples/ProjectStructureConfig/LayeredRoutesControllers/server.js",
       note: "A real, self-contained Express app — server.js just wires things together; the real logic lives in routes/todos.routes.js and controllers/todos.controller.js.",
@@ -183,8 +178,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <StaticVsApiDiagram />,
-    demo: <StaticAssetsAndJsonRunner />,
-    demoCommand: "node demo.js",
     filePointer: {
       path: "examples/ProjectStructureConfig/StaticAssetsAndJson/server.js",
       note: "A real, self-contained Express app — a real public/index.html file served by express.static(), plus a real /api/status JSON route on the same app.",
@@ -237,8 +230,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <EnvConfigDiagram />,
-    demo: <EnvConfigWithDotenvRunner />,
-    demoCommand: "node demo.js",
     filePointer: {
       path: "examples/ProjectStructureConfig/EnvConfigWithDotenv/server.js",
       note: "A real, self-contained Express app — a real .env (git-ignored) and .env.example (committed) side by side, loaded with dotenv.",

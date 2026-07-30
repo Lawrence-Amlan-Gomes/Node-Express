@@ -4,10 +4,6 @@ import FlowChain from "@/components/FlowChain";
 import ConceptBreakdown from "@/components/ConceptBreakdown";
 import Callout from "@/components/Callout";
 import PostmanCheck from "@/components/PostmanCheck";
-import BrokenAccessControlRunner from "@/example-runners/SecurityRateLimiting/BrokenAccessControlRunner";
-import SqlInjectionBoundaryRunner from "@/example-runners/SecurityRateLimiting/SqlInjectionBoundaryRunner";
-import RateLimitingRunner from "@/example-runners/SecurityRateLimiting/RateLimitingRunner";
-import HelmetSecurityHeadersRunner from "@/example-runners/SecurityRateLimiting/HelmetSecurityHeadersRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per the
 // standing rule in co-founder/build-conventions.md. Rewritten 2026-07-18.
@@ -150,12 +146,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <BolaStepDiagram />,
-    demo: <BrokenAccessControlRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/SecurityRateLimiting/BrokenAccessControl/routes/orders.routes.js", note: "Declares which path/method maps to which controller function — no ownership logic here at all." },
       { path: "examples/SecurityRateLimiting/BrokenAccessControl/controllers/orders.controller.js", note: "The ONLY file with the real ownership check — the vulnerable and fixed versions side by side." },
-      { path: "examples/SecurityRateLimiting/BrokenAccessControl/demo.js", note: "Proves the real data leak on the vulnerable route and the real 403 on the fixed one." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -211,12 +204,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <SqlInjectionDiagram />,
-    demo: <SqlInjectionBoundaryRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/SecurityRateLimiting/SqlInjectionBoundary/routes/auth.routes.js", note: "Declares which path/method maps to which controller function — no SQL here at all." },
       { path: "examples/SecurityRateLimiting/SqlInjectionBoundary/controllers/auth.controller.js", note: "The ONLY file that touches node:sqlite — the vulnerable, concatenated query and the fixed, parameterized one, side by side." },
-      { path: "examples/SecurityRateLimiting/SqlInjectionBoundary/demo.js", note: "Calls the real, running API over real HTTP — proves the real attack succeeding, then failing against the fix." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -311,12 +301,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <RateLimitDiagram />,
-    demo: <RateLimitingRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/SecurityRateLimiting/RateLimiting/routes/limited.routes.js", note: "Declares the one route AND the real rate-limit config that protects it, right next to each other." },
       { path: "examples/SecurityRateLimiting/RateLimiting/controllers/limited.controller.js", note: "The trivial real handler — only ever reached once the real limiter has let a request through." },
-      { path: "examples/SecurityRateLimiting/RateLimiting/demo.js", note: "Fires 7 real requests and shows the real 200→429 transition with real headers." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -368,13 +355,10 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <HeaderComparisonDiagram />,
-    demo: <HelmetSecurityHeadersRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/SecurityRateLimiting/HelmetSecurityHeaders/routes/root.routes.js", note: "The one real route both apps share — identical on purpose." },
       { path: "examples/SecurityRateLimiting/HelmetSecurityHeaders/controllers/root.controller.js", note: "The trivial shared handler — the real difference between the two apps is entirely in their headers, not this logic." },
       { path: "examples/SecurityRateLimiting/HelmetSecurityHeaders/server.js", note: "Wires up two real apps on two real ports — one plain, one with helmet() — so both can be hit and compared directly." },
-      { path: "examples/SecurityRateLimiting/HelmetSecurityHeaders/demo.js", note: "Fetches both real apps and prints the actual header differences." },
     ],
     postmanCheck: (
       <PostmanCheck

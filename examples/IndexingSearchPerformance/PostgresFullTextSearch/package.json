@@ -4,10 +4,9 @@
   "version": "0.1.0",
   "description": "Real Postgres full-text search — tsvector/tsquery matching and ts_rank relevance ranking, with a real GIN index measured before and after against a real remote database.",
   "type": "module",
-  "main": "demo.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "demo": "node demo.js"
+    "start": "node server.js"
   },
   "engines": {
     "node": ">=18.0.0"

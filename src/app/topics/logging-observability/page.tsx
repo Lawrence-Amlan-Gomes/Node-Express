@@ -4,8 +4,6 @@ import FlowChain from "@/components/FlowChain";
 import ConceptBreakdown from "@/components/ConceptBreakdown";
 import Callout from "@/components/Callout";
 import PostmanCheck from "@/components/PostmanCheck";
-import StructuredLoggingWithPinoRunner from "@/example-runners/LoggingErrorTracking/StructuredLoggingWithPinoRunner";
-import RequestLoggingWithPinoHttpRunner from "@/example-runners/LoggingErrorTracking/RequestLoggingWithPinoHttpRunner";
 import CatchingUncaughtErrorsRunner from "@/example-runners/LoggingErrorTracking/CatchingUncaughtErrorsRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per the
@@ -117,13 +115,10 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <ConsoleVsPinoDiagram />,
-    demo: <StructuredLoggingWithPinoRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/LoggingErrorTracking/StructuredLoggingWithPino/logger.js", note: "One real, shared pino instance — imported everywhere logging is needed, instead of console.log scattered across the codebase." },
       { path: "examples/LoggingErrorTracking/StructuredLoggingWithPino/routes/tasks.routes.js", note: "Declares which path/method maps to which controller function — no logging code here at all." },
       { path: "examples/LoggingErrorTracking/StructuredLoggingWithPino/controllers/tasks.controller.js", note: "The ONLY file that calls logger.info/logger.warn — real structured fields on every call." },
-      { path: "examples/LoggingErrorTracking/StructuredLoggingWithPino/demo.js", note: "Calls the real, running API over real HTTP — the real log lines print from the same process, interleaved with this file's own narration." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -186,13 +181,10 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <AutoRequestLogDiagram />,
-    demo: <RequestLoggingWithPinoHttpRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/LoggingErrorTracking/RequestLoggingWithPinoHttp/routes/tasks.routes.js", note: "Declares the three real routes — no logging code here either." },
       { path: "examples/LoggingErrorTracking/RequestLoggingWithPinoHttp/controllers/tasks.controller.js", note: "The real handler logic — genuinely zero logging calls anywhere in this file." },
       { path: "examples/LoggingErrorTracking/RequestLoggingWithPinoHttp/server.js", note: "The real pino-http config — trimmed serializers and the real customLogLevel fix for the 500-stays-at-info gotcha." },
-      { path: "examples/LoggingErrorTracking/RequestLoggingWithPinoHttp/demo.js", note: "Calls the real, running API over real HTTP — every log line comes entirely from pino-http's own middleware." },
     ],
     postmanCheck: (
       <PostmanCheck
