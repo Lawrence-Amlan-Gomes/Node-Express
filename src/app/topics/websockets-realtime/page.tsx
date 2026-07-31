@@ -4,10 +4,7 @@ import Callout from "@/components/Callout";
 import ComparisonCard from "@/components/ComparisonCard";
 import FlowChain from "@/components/FlowChain";
 import PostmanCheck from "@/components/PostmanCheck";
-import WhyNotJustPollingRunner from "@/example-runners/WebSocketsRealTime/WhyNotJustPollingRunner";
-import ServerSentEventsRunner from "@/example-runners/WebSocketsRealTime/ServerSentEventsRunner";
-import RawWebSocketsRunner from "@/example-runners/WebSocketsRealTime/RawWebSocketsRunner";
-import SocketIoRoomsRunner from "@/example-runners/WebSocketsRealTime/SocketIoRoomsRunner";
+import CopyButton from "@/components/CopyButton";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per
 // the standing rule in co-founder/build-conventions.md.
@@ -117,14 +114,18 @@ function TryRawWebSocketYourself() {
       <div className="flex flex-col gap-2.5">
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">1. Terminal</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block">
-            cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/WebSocketsRealTime/RawWebSockets&quot; &amp;&amp; node server.js
-          </code>
+          <div className="flex items-start gap-2">
+            <code className="flex-1 text-cyan-500 font-mono text-xs break-all block">
+              cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/WebSocketsRealTime/RawWebSockets&quot; &amp;&amp; node server.js
+            </code>
+            <CopyButton text={'cd "/Users/lawrencealangomes/Documents/Node Express/examples/WebSocketsRealTime/RawWebSockets" && node server.js'} label="Copy command" className="text-cyan-500" />
+          </div>
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">2. In Postman: New &rarr; WebSocket Request</div>
-          <div className="text-xs text-body leading-relaxed">
-            Enter <code className="text-cyan-500">ws://localhost:4105/ws</code> and click Connect.
+          <div className="text-xs text-body leading-relaxed flex items-center gap-2 flex-wrap">
+            <span>Enter <code className="text-cyan-500">ws://localhost:4105/ws</code> and click Connect.</span>
+            <CopyButton text="ws://localhost:4105/ws" label="Copy URL" className="text-cyan-500" />
           </div>
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
@@ -158,14 +159,18 @@ function TrySocketIoYourself() {
       <div className="flex flex-col gap-2.5">
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">1. Terminal</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block">
-            cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/WebSocketsRealTime/SocketIoRooms&quot; &amp;&amp; node server.js
-          </code>
+          <div className="flex items-start gap-2">
+            <code className="flex-1 text-cyan-500 font-mono text-xs break-all block">
+              cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/WebSocketsRealTime/SocketIoRooms&quot; &amp;&amp; node server.js
+            </code>
+            <CopyButton text={'cd "/Users/lawrencealangomes/Documents/Node Express/examples/WebSocketsRealTime/SocketIoRooms" && node server.js'} label="Copy command" className="text-cyan-500" />
+          </div>
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">2. In Postman: New &rarr; Socket.io Request (open it TWICE, two tabs)</div>
-          <div className="text-xs text-body leading-relaxed">
-            Both tabs: enter <code className="text-cyan-500">http://localhost:4106</code> and click Connect.
+          <div className="text-xs text-body leading-relaxed flex items-center gap-2 flex-wrap">
+            <span>Both tabs: enter <code className="text-cyan-500">http://localhost:4106</code> and click Connect.</span>
+            <CopyButton text="http://localhost:4106" label="Copy URL" className="text-cyan-500" />
           </div>
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
@@ -174,7 +179,10 @@ function TrySocketIoYourself() {
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">4. From Tab 1, emit send-to-room with a real JSON body</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block">{'{"room":"general","message":"hi"}'}</code>
+          <div className="flex items-start gap-2">
+            <code className="flex-1 text-cyan-500 font-mono text-xs break-all block">{'{"room":"general","message":"hi"}'}</code>
+            <CopyButton text={'{"room":"general","message":"hi"}'} label="Copy body" className="text-cyan-500" />
+          </div>
           <div className="mt-1.5 text-xs text-body leading-relaxed">
             A real <code className="text-cyan-500">room-message</code> event arrives in Tab 1 — Tab 2 gets nothing at all,
             since it joined a different room.
@@ -219,11 +227,8 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <PollingWasteDiagram />,
-    demo: <WhyNotJustPollingRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/WebSocketsRealTime/WhyNotJustPolling/controllers/price.controller.js", note: "A real value that changes on its OWN schedule, completely independent of any request." },
-      { path: "examples/WebSocketsRealTime/WhyNotJustPolling/demo.js", note: "Polls the real endpoint every 300ms for 3 real seconds and counts the real waste." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -289,11 +294,8 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <SseDiagram />,
-    demo: <ServerSentEventsRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/WebSocketsRealTime/ServerSentEvents/controllers/events.controller.js", note: "Writes real \"data: ...\\n\\n\" messages onto ONE already-open connection, on a real interval." },
-      { path: "examples/WebSocketsRealTime/ServerSentEvents/demo.js", note: "A plain fetch() call that reads the real streaming response body chunk by chunk." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -345,12 +347,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <RawWebSocketDiagram />,
-    demo: <RawWebSocketsRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/WebSocketsRealTime/RawWebSockets/server.js", note: "Creates a real node:http server, hands it to Express, then attaches a real WebSocketServer to the SAME server." },
       { path: "examples/WebSocketsRealTime/RawWebSockets/sockets/echo.socket.js", note: "The real, two-way connection logic — a push on connect, a reply to \"ping\"." },
-      { path: "examples/WebSocketsRealTime/RawWebSockets/demo.js", note: "A real ws client, proving both directions actually work." },
     ],
     postmanCheck: <TryRawWebSocketYourself />,
   },
@@ -387,11 +386,8 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <SocketIoRoomsDiagram />,
-    demo: <SocketIoRoomsRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/WebSocketsRealTime/SocketIoRooms/sockets/room.socket.js", note: "The real room logic: join-room labels a connection, send-to-room broadcasts only to that room." },
-      { path: "examples/WebSocketsRealTime/SocketIoRooms/demo.js", note: "3 real Socket.io clients, 2 rooms, proving isolation by comparing each client's real received messages." },
     ],
     postmanCheck: <TrySocketIoYourself />,
   },

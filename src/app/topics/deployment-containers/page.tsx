@@ -4,6 +4,7 @@ import Callout from "@/components/Callout";
 import ComparisonCard from "@/components/ComparisonCard";
 import FlowChain from "@/components/FlowChain";
 import PostmanCheck from "@/components/PostmanCheck";
+import CopyButton from "@/components/CopyButton";
 import WhatIsAContainerRunner from "@/example-runners/ContainerizationDeployment/WhatIsAContainerRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per
@@ -144,6 +145,7 @@ function LiveDeploymentCheck() {
           <div className="flex items-center gap-2 flex-wrap">
             <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded border text-green-500 border-green-500/40 bg-green-500/10">GET</span>
             <code className="text-cyan-500 font-mono text-xs break-all">{liveUrl}/</code>
+            <CopyButton text={`${liveUrl}/`} label="Copy URL" className="text-cyan-500" />
           </div>
           <div className="mt-2 text-xs leading-relaxed">
             <span className="text-green-500 font-semibold">Expect: </span>
@@ -160,6 +162,7 @@ function LiveDeploymentCheck() {
           <div className="flex items-center gap-2 flex-wrap">
             <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded border text-green-500 border-green-500/40 bg-green-500/10">GET</span>
             <code className="text-cyan-500 font-mono text-xs break-all">{liveUrl}/health</code>
+            <CopyButton text={`${liveUrl}/health`} label="Copy URL" className="text-cyan-500" />
           </div>
           <div className="mt-2 text-xs leading-relaxed">
             <span className="text-green-500 font-semibold">Expect: </span>
@@ -253,33 +256,48 @@ function TryNginxSwapYourself() {
       <div className="flex flex-col gap-2.5">
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">1. Terminal</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block">
-            cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/ContainerizationDeployment/NginxDockerDns&quot;
-          </code>
+          <div className="flex items-start gap-2">
+            <code className="flex-1 text-cyan-500 font-mono text-xs break-all block">
+              cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/ContainerizationDeployment/NginxDockerDns&quot;
+            </code>
+            <CopyButton text={'cd "/Users/lawrencealangomes/Documents/Node Express/examples/ContainerizationDeployment/NginxDockerDns"'} label="Copy command" className="text-cyan-500" />
+          </div>
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">2. Start all 3 real containers (the app + both real Nginx configs)</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block">
-            docker compose -p ngdns up -d --build
-          </code>
+          <div className="flex items-center gap-2">
+            <code className="text-cyan-500 font-mono text-xs break-all block">
+              docker compose -p ngdns up -d --build
+            </code>
+            <CopyButton text="docker compose -p ngdns up -d --build" label="Copy command" className="text-cyan-500" />
+          </div>
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">3. Confirm both real proxies work — same real container answers both</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block">
-            curl http://localhost:4124/ &amp;&amp; curl http://localhost:4125/
-          </code>
+          <div className="flex items-center gap-2">
+            <code className="text-cyan-500 font-mono text-xs break-all block">
+              curl http://localhost:4124/ &amp;&amp; curl http://localhost:4125/
+            </code>
+            <CopyButton text="curl http://localhost:4124/ && curl http://localhost:4125/" label="Copy command" className="text-cyan-500" />
+          </div>
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">4. Simulate a real redeploy — start a replacement, then remove the original</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block whitespace-pre-wrap">
-            {"docker run -d --network ngdns_demo-net --network-alias app --name ngdns-app-replacement ngdns-app\ndocker rm -f ngdns-app-1"}
-          </code>
+          <div className="flex items-start gap-2">
+            <code className="flex-1 text-cyan-500 font-mono text-xs break-all block whitespace-pre-wrap">
+              {"docker run -d --network ngdns_demo-net --network-alias app --name ngdns-app-replacement ngdns-app\ndocker rm -f ngdns-app-1"}
+            </code>
+            <CopyButton text={"docker run -d --network ngdns_demo-net --network-alias app --name ngdns-app-replacement ngdns-app\ndocker rm -f ngdns-app-1"} label="Copy commands" className="text-cyan-500" />
+          </div>
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">5. Hit both proxies again</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block">
-            curl http://localhost:4124/ &amp;&amp; curl http://localhost:4125/
-          </code>
+          <div className="flex items-center gap-2">
+            <code className="text-cyan-500 font-mono text-xs break-all block">
+              curl http://localhost:4124/ &amp;&amp; curl http://localhost:4125/
+            </code>
+            <CopyButton text="curl http://localhost:4124/ && curl http://localhost:4125/" label="Copy command" className="text-cyan-500" />
+          </div>
           <div className="mt-1.5 text-xs text-body leading-relaxed">
             Expect the naive one (4124) to fail with a real 502 or 504, and the dynamic one (4125) to keep working —
             with a NEW container hostname in its response.
@@ -287,9 +305,12 @@ function TryNginxSwapYourself() {
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">6. Clean up</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block whitespace-pre-wrap">
-            {"docker rm -f ngdns-app-replacement\ndocker compose -p ngdns down -v"}
-          </code>
+          <div className="flex items-start gap-2">
+            <code className="flex-1 text-cyan-500 font-mono text-xs break-all block whitespace-pre-wrap">
+              {"docker rm -f ngdns-app-replacement\ndocker compose -p ngdns down -v"}
+            </code>
+            <CopyButton text={"docker rm -f ngdns-app-replacement\ndocker compose -p ngdns down -v"} label="Copy commands" className="text-cyan-500" />
+          </div>
         </div>
       </div>
     </div>

@@ -1,3 +1,5 @@
+import CopyButton from "./CopyButton";
+
 export interface PgAdminQueryStep {
   label: string; // what this query does, e.g. "Insert a real row"
   sql: string; // the real SQL to paste into pgAdmin4's Query Tool
@@ -52,9 +54,12 @@ export default function PgAdminCheck({
             <div className="text-sublabel text-xs mb-1.5">
               3.{i + 1}. {q.label}
             </div>
-            <pre className="font-mono text-xs text-blue-500 bg-blue-500/10 rounded px-2 py-1.5 whitespace-pre-wrap break-all">
-              {q.sql}
-            </pre>
+            <div className="flex items-start gap-2">
+              <pre className="flex-1 font-mono text-xs text-blue-500 bg-blue-500/10 rounded px-2 py-1.5 whitespace-pre-wrap break-all">
+                {q.sql}
+              </pre>
+              <CopyButton text={q.sql} label="Copy SQL" className="text-blue-500 mt-1.5" />
+            </div>
             {q.note && <div className="mt-2 text-xs text-sublabel leading-relaxed italic">{q.note}</div>}
             <div className="mt-2 text-xs leading-relaxed">
               <span className="text-green-500 font-semibold">Expect: </span>

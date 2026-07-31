@@ -4,9 +4,7 @@ import Callout from "@/components/Callout";
 import ComparisonCard from "@/components/ComparisonCard";
 import FlowChain from "@/components/FlowChain";
 import PostmanCheck from "@/components/PostmanCheck";
-import WhyBackgroundJobsRunner from "@/example-runners/BackgroundJobsQueues/WhyBackgroundJobsRunner";
-import BullMqProducerWorkerRunner from "@/example-runners/BackgroundJobsQueues/BullMqProducerWorkerRunner";
-import JobRetriesBackoffRunner from "@/example-runners/BackgroundJobsQueues/JobRetriesBackoffRunner";
+import CopyButton from "@/components/CopyButton";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per
 // the standing rule in co-founder/build-conventions.md.
@@ -132,12 +130,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <BlockingVsQueuedDiagram />,
-    demo: <WhyBackgroundJobsRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/BackgroundJobsQueues/WhyBackgroundJobs/queues/report.queue.js", note: "A real BullMQ Queue (for adding jobs) and Worker (for processing them) backed by this machine's real local Redis." },
       { path: "examples/BackgroundJobsQueues/WhyBackgroundJobs/controllers/report.controller.js", note: "The sync route awaits the real slow task directly; the async route enqueues it and returns immediately." },
-      { path: "examples/BackgroundJobsQueues/WhyBackgroundJobs/demo.js", note: "Times both real routes, then polls the real job until the worker actually finishes it." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -210,12 +205,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <ProducerWorkerDiagram />,
-    demo: <BullMqProducerWorkerRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/BackgroundJobsQueues/BullMqProducerWorker/queues/connection.js", note: "The one real queue name + Redis connection both the producer and the separate worker have to agree on." },
       { path: "examples/BackgroundJobsQueues/BullMqProducerWorker/worker.js", note: "A real, standalone script — never imported by server.js. Run it on its own with node worker.js." },
-      { path: "examples/BackgroundJobsQueues/BullMqProducerWorker/demo.js", note: "Spawns worker.js as a genuinely separate real process, then proves it processed the real jobs." },
     ],
     postmanCheck: (
       <div className="rounded-card border border-orange-500/40 bg-orange-500/5 px-4 py-3.5 my-4">
@@ -230,20 +222,32 @@ const sections: StudySection[] = [
         <div className="flex flex-col gap-2.5">
           <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
             <div className="text-sublabel text-xs uppercase tracking-wide mb-1">1. Terminal A — the producer</div>
-            <code className="text-cyan-500 font-mono text-xs break-all block">
-              cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/BackgroundJobsQueues/BullMqProducerWorker&quot; &amp;&amp; node server.js
-            </code>
+            <div className="flex items-start gap-2">
+              <code className="flex-1 text-cyan-500 font-mono text-xs break-all block">
+                cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/BackgroundJobsQueues/BullMqProducerWorker&quot; &amp;&amp; node server.js
+              </code>
+              <CopyButton text={'cd "/Users/lawrencealangomes/Documents/Node Express/examples/BackgroundJobsQueues/BullMqProducerWorker" && node server.js'} label="Copy command" className="text-cyan-500" />
+            </div>
           </div>
           <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
             <div className="text-sublabel text-xs uppercase tracking-wide mb-1">2. Terminal B — the real, separate worker</div>
-            <code className="text-cyan-500 font-mono text-xs break-all block">
-              cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/BackgroundJobsQueues/BullMqProducerWorker&quot; &amp;&amp; node worker.js
-            </code>
+            <div className="flex items-start gap-2">
+              <code className="flex-1 text-cyan-500 font-mono text-xs break-all block">
+                cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/BackgroundJobsQueues/BullMqProducerWorker&quot; &amp;&amp; node worker.js
+              </code>
+              <CopyButton text={'cd "/Users/lawrencealangomes/Documents/Node Express/examples/BackgroundJobsQueues/BullMqProducerWorker" && node worker.js'} label="Copy command" className="text-cyan-500" />
+            </div>
             <div className="mt-1.5 text-xs text-body leading-relaxed">Leave both running — watch Terminal B while you send the requests below.</div>
           </div>
           <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
-            <div className="text-sublabel text-xs uppercase tracking-wide mb-1">3.1. In Postman: POST http://localhost:4108/jobs/welcome-email</div>
-            <div className="text-xs text-body leading-relaxed mb-1">Body (raw JSON): <code className="text-cyan-500">{'{"email":"you@example.com"}'}</code></div>
+            <div className="text-sublabel text-xs uppercase tracking-wide mb-1 flex items-center gap-2 flex-wrap">
+              <span>3.1. In Postman: POST http://localhost:4108/jobs/welcome-email</span>
+              <CopyButton text="http://localhost:4108/jobs/welcome-email" label="Copy URL" className="text-cyan-500 normal-case" />
+            </div>
+            <div className="text-xs text-body leading-relaxed mb-1 flex items-center gap-2 flex-wrap">
+              <span>Body (raw JSON): <code className="text-cyan-500">{'{"email":"you@example.com"}'}</code></span>
+              <CopyButton text={'{"email":"you@example.com"}'} label="Copy body" className="text-cyan-500" />
+            </div>
             <div className="text-xs text-body leading-relaxed">
               Expect: <span className="text-green-500 font-mono">202</span>{" "}
               <span className="font-mono">{'{"jobId":<a real id>,"queuedFor":"you@example.com"}'}</span> — and watch Terminal B print
@@ -294,12 +298,9 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <RetryBackoffDiagram />,
-    demo: <JobRetriesBackoffRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/BackgroundJobsQueues/JobRetriesBackoff/queues/task.queue.js", note: "The processor deliberately throws on job.attemptsMade < 2 — a real, verified failure, not a fabricated one." },
       { path: "examples/BackgroundJobsQueues/JobRetriesBackoff/controllers/task.controller.js", note: "Real retry config on queue.add(), and a status endpoint exposing the real attemptsMade/failedReason." },
-      { path: "examples/BackgroundJobsQueues/JobRetriesBackoff/demo.js", note: "Polls the real job through delayed → delayed → completed and measures the real total wait." },
     ],
     postmanCheck: (
       <PostmanCheck

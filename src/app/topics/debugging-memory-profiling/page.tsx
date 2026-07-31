@@ -4,6 +4,7 @@ import Callout from "@/components/Callout";
 import ComparisonCard from "@/components/ComparisonCard";
 import FlowChain from "@/components/FlowChain";
 import PostmanCheck from "@/components/PostmanCheck";
+import CopyButton from "@/components/CopyButton";
 import HeapSnapshotComparisonRunner from "@/example-runners/DebuggingMemoryProfiling/HeapSnapshotComparisonRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per
@@ -59,13 +60,19 @@ function TryInChromeDevTools() {
       <div className="flex flex-col gap-2.5">
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">1. Terminal</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block">
-            cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/DebuggingMemoryProfiling/InspectorProtocol&quot; &amp;&amp; node --inspect server.js
-          </code>
+          <div className="flex items-start gap-2">
+            <code className="flex-1 text-cyan-500 font-mono text-xs break-all block">
+              cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/DebuggingMemoryProfiling/InspectorProtocol&quot; &amp;&amp; node --inspect server.js
+            </code>
+            <CopyButton text={'cd "/Users/lawrencealangomes/Documents/Node Express/examples/DebuggingMemoryProfiling/InspectorProtocol" && node --inspect server.js'} label="Copy command" className="text-cyan-500" />
+          </div>
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">2. Chrome, address bar</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block">chrome://inspect</code>
+          <div className="flex items-center gap-2">
+            <code className="text-cyan-500 font-mono text-xs break-all block">chrome://inspect</code>
+            <CopyButton text="chrome://inspect" label="Copy URL" className="text-cyan-500" />
+          </div>
           <div className="mt-1.5 text-xs text-body leading-relaxed">
             Under &quot;Remote Target,&quot; a real entry for this exact process appears — click its <span className="text-body font-semibold">inspect</span> link.
           </div>
@@ -79,7 +86,10 @@ function TryInChromeDevTools() {
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">4. In Postman (or another terminal)</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block">GET http://localhost:4096/compute?n=10</code>
+          <div className="flex items-center gap-2">
+            <code className="text-cyan-500 font-mono text-xs break-all block">GET http://localhost:4096/compute?n=10</code>
+            <CopyButton text="http://localhost:4096/compute?n=10" label="Copy URL" className="text-cyan-500" />
+          </div>
           <div className="mt-1.5 text-xs text-body leading-relaxed">
             Execution really pauses, right there, mid-request — BEFORE that highlighted line actually runs, not after. Open
             the real Console tab and type <code className="text-cyan-500">globalThis.__requestCount</code> (the bare name{" "}
@@ -231,15 +241,21 @@ function TryClinicYourself() {
       <div className="flex flex-col gap-2.5">
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">1. Terminal</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block">
-            cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/DebuggingMemoryProfiling/ClinicJsProfiling&quot;
-          </code>
+          <div className="flex items-start gap-2">
+            <code className="flex-1 text-cyan-500 font-mono text-xs break-all block">
+              cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/DebuggingMemoryProfiling/ClinicJsProfiling&quot;
+            </code>
+            <CopyButton text={'cd "/Users/lawrencealangomes/Documents/Node Express/examples/DebuggingMemoryProfiling/ClinicJsProfiling"'} label="Copy command" className="text-cyan-500" />
+          </div>
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">2. Run Clinic Doctor with a real, built-in load generator (autocannon)</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block">
-            npm run profile
-          </code>
+          <div className="flex items-center gap-2">
+            <code className="text-cyan-500 font-mono text-xs break-all block">
+              npm run profile
+            </code>
+            <CopyButton text="npm run profile" label="Copy command" className="text-cyan-500" />
+          </div>
           <div className="mt-1.5 text-xs text-body leading-relaxed">
             Runs <code className="text-cyan-500">clinic doctor --autocannon [ /blocking ] --open=false -- node server.js</code> —
             starts the real server, hammers <code className="text-cyan-500">/blocking</code> with real requests, then writes a real

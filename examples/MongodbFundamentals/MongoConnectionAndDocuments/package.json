@@ -1,0 +1,19 @@
+{
+  "name": "mongo-connection-and-documents-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof of connecting to real MongoDB Atlas with the native mongodb driver (no ODM yet), inserting a real flexible document, and seeing exactly what real JS type each field comes back as.",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongodb": "^7.5.0"
+  }
+}

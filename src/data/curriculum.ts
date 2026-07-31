@@ -128,14 +128,14 @@ export const stages: Stage[] = [
         title: "PostgreSQL Fundamentals",
         summary: "Real SQL from the ground up on the actual Coolify Postgres server — psql and Node's raw pg driver, data types, table creation, and CRUD/filtering/sorting via real SQL, before any ORM is introduced.",
         hasPage: true,
-        status: "in-progress",
+        status: "mastered",
       },
       {
         slug: "mongodb-fundamentals",
         title: "MongoDB Fundamentals",
         summary: "Real document-database basics on the actual Atlas cluster — mongosh and Node's native mongodb driver, documents/BSON types/collections, and CRUD/filtering via the raw driver, before any ODM is introduced.",
-        hasPage: false,
-        status: "not-started",
+        hasPage: true,
+        status: "in-progress",
       },
       {
         slug: "orm-query-builder",

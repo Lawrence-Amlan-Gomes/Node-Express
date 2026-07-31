@@ -4,9 +4,7 @@ import Callout from "@/components/Callout";
 import ComparisonCard from "@/components/ComparisonCard";
 import FlowChain from "@/components/FlowChain";
 import PostmanCheck from "@/components/PostmanCheck";
-import TheMonolithRunner from "@/example-runners/MicroservicesVsMonolith/TheMonolithRunner";
-import SplitIntoServicesRunner from "@/example-runners/MicroservicesVsMonolith/SplitIntoServicesRunner";
-import IndependentFailureRunner from "@/example-runners/MicroservicesVsMonolith/IndependentFailureRunner";
+import CopyButton from "@/components/CopyButton";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per
 // the standing rule in co-founder/build-conventions.md.
@@ -132,8 +130,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <MonolithDiagram />,
-    demo: <TheMonolithRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/MicroservicesVsMonolith/TheMonolith/controllers/data.js", note: "Users AND orders share the exact same in-memory store, inside the same real process." },
       { path: "examples/MicroservicesVsMonolith/TheMonolith/controllers/order.controller.js", note: "The real \"join\": a plain, in-process function call to look up the user — no network involved." },
@@ -187,8 +183,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <SplitServicesDiagram />,
-    demo: <SplitIntoServicesRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/MicroservicesVsMonolith/SplitIntoServices/users-service/server.js", note: "A real, complete, standalone Express app — genuinely knows nothing about orders." },
       { path: "examples/MicroservicesVsMonolith/SplitIntoServices/orders-service/controllers/order.controller.js", note: "The real \"join\" is now a real fetch() call to a different real service, on a real network." },
@@ -206,20 +200,29 @@ const sections: StudySection[] = [
         <div className="flex flex-col gap-2.5">
           <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
             <div className="text-sublabel text-xs uppercase tracking-wide mb-1">1. Terminal A — users-service</div>
-            <code className="text-cyan-500 font-mono text-xs break-all block">
-              cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/MicroservicesVsMonolith/SplitIntoServices/users-service&quot; &amp;&amp; node server.js
-            </code>
+            <div className="flex items-start gap-2">
+              <code className="flex-1 text-cyan-500 font-mono text-xs break-all block">
+                cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/MicroservicesVsMonolith/SplitIntoServices/users-service&quot; &amp;&amp; node server.js
+              </code>
+              <CopyButton text={'cd "/Users/lawrencealangomes/Documents/Node Express/examples/MicroservicesVsMonolith/SplitIntoServices/users-service" && node server.js'} label="Copy command" className="text-cyan-500" />
+            </div>
             <div className="mt-1.5 text-xs text-body leading-relaxed">Listens on a real, fixed port: 4111.</div>
           </div>
           <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
             <div className="text-sublabel text-xs uppercase tracking-wide mb-1">2. Terminal B — orders-service</div>
-            <code className="text-cyan-500 font-mono text-xs break-all block">
-              cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/MicroservicesVsMonolith/SplitIntoServices/orders-service&quot; &amp;&amp; node server.js
-            </code>
+            <div className="flex items-start gap-2">
+              <code className="flex-1 text-cyan-500 font-mono text-xs break-all block">
+                cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/MicroservicesVsMonolith/SplitIntoServices/orders-service&quot; &amp;&amp; node server.js
+              </code>
+              <CopyButton text={'cd "/Users/lawrencealangomes/Documents/Node Express/examples/MicroservicesVsMonolith/SplitIntoServices/orders-service" && node server.js'} label="Copy command" className="text-cyan-500" />
+            </div>
             <div className="mt-1.5 text-xs text-body leading-relaxed">Listens on a real, fixed port: 4112. Leave both terminals running.</div>
           </div>
           <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
-            <div className="text-sublabel text-xs uppercase tracking-wide mb-1">3. In Postman: GET http://localhost:4112/orders/1</div>
+            <div className="text-sublabel text-xs uppercase tracking-wide mb-1 flex items-center gap-2 flex-wrap">
+              <span>3. In Postman: GET http://localhost:4112/orders/1</span>
+              <CopyButton text="http://localhost:4112/orders/1" label="Copy URL" className="text-cyan-500 normal-case" />
+            </div>
             <div className="text-xs text-body leading-relaxed">
               Sent to orders-service — it makes a real internal call to users-service (port 4111) before responding.
               Expect: <span className="text-green-500 font-mono">200</span>{" "}
@@ -264,8 +267,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <FaultIsolationDiagram />,
-    demo: <IndependentFailureRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/MicroservicesVsMonolith/IndependentFailure/orders-service/controllers/order.controller.js", note: "getOrderBasic needs nothing from users-service; getOrderEnriched wraps the real cross-service call in try/catch, returning a real 503 instead of crashing." },
     ],
@@ -282,18 +283,27 @@ const sections: StudySection[] = [
         <div className="flex flex-col gap-2.5">
           <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
             <div className="text-sublabel text-xs uppercase tracking-wide mb-1">1. Terminal A — users-service</div>
-            <code className="text-cyan-500 font-mono text-xs break-all block">
-              cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/MicroservicesVsMonolith/IndependentFailure/users-service&quot; &amp;&amp; node server.js
-            </code>
+            <div className="flex items-start gap-2">
+              <code className="flex-1 text-cyan-500 font-mono text-xs break-all block">
+                cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/MicroservicesVsMonolith/IndependentFailure/users-service&quot; &amp;&amp; node server.js
+              </code>
+              <CopyButton text={'cd "/Users/lawrencealangomes/Documents/Node Express/examples/MicroservicesVsMonolith/IndependentFailure/users-service" && node server.js'} label="Copy command" className="text-cyan-500" />
+            </div>
           </div>
           <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
             <div className="text-sublabel text-xs uppercase tracking-wide mb-1">2. Terminal B — orders-service</div>
-            <code className="text-cyan-500 font-mono text-xs break-all block">
-              cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/MicroservicesVsMonolith/IndependentFailure/orders-service&quot; &amp;&amp; node server.js
-            </code>
+            <div className="flex items-start gap-2">
+              <code className="flex-1 text-cyan-500 font-mono text-xs break-all block">
+                cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/MicroservicesVsMonolith/IndependentFailure/orders-service&quot; &amp;&amp; node server.js
+              </code>
+              <CopyButton text={'cd "/Users/lawrencealangomes/Documents/Node Express/examples/MicroservicesVsMonolith/IndependentFailure/orders-service" && node server.js'} label="Copy command" className="text-cyan-500" />
+            </div>
           </div>
           <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
-            <div className="text-sublabel text-xs uppercase tracking-wide mb-1">3. In Postman: GET http://localhost:4114/orders/1</div>
+            <div className="text-sublabel text-xs uppercase tracking-wide mb-1 flex items-center gap-2 flex-wrap">
+              <span>3. In Postman: GET http://localhost:4114/orders/1</span>
+              <CopyButton text="http://localhost:4114/orders/1" label="Copy URL" className="text-cyan-500 normal-case" />
+            </div>
             <div className="text-xs text-body leading-relaxed">
               Expect: <span className="text-green-500 font-mono">200</span>{" "}
               <span className="font-mono">{'{"id":"1","userId":"1","item":"Mechanical Keyboard","user":{"id":"1","name":"Lawrence"}}'}</span>
@@ -303,14 +313,20 @@ const sections: StudySection[] = [
             <div className="text-sublabel text-xs uppercase tracking-wide mb-1">4. Kill Terminal A (Ctrl+C, or close it) — users-service is now really gone</div>
           </div>
           <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
-            <div className="text-sublabel text-xs uppercase tracking-wide mb-1">5. GET http://localhost:4114/orders/1/basic</div>
+            <div className="text-sublabel text-xs uppercase tracking-wide mb-1 flex items-center gap-2 flex-wrap">
+              <span>5. GET http://localhost:4114/orders/1/basic</span>
+              <CopyButton text="http://localhost:4114/orders/1/basic" label="Copy URL" className="text-cyan-500 normal-case" />
+            </div>
             <div className="text-xs text-body leading-relaxed">
               Expect: <span className="text-green-500 font-mono">200</span>{" "}
               <span className="font-mono">{'{"id":"1","userId":"1","item":"Mechanical Keyboard"}'}</span> — still works, needs nothing from users-service.
             </div>
           </div>
           <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
-            <div className="text-sublabel text-xs uppercase tracking-wide mb-1">6. GET http://localhost:4114/orders/1 again</div>
+            <div className="text-sublabel text-xs uppercase tracking-wide mb-1 flex items-center gap-2 flex-wrap">
+              <span>6. GET http://localhost:4114/orders/1 again</span>
+              <CopyButton text="http://localhost:4114/orders/1" label="Copy URL" className="text-cyan-500 normal-case" />
+            </div>
             <div className="text-xs text-body leading-relaxed">
               Expect: <span className="text-yellow-500 font-mono">503</span>{" "}
               <span className="font-mono">{'{"error":"users-service is unreachable — try again later","orderId":"1"}'}</span> — a

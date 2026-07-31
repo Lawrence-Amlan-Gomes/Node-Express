@@ -4,6 +4,7 @@ import Callout from "@/components/Callout";
 import ComparisonCard from "@/components/ComparisonCard";
 import FlowChain from "@/components/FlowChain";
 import PostmanCheck from "@/components/PostmanCheck";
+import CopyButton from "@/components/CopyButton";
 import CacheStampedeRunner from "@/example-runners/CachingScaling/CacheStampedeRunner";
 import DistributedLockRunner from "@/example-runners/CachingScaling/DistributedLockRunner";
 import WorkerThreadsCpuRunner from "@/example-runners/CachingScaling/WorkerThreadsCpuRunner";
@@ -164,19 +165,28 @@ function TryClusterYourself() {
       <div className="flex flex-col gap-2.5">
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">1. Terminal</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block">
-            cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/CachingScaling/ClusterHttp&quot; &amp;&amp; node server.js
-          </code>
+          <div className="flex items-start gap-2">
+            <code className="flex-1 text-cyan-500 font-mono text-xs break-all block">
+              cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/CachingScaling/ClusterHttp&quot; &amp;&amp; node server.js
+            </code>
+            <CopyButton text={'cd "/Users/lawrencealangomes/Documents/Node Express/examples/CachingScaling/ClusterHttp" && node server.js'} label="Copy command" className="text-cyan-500" />
+          </div>
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
-          <div className="text-sublabel text-xs uppercase tracking-wide mb-1">2. In Postman, GET http://localhost:4101/ a few times in a row</div>
+          <div className="text-sublabel text-xs uppercase tracking-wide mb-1 flex items-center gap-2 flex-wrap">
+            <span>2. In Postman, GET http://localhost:4101/ a few times in a row</span>
+            <CopyButton text="http://localhost:4101/" label="Copy URL" className="text-cyan-500 normal-case" />
+          </div>
           <div className="text-xs text-body leading-relaxed">
             Watch the real <code className="text-cyan-500">pid</code> in the response change between requests — real, different
             OS processes are answering, round-robin.
           </div>
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
-          <div className="text-sublabel text-xs uppercase tracking-wide mb-1">3. GET http://localhost:4101/crash-me once</div>
+          <div className="text-sublabel text-xs uppercase tracking-wide mb-1 flex items-center gap-2 flex-wrap">
+            <span>3. GET http://localhost:4101/crash-me once</span>
+            <CopyButton text="http://localhost:4101/crash-me" label="Copy URL" className="text-cyan-500 normal-case" />
+          </div>
           <div className="text-xs text-body leading-relaxed">
             That one real worker really exits. Send GET / a few more times — every request still succeeds, and the
             primary&apos;s own terminal log shows it forking a real replacement.
@@ -218,13 +228,19 @@ function TryPm2Yourself() {
       <div className="flex flex-col gap-2.5">
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">1. Terminal</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block">
-            cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/CachingScaling/PM2ProcessManagement&quot; &amp;&amp; ./node_modules/.bin/pm2 start server.js --name my-demo
-          </code>
+          <div className="flex items-start gap-2">
+            <code className="flex-1 text-cyan-500 font-mono text-xs break-all block">
+              cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/CachingScaling/PM2ProcessManagement&quot; &amp;&amp; ./node_modules/.bin/pm2 start server.js --name my-demo
+            </code>
+            <CopyButton text={'cd "/Users/lawrencealangomes/Documents/Node Express/examples/CachingScaling/PM2ProcessManagement" && ./node_modules/.bin/pm2 start server.js --name my-demo'} label="Copy command" className="text-cyan-500" />
+          </div>
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
           <div className="text-sublabel text-xs uppercase tracking-wide mb-1">2. Watch it live</div>
-          <code className="text-cyan-500 font-mono text-xs break-all block">./node_modules/.bin/pm2 list</code>
+          <div className="flex items-center gap-2">
+            <code className="text-cyan-500 font-mono text-xs break-all block">./node_modules/.bin/pm2 list</code>
+            <CopyButton text="./node_modules/.bin/pm2 list" label="Copy command" className="text-cyan-500" />
+          </div>
           <div className="mt-1.5 text-xs text-body leading-relaxed">Shows the real pid, real uptime, and real restart_time (starts at 0).</div>
         </div>
         <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
@@ -232,7 +248,8 @@ function TryPm2Yourself() {
           <code className="text-cyan-500 font-mono text-xs break-all block">kill -9 &lt;the real pid from step 2&gt;</code>
           <div className="mt-1.5 text-xs text-body leading-relaxed">
             Run <code className="text-cyan-500">pm2 list</code> again — a real NEW pid, and restart_time is now 1. Clean up with{" "}
-            <code className="text-cyan-500">./node_modules/.bin/pm2 delete my-demo</code>.
+            <code className="text-cyan-500">./node_modules/.bin/pm2 delete my-demo</code>
+            <CopyButton text="./node_modules/.bin/pm2 delete my-demo" label="Copy command" className="text-cyan-500 ml-1.5 align-middle" />.
           </div>
         </div>
       </div>

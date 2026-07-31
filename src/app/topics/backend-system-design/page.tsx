@@ -4,7 +4,6 @@ import Callout from "@/components/Callout";
 import ComparisonCard from "@/components/ComparisonCard";
 import FlowChain from "@/components/FlowChain";
 import PostmanCheck from "@/components/PostmanCheck";
-import LiveCodingDrillRunner from "@/example-runners/BackendSystemDesignDrills/LiveCodingDrillRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per
 // the standing rule in co-founder/build-conventions.md.
@@ -177,8 +176,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <TimeBudgetDiagram />,
-    demo: <LiveCodingDrillRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/BackendSystemDesignDrills/LiveCodingDrill/routes/bookmarks.routes.js", note: "Every endpoint this resource has, at a glance — no logic, just path+method → controller." },
       { path: "examples/BackendSystemDesignDrills/LiveCodingDrill/controllers/bookmarks.controller.js", note: "The real logic — zod validation on create, and the real cursor-pagination filter (id > cursor)." },

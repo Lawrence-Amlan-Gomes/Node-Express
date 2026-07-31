@@ -1,3 +1,5 @@
+import CopyButton from "./CopyButton";
+
 const methodColor: Record<string, string> = {
   GET: "text-green-500 border-green-500/40 bg-green-500/10",
   POST: "text-orange-500 border-orange-500/40 bg-orange-500/10",
@@ -70,28 +72,34 @@ export default function PostmanCheck({
       <div className="rounded-card border border-border bg-surface-raised px-3 py-2 mb-3 flex flex-col gap-1.5">
         <div className="text-body text-xs leading-relaxed">
           <span className="font-semibold">1. Open a terminal and go to that folder:</span>
-          <pre className="mt-1 font-mono text-xs text-orange-500 bg-orange-500/10 rounded px-2 py-1.5 whitespace-pre-wrap break-all">
-            cd &quot;{PROJECT_ROOT}/{folderPath}&quot;
-          </pre>
+          <div className="mt-1 flex items-start gap-2">
+            <pre className="flex-1 font-mono text-xs text-orange-500 bg-orange-500/10 rounded px-2 py-1.5 whitespace-pre-wrap break-all">
+              cd &quot;{PROJECT_ROOT}/{folderPath}&quot;
+            </pre>
+            <CopyButton text={`cd "${PROJECT_ROOT}/${folderPath}"`} label="Copy cd command" className="text-orange-500 mt-1.5" />
+          </div>
         </div>
-        <div className="text-body text-xs leading-relaxed">
-          <span className="font-semibold">2. Start the real server:</span>{" "}
+        <div className="text-body text-xs leading-relaxed flex items-center gap-2 flex-wrap">
+          <span className="font-semibold">2. Start the real server:</span>
           <code className="text-orange-500 bg-orange-500/10 px-1.5 py-0.5 rounded font-mono text-xs">{runCommand}</code>
+          <CopyButton text={runCommand} label="Copy run command" className="text-orange-500" />
         </div>
-        <div className="text-body text-xs leading-relaxed">
-          <span className="font-semibold">3. It listens on a real, fixed port:</span>{" "}
+        <div className="text-body text-xs leading-relaxed flex items-center gap-2 flex-wrap">
+          <span className="font-semibold">3. It listens on a real, fixed port:</span>
           <code className="text-orange-500 bg-orange-500/10 px-1.5 py-0.5 rounded font-mono text-xs">
             http://localhost:{runPort}
           </code>
-          . Leave that terminal running.
+          <CopyButton text={`http://localhost:${runPort}`} label="Copy URL" className="text-orange-500" />
+          <span>. Leave that terminal running.</span>
         </div>
         {extraPorts?.map((extra) => (
-          <div key={extra.port} className="text-body text-xs leading-relaxed">
-            <span className="font-semibold">Also listens on ({extra.label}):</span>{" "}
+          <div key={extra.port} className="text-body text-xs leading-relaxed flex items-center gap-2 flex-wrap">
+            <span className="font-semibold">Also listens on ({extra.label}):</span>
             <code className="text-orange-500 bg-orange-500/10 px-1.5 py-0.5 rounded font-mono text-xs">
               http://localhost:{extra.port}
-            </code>{" "}
-            — the SAME command above starts both real servers at once.
+            </code>
+            <CopyButton text={`http://localhost:${extra.port}`} label="Copy URL" className="text-orange-500" />
+            <span>— the SAME command above starts both real servers at once.</span>
           </div>
         ))}
       </div>
@@ -108,15 +116,19 @@ export default function PostmanCheck({
                 http://localhost:{step.port ?? runPort}
                 {step.path}
               </code>
+              <CopyButton text={`http://localhost:${step.port ?? runPort}${step.path}`} label="Copy URL" className="text-cyan-500" />
             </div>
             {step.headers && (
               <div className="mt-2">
                 <div className="text-sublabel text-[11px] uppercase tracking-wide mb-1">Headers</div>
                 <div className="flex flex-col gap-1">
                   {Object.entries(step.headers).map(([name, value]) => (
-                    <code key={name} className="font-mono text-xs text-body bg-surface rounded px-2 py-1 border border-border w-fit">
-                      {name}: {value}
-                    </code>
+                    <div key={name} className="flex items-center gap-2">
+                      <code className="font-mono text-xs text-body bg-surface rounded px-2 py-1 border border-border w-fit">
+                        {name}: {value}
+                      </code>
+                      <CopyButton text={`${name}: ${value}`} label="Copy header" className="text-body" />
+                    </div>
                   ))}
                 </div>
               </div>
@@ -124,9 +136,12 @@ export default function PostmanCheck({
             {step.body && (
               <div className="mt-2">
                 <div className="text-sublabel text-[11px] uppercase tracking-wide mb-1">Body (raw JSON)</div>
-                <pre className="font-mono text-xs text-body whitespace-pre-wrap bg-surface rounded px-2 py-1.5 border border-border">
-                  {step.body}
-                </pre>
+                <div className="flex items-start gap-2">
+                  <pre className="flex-1 font-mono text-xs text-body whitespace-pre-wrap bg-surface rounded px-2 py-1.5 border border-border">
+                    {step.body}
+                  </pre>
+                  <CopyButton text={step.body} label="Copy body" className="text-body mt-1.5" />
+                </div>
               </div>
             )}
             {step.note && <div className="mt-2 text-xs text-sublabel leading-relaxed italic">{step.note}</div>}

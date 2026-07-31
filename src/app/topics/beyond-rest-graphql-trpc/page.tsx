@@ -4,9 +4,7 @@ import Callout from "@/components/Callout";
 import ComparisonCard from "@/components/ComparisonCard";
 import FlowChain from "@/components/FlowChain";
 import PostmanCheck from "@/components/PostmanCheck";
-import RestOverUnderFetchingRunner from "@/example-runners/BeyondRestGraphqlTrpc/RestOverUnderFetchingRunner";
-import GraphQlYogaBasicsRunner from "@/example-runners/BeyondRestGraphqlTrpc/GraphQlYogaBasicsRunner";
-import TrpcEndToEndTypesRunner from "@/example-runners/BeyondRestGraphqlTrpc/TrpcEndToEndTypesRunner";
+import CopyButton from "@/components/CopyButton";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per
 // the standing rule in co-founder/build-conventions.md.
@@ -131,11 +129,8 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <OverUnderFetchingDiagram />,
-    demo: <RestOverUnderFetchingRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/BeyondRestGraphqlTrpc/RestOverUnderFetching/controllers/data.js", note: "The real user record includes email and bio — fields this section's real goal never needs." },
-      { path: "examples/BeyondRestGraphqlTrpc/RestOverUnderFetching/demo.js", note: "Makes the real 2 requests and counts the real unused fields returned." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -193,8 +188,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <GraphQlDiagram />,
-    demo: <GraphQlYogaBasicsRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/BeyondRestGraphqlTrpc/GraphQlYogaBasics/schema/typeDefs.js", note: "The real, published schema — User still has every field, including ones this section's query never asks for." },
       { path: "examples/BeyondRestGraphqlTrpc/GraphQlYogaBasics/schema/resolvers.js", note: "Order.user only runs when a real query actually requests the user field." },
@@ -250,8 +243,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <TrpcDiagram />,
-    demo: <TrpcEndToEndTypesRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/BeyondRestGraphqlTrpc/TrpcEndToEndTypes/server.ts", note: "export type AppRouter — the one real thing a client is ever allowed to import from here." },
       { path: "examples/BeyondRestGraphqlTrpc/TrpcEndToEndTypes/client.ts", note: "import type { AppRouter } — a real, compile-time-only import; every call below is fully typed from it." },
@@ -272,19 +263,28 @@ const sections: StudySection[] = [
         <div className="flex flex-col gap-2.5">
           <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
             <div className="text-sublabel text-xs uppercase tracking-wide mb-1">1. Terminal A — the real server</div>
-            <code className="text-cyan-500 font-mono text-xs break-all block">
-              cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/BeyondRestGraphqlTrpc/TrpcEndToEndTypes&quot; &amp;&amp; node server.ts
-            </code>
+            <div className="flex items-start gap-2">
+              <code className="flex-1 text-cyan-500 font-mono text-xs break-all block">
+                cd &quot;/Users/lawrencealangomes/Documents/Node Express/examples/BeyondRestGraphqlTrpc/TrpcEndToEndTypes&quot; &amp;&amp; node server.ts
+              </code>
+              <CopyButton text={'cd "/Users/lawrencealangomes/Documents/Node Express/examples/BeyondRestGraphqlTrpc/TrpcEndToEndTypes" && node server.ts'} label="Copy command" className="text-cyan-500" />
+            </div>
             <div className="mt-1.5 text-xs text-body leading-relaxed">Real TypeScript, run directly — Node&apos;s own native type-stripping handles it. Listens on a real, fixed port: 4117.</div>
           </div>
           <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
             <div className="text-sublabel text-xs uppercase tracking-wide mb-1">2. Terminal B — the real, correct client</div>
-            <code className="text-cyan-500 font-mono text-xs break-all block">node client.ts 4117</code>
+            <div className="flex items-center gap-2">
+              <code className="text-cyan-500 font-mono text-xs break-all block">node client.ts 4117</code>
+              <CopyButton text="node client.ts 4117" label="Copy command" className="text-cyan-500" />
+            </div>
             <div className="mt-1.5 text-xs text-body leading-relaxed">Prints the real, fully-typed result: <code className="text-cyan-500">{'{"id":"1","name":"Lawrence"}'}</code></div>
           </div>
           <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
             <div className="text-sublabel text-xs uppercase tracking-wide mb-1">3. See the real compile-time rejection yourself</div>
-            <code className="text-cyan-500 font-mono text-xs break-all block">./node_modules/.bin/tsc -p tsconfig.errordemo.json</code>
+            <div className="flex items-center gap-2">
+              <code className="text-cyan-500 font-mono text-xs break-all block">./node_modules/.bin/tsc -p tsconfig.errordemo.json</code>
+              <CopyButton text="./node_modules/.bin/tsc -p tsconfig.errordemo.json" label="Copy command" className="text-cyan-500" />
+            </div>
             <div className="mt-1.5 text-xs text-body leading-relaxed">Prints the real error: <code className="text-cyan-500">broken-usage.ts(16,43): error TS2322: Type &apos;number&apos; is not assignable to type &apos;string&apos;.</code></div>
           </div>
         </div>

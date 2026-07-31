@@ -4,10 +4,6 @@ import Callout from "@/components/Callout";
 import ComparisonCard from "@/components/ComparisonCard";
 import FlowChain from "@/components/FlowChain";
 import PostmanCheck from "@/components/PostmanCheck";
-import ContractHandshakeRunner from "@/example-runners/WorkingWithFrontendTeams/ContractHandshakeRunner";
-import OpenApiSwaggerDocsRunner from "@/example-runners/WorkingWithFrontendTeams/OpenApiSwaggerDocsRunner";
-import MockingWithPrismRunner from "@/example-runners/WorkingWithFrontendTeams/MockingWithPrismRunner";
-import ContractValidationMiddlewareRunner from "@/example-runners/WorkingWithFrontendTeams/ContractValidationMiddlewareRunner";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per
 // the standing rule in co-founder/build-conventions.md.
@@ -136,11 +132,8 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <ContractDriftDiagram />,
-    demo: <ContractHandshakeRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/WorkingWithFrontendTeams/ContractHandshake/controllers/profile.controller.js", note: "v1 returns name; v2 returns fullName — the exact real drift this section proves." },
-      { path: "examples/WorkingWithFrontendTeams/ContractHandshake/demo.js", note: "Plays the role of a real frontend consumer — reads data.name against both real versions." },
     ],
     postmanCheck: (
       <PostmanCheck
@@ -202,8 +195,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <OpenApiDocsDiagram />,
-    demo: <OpenApiSwaggerDocsRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/WorkingWithFrontendTeams/OpenApiSwaggerDocs/openapi.yaml", note: "The real, plain-text contract — every path, method, and shape this API actually has." },
       { path: "examples/WorkingWithFrontendTeams/OpenApiSwaggerDocs/server.js", note: "Loads that real spec and serves it as real interactive docs at /docs, via swagger-ui-express." },
@@ -284,8 +275,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <MockServerDiagram />,
-    demo: <MockingWithPrismRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/WorkingWithFrontendTeams/MockingWithPrism/openapi.yaml", note: "The ONLY real artifact in this mini-project — no server.js, no controllers, on purpose." },
     ],
@@ -354,8 +343,6 @@ const sections: StudySection[] = [
       </>
     ),
     extra: <ValidationMiddlewareDiagram />,
-    demo: <ContractValidationMiddlewareRunner />,
-    demoCommand: "node demo.js",
     filePointers: [
       { path: "examples/WorkingWithFrontendTeams/ContractValidationMiddleware/openapi.yaml", note: "The real contract this section actually enforces, not just describes." },
       { path: "examples/WorkingWithFrontendTeams/ContractValidationMiddleware/server.js", note: "Wires the real spec in as real middleware, BEFORE any route can run." },
