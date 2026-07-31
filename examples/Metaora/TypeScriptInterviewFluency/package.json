@@ -1,0 +1,18 @@
+{
+  "name": "metaora-typescript-interview-fluency",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof of the TypeScript generics fluency Metaora's interview expects: a real discriminated status union, a generic function constrained to it, and a real captured tsc error when a status outside the union is passed.",
+  "type": "module",
+  "scripts": {
+    "start": "node correct-usage.ts",
+    "typecheck": "tsc --noEmit",
+    "check-broken-usage": "tsc -p tsconfig.errordemo.json"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=22.6.0"
+  }
+}

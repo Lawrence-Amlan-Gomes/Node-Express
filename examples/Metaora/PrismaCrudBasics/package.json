@@ -1,0 +1,23 @@
+{
+  "name": "metaora-prisma-crud-basics",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof of Prisma's 4 basic operations from Metaora's own interview snippet: create, findMany with a where filter + include (relation), update, and delete.",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "db:push": "prisma db push",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "prisma": "^6.19.0"
+  }
+}

@@ -5,6 +5,7 @@ import ComparisonCard from "@/components/ComparisonCard";
 import FlowChain from "@/components/FlowChain";
 import PostmanCheck from "@/components/PostmanCheck";
 import PgAdminCheck from "@/components/PgAdminCheck";
+import DataTable from "@/components/DataTable";
 
 // Bespoke, page-local diagrams — one per non-Interview-Angle section, per
 // the standing rule in co-founder/build-conventions.md.
@@ -37,6 +38,20 @@ function DataTypesDiagram() {
       <div className="rounded-card border border-yellow-500 bg-yellow-500/3 px-3 py-2 mt-3 text-center">
         <span className="text-yellow-500 text-xs">A NUMERIC column comes back as a STRING on purpose — a JS number can silently lose precision on some real decimal values, so the pg driver never risks it for you.</span>
       </div>
+      <div className="mt-4">
+        <DataTable
+          accentKey="orange"
+          caption='The real "products" table — one real row, exactly as the pg driver hands it back'
+          columns={[
+            { key: "id", label: "id" },
+            { key: "name", label: "name" },
+            { key: "price", label: "price" },
+            { key: "in_stock", label: "in_stock" },
+            { key: "created_at", label: "created_at" },
+          ]}
+          rows={[{ id: 1, name: "Test via Postman", price: '"12.50" (string)', in_stock: "true", created_at: "2026-07-30 10:15:00" }]}
+        />
+      </div>
     </div>
   );
 }
@@ -56,6 +71,19 @@ function ParameterizedQueryDiagram() {
           <div className="font-mono text-[11px] text-body leading-relaxed break-all">{`\`SELECT * FROM books WHERE title = $1\`, [title]`}</div>
           <div className="text-body text-xs leading-relaxed mt-1.5">pg sends the value to Postgres SEPARATELY from the query text — it can never be read as part of the SQL itself.</div>
         </div>
+      </div>
+      <div className="mt-4">
+        <DataTable
+          accentKey="blue"
+          caption='The real "books" table — after a real CREATE and one real UPDATE'
+          columns={[
+            { key: "id", label: "id" },
+            { key: "title", label: "title" },
+            { key: "author", label: "author" },
+            { key: "published_year", label: "published_year" },
+          ]}
+          rows={[{ id: 1, title: "Clean Code (2nd read)", author: "Robert C. Martin", published_year: 2008 }]}
+        />
       </div>
     </div>
   );
@@ -84,6 +112,48 @@ function FilterSortPaginateDiagram() {
       <div className="rounded-card border border-yellow-500 bg-yellow-500/3 px-3 py-2 mt-3 text-center">
         <span className="text-yellow-500 text-xs">A column name or ASC/DESC can&apos;t be a $1 placeholder — only real VALUES can. That&apos;s why sort picks from a fixed list instead of using req.query.sort directly.</span>
       </div>
+      <div className="mt-4 flex flex-wrap items-start gap-4">
+        <DataTable
+          accentKey="purple"
+          caption='The real "movies" table — every row currently seeded'
+          columns={[
+            { key: "id", label: "id" },
+            { key: "title", label: "title" },
+            { key: "genre", label: "genre" },
+            { key: "rating", label: "rating" },
+            { key: "release_year", label: "release_year" },
+          ]}
+          rows={[
+            { id: 1, title: "The Matrix", genre: "Action", rating: "8.7", release_year: 1999 },
+            { id: 2, title: "Inception", genre: "Action", rating: "8.8", release_year: 2010 },
+            { id: 3, title: "The Notebook", genre: "Romance", rating: "7.8", release_year: 2004 },
+          ]}
+        />
+      </div>
+      <pre className="font-mono text-[11px] text-cyan-500 bg-cyan-500/10 border border-cyan-500/30 rounded-card px-3 py-2.5 whitespace-pre-wrap my-3">
+{`SELECT * FROM movies
+WHERE genre = $1
+ORDER BY rating DESC
+-- $1 = 'Action', built from ?genre=Action&sort=rating_desc`}
+      </pre>
+      <div className="flex flex-wrap items-start gap-4">
+        <DataTable
+          accentKey="cyan"
+          caption="?genre=Action&sort=rating_desc — the real filtered + sorted result"
+          columns={[
+            { key: "title", label: "title" },
+            { key: "genre", label: "genre" },
+            { key: "rating", label: "rating" },
+          ]}
+          rows={[
+            { title: "Inception", genre: "Action", rating: "8.8" },
+            { title: "The Matrix", genre: "Action", rating: "8.7" },
+          ]}
+        />
+      </div>
+      <div className="rounded-card border border-yellow-500 bg-yellow-500/3 px-3 py-2 mt-3 text-center">
+        <span className="text-yellow-500 text-xs">The Notebook is filtered out entirely (wrong genre) — the two Action movies that remain come back highest-rating-first, exactly matching ORDER BY rating DESC.</span>
+      </div>
     </div>
   );
 }
@@ -92,24 +162,42 @@ function AggregateFunctionsDiagram() {
   return (
     <div className="rounded-card border border-dashed border-cyan-500 bg-surface p-4 my-4">
       <div className="text-xs uppercase tracking-wide text-sublabel mb-3">GROUP BY splits rows into buckets — each bucket collapses into ONE summary row</div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div className="rounded-card border border-border bg-surface-raised px-3 py-2.5">
-          <div className="font-mono text-xs text-sublabel font-semibold mb-1.5">5 real rows, before GROUP BY</div>
-          <div className="font-mono text-[11px] text-body leading-relaxed">
-            Electronics — 199.99<br />
-            Electronics — 49.50<br />
-            Electronics — 899.00<br />
-            Books — 14.99<br />
-            Books — 22.50
-          </div>
-        </div>
-        <div className="rounded-card border border-cyan-500 bg-cyan-500/5 px-3 py-2.5">
-          <div className="font-mono text-xs text-cyan-500 font-semibold mb-1.5">2 real rows, after GROUP BY category</div>
-          <div className="font-mono text-[11px] text-body leading-relaxed">
-            Electronics — count 3, total 1148.49<br />
-            Books — count 2, total 37.49
-          </div>
-        </div>
+      <DataTable
+        accentKey="cyan"
+        caption="5 real rows, before GROUP BY"
+        columns={[
+          { key: "category", label: "category" },
+          { key: "amount", label: "amount" },
+        ]}
+        rows={[
+          { category: "Electronics", amount: "199.99" },
+          { category: "Electronics", amount: "49.50" },
+          { category: "Electronics", amount: "899.00" },
+          { category: "Books", amount: "14.99" },
+          { category: "Books", amount: "22.50" },
+        ]}
+      />
+      <pre className="font-mono text-[11px] text-green-500 bg-green-500/10 border border-green-500/30 rounded-card px-3 py-2.5 whitespace-pre-wrap my-3">
+{`SELECT category,
+       COUNT(*) AS count,
+       SUM(amount) AS total
+FROM sales
+GROUP BY category`}
+      </pre>
+      <div className="flex flex-wrap items-start gap-4">
+        <DataTable
+          accentKey="green"
+          caption="2 real rows, after GROUP BY category"
+          columns={[
+            { key: "category", label: "category" },
+            { key: "count", label: "count" },
+            { key: "total", label: "total" },
+          ]}
+          rows={[
+            { category: "Electronics", count: 3, total: "1148.49" },
+            { category: "Books", count: 2, total: "37.49" },
+          ]}
+        />
       </div>
       <div className="rounded-card border border-yellow-500 bg-yellow-500/3 px-3 py-2 mt-3 text-center">
         <span className="text-yellow-500 text-xs">COUNT(*) is a BIGINT under the hood — it comes back as a STRING too, for the exact same precision reason as a NUMERIC column.</span>

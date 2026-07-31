@@ -1,0 +1,22 @@
+// This is the schema.prisma file for the "AsyncRouteErrorHandling"
+// mini-project. What this file does: same real job as schema.prisma in
+// "PostgresWithPrisma" (see examples/ConnectingRealDatabases) — it tells
+// Prisma which real database to connect to, and declares the one real
+// table this mini-project needs.
+generator client {
+  provider = "prisma-client-js" // Tells Prisma to build a real, typed client into node_modules
+}
+
+datasource db {
+  provider = "postgresql" // This mini-project talks to a real PostgreSQL server
+  url      = env("DATABASE_URL") // The real connection string lives in .env, never here
+}
+
+// A real "Customer" table, once "prisma db push" runs. Deliberately tiny —
+// this section's whole point is the ASYNC ROUTE + ERROR HANDLING around a
+// lookup, not a complex data shape.
+model Customer {
+  id    Int    @id @default(autoincrement()) // A real auto-incrementing whole-number primary key
+  name  String // A real, required plain-text name
+  email String // A real, required plain-text email
+}

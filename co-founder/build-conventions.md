@@ -420,6 +420,19 @@ The user's own direct request: manually selecting-and-copying (or worse, retypin
 
 **Standing rule going forward:** any NEW `PostmanCheck`/`PgAdminCheck`/bespoke "Try It Yourself" content is already covered by the shared components; any NEW bespoke walkthrough (following the "different real host"/"needs its own visual block" pattern above) must add `CopyButton` next to every literal, fully-real, no-placeholder value the reader is meant to paste — don't ship a new one without it.
 
+## Relational/tabular data gets a real HTML table, never a card diagram (started 2026-07-31)
+
+Caught directly and bluntly by the user on the new "Metaora" (Stage G) topic's PostgreSQL JOIN + GROUP BY section: the existing bespoke-diagram style (dashed-border card, stacked colored rows with one label + one description each) is the wrong shape for anything whose whole point is real rows and columns — a database table, a JOIN result, a relation between two tables. A reader needs to SEE a real table (real column headers, real sample rows), the same way any real SQL tutorial teaches it — not have the data paraphrased into prose-in-a-box.
+
+**New component: `src/components/DataTable.tsx`** — a real `<table>` (caption, `columns: {key,label}[]`, `rows: Record<string, string|number>[]`, `accentKey` for the caption color). Standing rule going forward, on ANY topic whose section involves:
+- **One real table** → show it as a `DataTable` with a couple of real sample rows, not just described in a `ConceptBreakdown` item.
+- **Two related tables (a foreign key relation)** → show both side by side as real `DataTable`s, with a callout naming which column points at which.
+- **A JOIN (or JOIN + GROUP BY)** → show the real source table(s) FIRST as `DataTable`s, then the real result table(s) AFTER, so the transformation is visually obvious — this was the single biggest gap that triggered the correction.
+
+This does not replace the existing bespoke-diagram rule for non-tabular concepts (control flow, type narrowing, a security before/after code contrast) — card-diagrams and `FlowChain` still fit those. It specifically supersedes using a card-diagram for anything that IS a table or a table-shaped result.
+
+**Applied 2026-07-31 to "Metaora" (built with this from the start) and retroactively to all 4 "PostgreSQL Fundamentals" sections** (product/book/movie/sales tables, plus the filtered-result and GROUP BY-result tables) — verified via `typecheck`/`lint`/a clean `rm -rf .next && npm run build` (39/39) and a real headless-Chromium screenshot, zero console errors. **Standing rule for the next two Postgres topics in the initiative ("PostgreSQL Relational Querying," "PostgreSQL Advanced Querying & Production Patterns") and every future database-touching topic** — build with real `DataTable`s from the start rather than needing a retroactive pass later. Not yet retroactively applied to other already-shipped database topics (MongoDB Fundamentals, Connecting Real Databases, Migrations & Schema Design, etc.) — only Metaora and PostgreSQL Fundamentals so far; revisit the rest only if asked.
+
 ## Verification discipline
 
 Before writing prose that asserts "Express does X" or "Node does Y" as fact, actually run it and look at the real output first — including running it multiple times when a claim is about ordering/timing, since that's exactly the kind of claim that looks deterministic until you check (see the `what-is-nodejs` topic). Record confirmed gotchas here or in `CLAUDE.md` as they're found, not just in the moment they're discovered.

@@ -1,0 +1,20 @@
+{
+  "name": "metaora-postgres-join-groupby",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real, runnable proof of Metaora's own JOIN + GROUP BY report: a real businesses/leads join, INNER vs LEFT compared side by side, and a real EXPLAIN plan showing what the index on leads.business_id actually does.",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "setup": "node setup.js",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
+  }
+}

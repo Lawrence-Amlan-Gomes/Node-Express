@@ -9,7 +9,7 @@
 // frontend team. See co-founder/roadmap.md for the prose version and reasoning.
 
 export type TopicStatus = "not-started" | "in-progress" | "mastered";
-export type AccentKey = "blue" | "purple" | "orange" | "yellow" | "green" | "cyan";
+export type AccentKey = "blue" | "purple" | "orange" | "yellow" | "green" | "cyan" | "red";
 
 export interface Topic {
   slug: string;
@@ -325,6 +325,20 @@ export const stages: Stage[] = [
         summary: "API contracts, OpenAPI/Swagger, and mocking a backend for a frontend dev — using the existing frontend background as a real interview differentiator.",
         hasPage: true,
         status: "mastered",
+      },
+    ],
+  },
+  {
+    id: "stage-g",
+    label: "Stage G — Company-Specific Interview Prep",
+    color: "red",
+    topics: [
+      {
+        slug: "metaora",
+        title: "Metaora",
+        summary: "Built directly from Metaora's real job description: Express async routes with central error handling, Prisma's 4 basic operations (create/findMany-with-relation/update/delete), a real Postgres JOIN + GROUP BY report, and the TypeScript generics fluency their interview expects.",
+        hasPage: true,
+        status: "in-progress",
       },
     ],
   },
