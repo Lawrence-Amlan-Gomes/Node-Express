@@ -211,6 +211,18 @@ const sections: StudySection[] = [
     heading: "Connecting to Postgres & Real Data Types",
     body: (
       <>
+        <p>
+          Normally, a list of products would just be a JS array of objects — real while the process is running, gone
+          the moment it restarts. A <strong>database</strong> is simply a place that stores that same data
+          permanently, on a real server, even after every process using it stops and starts again. Inside a
+          database, data lives in <strong>tables</strong>, and a table looks exactly like a spreadsheet: real rows
+          (one per product) and real columns (<span className="font-mono text-xs">name</span>,{" "}
+          <span className="font-mono text-xs">price</span>, <span className="font-mono text-xs">in_stock</span>...).
+          <strong>SQL</strong> (Structured Query Language) is the language you use to talk to that table — plain
+          enough to read almost like English: &quot;give me every product,&quot; &quot;give me only the ones in
+          stock.&quot; Everything below is that same idea made real: a genuine table, on the genuine Coolify server
+          this whole project already uses, reached through genuine SQL you write yourself.
+        </p>
         <ConceptBreakdown
           accent="orange"
           items={[
@@ -301,6 +313,73 @@ const sections: StudySection[] = [
     heading: "Basic CRUD via Raw SQL",
     body: (
       <>
+        <p>
+          In plain English: <strong>SELECT</strong> means &quot;show me.&quot; <strong>INSERT</strong> means
+          &quot;add a new row.&quot; <strong>UPDATE</strong> means &quot;change an existing row.&quot;{" "}
+          <strong>DELETE</strong> means &quot;remove a row.&quot; Right after SELECT, you name exactly which real
+          columns you want back — <span className="font-mono text-xs">*</span> means &quot;every column,&quot; or you
+          can name one (or several, comma-separated) and only those come back. It is still the exact same rows either
+          way — nothing about which books exist changes, only how many columns come back per row.
+        </p>
+        <p>
+          Since JS is already familiar ground: <span className="font-mono text-xs">SELECT title FROM books</span> is
+          the same idea as{" "}
+          <span className="font-mono text-xs">books.map(b =&gt; ({"{"} title: b.title {"}"}))</span> — loop over
+          every row, and from each one, keep only the <span className="font-mono text-xs">title</span> property.
+        </p>
+        <div className="flex flex-wrap items-start gap-4 my-3">
+          <DataTable
+            accentKey="blue"
+            caption="The real table — 4 columns, 3 rows"
+            columns={[
+              { key: "id", label: "id" },
+              { key: "title", label: "title" },
+              { key: "author", label: "author" },
+              { key: "published_year", label: "published_year" },
+            ]}
+            rows={[
+              { id: 33, title: "Atomic Habits", author: "James Clear", published_year: 2018 },
+              { id: 34, title: "Deep Work", author: "Cal Newport", published_year: 2016 },
+              { id: 35, title: "Clean Code", author: "Robert C. Martin", published_year: 2008 },
+            ]}
+          />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-3">
+          <div>
+            <pre className="font-mono text-[11px] text-cyan-500 bg-cyan-500/10 border border-cyan-500/30 rounded-card px-3 py-2.5 whitespace-pre-wrap mb-2">
+{`SELECT * FROM books -- keep all 4 columns`}
+            </pre>
+            <DataTable
+              accentKey="blue"
+              caption="Same 3 rows — every column kept"
+              columns={[
+                { key: "id", label: "id" },
+                { key: "title", label: "title" },
+                { key: "author", label: "author" },
+                { key: "published_year", label: "published_year" },
+              ]}
+              rows={[
+                { id: 33, title: "Atomic Habits", author: "James Clear", published_year: 2018 },
+                { id: 34, title: "Deep Work", author: "Cal Newport", published_year: 2016 },
+                { id: 35, title: "Clean Code", author: "Robert C. Martin", published_year: 2008 },
+              ]}
+            />
+          </div>
+          <div>
+            <pre className="font-mono text-[11px] text-cyan-500 bg-cyan-500/10 border border-cyan-500/30 rounded-card px-3 py-2.5 whitespace-pre-wrap mb-2">
+{`SELECT title FROM books -- keep ONLY title, drop id/author/published_year`}
+            </pre>
+            <DataTable
+              accentKey="blue"
+              caption="Same 3 rows — only title kept"
+              columns={[{ key: "title", label: "title" }]}
+              rows={[{ title: "Atomic Habits" }, { title: "Deep Work" }, { title: "Clean Code" }]}
+            />
+          </div>
+        </div>
+        <div className="rounded-card border border-yellow-500 bg-yellow-500/3 px-3 py-2 mt-1 mb-3 text-center">
+          <span className="text-yellow-500 text-xs">Both queries return the same 3 real books — Atomic Habits, Deep Work, Clean Code. Only the number of columns per row changed, because that is the only thing that changed between the two queries.</span>
+        </div>
         <ConceptBreakdown
           accent="blue"
           items={[
@@ -397,6 +476,12 @@ const sections: StudySection[] = [
     heading: "Filtering, Sorting & Pagination Basics",
     body: (
       <>
+        <p>
+          Now imagine this table has 50,000 movies in it, not 3. You almost never want all 50,000 back — you want
+          only the ones that match something specific: only Action movies, only movies rated 8.8 or higher. That is
+          exactly what <strong>WHERE</strong> does. In plain English, WHERE means &quot;only show rows that satisfy
+          this condition&quot; — it filters, it never adds or changes anything.
+        </p>
         <ConceptBreakdown
           accent="purple"
           items={[
@@ -479,6 +564,12 @@ const sections: StudySection[] = [
     heading: "Aggregate Functions & GROUP BY Basics",
     body: (
       <>
+        <p>
+          Suppose your boss asks: &quot;how much did we sell, per category?&quot; Not every individual sale one at a
+          time — grouped by category. In plain English, <strong>GROUP BY</strong> means &quot;put similar rows into
+          buckets, then run one summary per bucket&quot; — every row with the same category value lands in the same
+          bucket, and everything after GROUP BY (COUNT, SUM, AVG...) runs once per bucket instead of once overall.
+        </p>
         <ConceptBreakdown
           accent="cyan"
           items={[

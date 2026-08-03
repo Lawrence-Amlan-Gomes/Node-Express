@@ -155,8 +155,8 @@ export const stages: Stage[] = [
         slug: "postgresql-relational-querying",
         title: "PostgreSQL Relational Querying",
         summary: "Real multi-table SQL: INNER/LEFT/RIGHT/FULL joins, subqueries, and constraints & data integrity (FK cascade/restrict, CHECK, UNIQUE) — proven by real enforcement, not just described.",
-        hasPage: false,
-        status: "not-started",
+        hasPage: true,
+        status: "in-progress",
       },
       {
         slug: "mongodb-schema-query-patterns",
@@ -325,20 +325,6 @@ export const stages: Stage[] = [
         summary: "API contracts, OpenAPI/Swagger, and mocking a backend for a frontend dev — using the existing frontend background as a real interview differentiator.",
         hasPage: true,
         status: "mastered",
-      },
-    ],
-  },
-  {
-    id: "stage-g",
-    label: "Stage G — Company-Specific Interview Prep",
-    color: "red",
-    topics: [
-      {
-        slug: "metaora",
-        title: "Metaora",
-        summary: "Built directly from Metaora's real job description: Express async routes with central error handling, Prisma's 4 basic operations (create/findMany-with-relation/update/delete), a real Postgres JOIN + GROUP BY report, and the TypeScript generics fluency their interview expects.",
-        hasPage: true,
-        status: "in-progress",
       },
     ],
   },

@@ -1,0 +1,20 @@
+{
+  "name": "subqueries-example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Real proof of two subquery shapes: a scalar subquery (WHERE amount > (SELECT AVG...)) and a list subquery (WHERE customer_id IN (SELECT ...)) against real orders/customers data.",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "setup": "node setup.js",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
+  }
+}
